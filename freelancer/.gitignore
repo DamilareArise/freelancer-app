@@ -1,0 +1,20 @@
+__pycache__/
+*.py[cod]
+*.so
+*.egg
+*.egg-info/
+*.pyo
+*.pyd
+*.pkl
+*.log
+
+# Virtual env
+venv/
+.env
+
+# Django stuff
+/media/
+
+# VSCode / IDE
+.vscode/
+.idea/
