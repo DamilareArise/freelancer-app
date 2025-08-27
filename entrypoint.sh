@@ -10,7 +10,8 @@ fi
 case "$CMD" in
   web)
     echo "Starting Gunicorn (Django web)..."
-    python manage.py migrate --noinput
+    python freelancer/manage.py migrate --noinput
+    python freelancer/manage.py role_seed
     exec gunicorn freelancer.wsgi:application --bind 0.0.0.0:8000 --workers 3
     ;;
     
