@@ -1,5 +1,11 @@
 {
   "schemaVersion": 2,
   "dockerfilePath": "./Dockerfile",
-  "dockerBuildContext": "./"
+  "dockerBuildContext": "./",
+  "containerHttpPort": "8000",
+  "serviceUpdateOverrideCommand": [
+    "/app/entrypoint.sh",
+    "web"
+  ]
 }
+
