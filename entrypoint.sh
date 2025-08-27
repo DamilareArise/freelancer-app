@@ -1,11 +1,16 @@
 #!/bin/sh
 set -e
 
-case "$1" in
+CMD="$1"
+
+if [ -z "$CMD" ]; then
+  CMD="web"   # default to web if nothing passed
+fi
+
+case "$CMD" in
   web)
     echo "Starting Gunicorn (Django web)..."
     python manage.py migrate --noinput
-    python manage.py role_seed
     exec gunicorn freelancer.wsgi:application --bind 0.0.0.0:8000 --workers 3
     ;;
     
@@ -20,7 +25,7 @@ case "$1" in
   #   ;;
 
   *)
-    echo "Unknown command: $1"
+    echo "Unknown command: $CMD"
     echo "Usage: entrypoint.sh {web|celery|celery-beat}"
     exit 1
     ;;
