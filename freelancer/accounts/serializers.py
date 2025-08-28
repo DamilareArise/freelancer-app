@@ -52,13 +52,12 @@ class RoleSerializer(serializers.ModelSerializer):
 
 
 class AddressSerializer(serializers.ModelSerializer):
+    country_name = serializers.CharField(source='country.name', read_only=True)
+
     class Meta:
         model = Address
-        fields = ['id', 'country', 'state', 'city', 'street', 'postal_code']
-    
-    def to_representation(self, instance):
-        address = super().to_representation(instance)
-        address['country'] = address['country'].name if address['country'] else None
+        fields = ['id', 'country', 'state', 'city', 'street', 'postal_code', 'country_name']
+
 
     def create(self, validated_data):
         user = self.context['request'].user
