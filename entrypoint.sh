@@ -1,12 +1,12 @@
 #!/bin/sh
 set -e
 ls -la
-cd app/
+cd freelancer/
 
 case "$1" in
   web)
     echo "Starting Gunicorn (Django web)..."
-    python freelancer/manage.py migrate --noinput
+    python manage.py migrate --noinput
     exec gunicorn freelancer.wsgi:application --bind 0.0.0.0:8000 --workers 3
     ;;
   celery)
