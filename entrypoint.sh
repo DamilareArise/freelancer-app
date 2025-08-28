@@ -1,6 +1,6 @@
 #!/bin/sh
 set -e
-ls -la
+
 cd freelancer/
 
 case "$1" in

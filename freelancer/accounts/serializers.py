@@ -2,6 +2,8 @@ from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from .models import Role, UserRole, Address
 from django.db import transaction
+from rest_framework_simplejwt.tokens import RefreshToken
+from .tasks import send_email
 
 User = get_user_model()
 
@@ -67,3 +69,73 @@ class AddressSerializer(serializers.ModelSerializer):
             user.address = address
             user.save()
             return address
+        
+def get_tokens_for_user(user):
+    """
+    Generate JWT tokens for a user.
+    """
+    refresh = RefreshToken.for_user(user)
+    return {
+        'refresh': str(refresh),
+        'access': str(refresh.access_token),
+    }
+    
+class PasswordResetSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    otp = serializers.CharField(max_length=4, min_length=4, write_only=True)
+    new_password = serializers.CharField(write_only=True, min_length=8)
+    
+class PasswordResetRequestSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    
+    def validate_email(self, value):
+        """Ensure the email exists in the database."""
+        if not User.objects.filter(email=value).exists():
+            raise serializers.ValidationError("No user found with this email.")
+        return value
+
+class ChangePasswordSerializer(serializers.Serializer):
+    password = serializers.CharField(write_only=True, min_length=8)
+    new_password = serializers.CharField(write_only=True, min_length=8)
+    confirm_password = serializers.CharField(write_only=True, min_length=8)
+    
+    def validate(self, data):
+        """Validate the new password and confirm password."""
+        new_password = data.get("new_password")
+        confirm_password = data.get("confirm_password")
+        
+        if new_password != confirm_password:
+            raise serializers.ValidationError({"confirm_password": "Passwords do not match."})
+        
+        return data
+    
+
+class DocumentSerializer(serializers.ModelSerializer):
+    role = serializers.PrimaryKeyRelatedField(queryset=Role.objects.all(), write_only =True)
+    class Meta:
+        model = User
+        fields = ['oib', 'vat', 'document_type', 'document', 'selfie', 'business_reg', 'auth_letter', 'auth_letter', 'role']
+        
+    def update(self, instance, validated_data):
+        user = instance
+        role = validated_data.pop('role')
+        
+        if not role:
+            raise serializers.ValidationError({"role": "Role is required."})
+        
+        for attr, value in validated_data.items():
+            setattr(user, attr, value)
+        
+        user.document_status = 'submitted'  
+        user.save()
+        
+        UserRole.objects.update_or_create(user=user, defaults={'role': role})
+        
+        context = {
+            "subject": "Document updated",
+            'email': user.email,
+            'first_name': user.first_name,
+            "role": role.label,
+        }
+        send_email.delay(context, file='seller_onboarding.html')
+        return user

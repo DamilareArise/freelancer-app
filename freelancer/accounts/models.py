@@ -74,6 +74,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     document = models.FileField(upload_to='user_document/', null=True, blank=True)
     business_reg = models.FileField(upload_to='business_reg/', null=True, blank=True)
     auth_letter = models.FileField(upload_to='auth_letter/', null=True, blank=True)
+    document_status = models.CharField(max_length=20, choices=DOC_VERIFICATION_STATUS, default='pending')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     selfie = models.ImageField(upload_to='selfie/', null=True, blank=True) 
