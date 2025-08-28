@@ -1,0 +1,236 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Welcome to Kliko - Let's Get Started!</title>
+</head>
+<body style="margin: 0; padding: 0; font-family: Arial, sans-serif; color: #333333; background-color: #ffffff;">
+  <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px; margin: 0 auto;">
+    <tr>
+      <td style="padding: 40px 30px 20px 30px;">
+        <!-- Logo -->
+        {% include "logo.html" %}
+      </td>
+    </tr>
+   
+    <!-- Welcome Header -->
+    <tr>
+      <td style="padding: 0 30px 30px 30px; text-align: center;">
+        <h1 style="margin: 0; font-size: 28px; color: #10B981; font-weight: bold;">Welcome to Kliko! 🎉</h1>
+        <p style="margin: 15px 0 0 0; font-size: 18px; color: #6B7280;">Your journey to finding amazing properties and services starts here</p>
+      </td>
+    </tr>
+
+    <!-- Personal Greeting -->
+    <tr>
+      <td style="padding: 0 30px 20px 30px; font-size: 16px; line-height: 1.5;">
+        <p style="margin-top: 0;">Hi {{user.first_name}},</p>
+        <p>Thank you for joining Kliko! We're excited to have you as part of our community where finding properties and booking services is made simple and secure.</p>
+      </td>
+    </tr>
+
+    <!-- What's Next Section -->
+    <tr>
+      <td style="padding: 0 30px 30px 30px;">
+        <table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #F9FAFB; border-radius: 8px;">
+          <tr>
+            <td style="padding: 25px;">
+              <h2 style="margin: 0 0 20px 0; font-size: 20px; color: #1F2937;">🚀 What's Next?</h2>
+             
+              <!-- Step 1 -->
+              <table border="0" cellpadding="0" cellspacing="0" width="100%" style="margin-bottom: 20px;">
+                <tr>
+                  <td width="30" style="vertical-align: top; padding-top: 2px;">
+                    <div style="width: 24px; height: 24px; background-color: #10B981; border-radius: 50%; color: white; text-align: center; font-size: 14px; font-weight: bold; line-height: 24px;">1</div>
+                  </td>
+                  <td style="padding-left: 15px;">
+                    <h3 style="margin: 0 0 5px 0; font-size: 16px; color: #1F2937;">Complete Your Profile</h3>
+                    <p style="margin: 0; font-size: 14px; color: #6B7280; line-height: 1.4;">Add a profile picture and tell us a bit about yourself to build trust with other users.</p>
+                  </td>
+                </tr>
+              </table>
+
+              <!-- Step 2 -->
+              <table border="0" cellpadding="0" cellspacing="0" width="100%" style="margin-bottom: 20px;">
+                <tr>
+                  <td width="30" style="vertical-align: top; padding-top: 2px;">
+                    <div style="width: 24px; height: 24px; background-color: #10B981; border-radius: 50%; color: white; text-align: center; font-size: 14px; font-weight: bold; line-height: 24px;">2</div>
+                  </td>
+                  <td style="padding-left: 15px;">
+                    <h3 style="margin: 0 0 5px 0; font-size: 16px; color: #1F2937;">Explore Categories</h3>
+                    <p style="margin: 0; font-size: 14px; color: #6B7280; line-height: 1.4;">Browse our wide range of properties and services - from vacation rentals to professional services.</p>
+                  </td>
+                </tr>
+              </table>
+
+              <!-- Step 3 -->
+              <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                <tr>
+                  <td width="30" style="vertical-align: top; padding-top: 2px;">
+                    <div style="width: 24px; height: 24px; background-color: #10B981; border-radius: 50%; color: white; text-align: center; font-size: 14px; font-weight: bold; line-height: 24px;">3</div>
+                  </td>
+                  <td style="padding-left: 15px;">
+                    <h3 style="margin: 0 0 5px 0; font-size: 16px; color: #1F2937;">Make Your First Booking</h3>
+                    <p style="margin: 0; font-size: 14px; color: #6B7280; line-height: 1.4;">Found something you like? Book instantly with our secure payment system.</p>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+
+    <!-- Quick Actions -->
+    <tr>
+      <td style="padding: 0 30px 30px 30px;">
+        <h2 style="margin: 0 0 20px 0; font-size: 20px; color: #1F2937; text-align: center;">Quick Actions</h2>
+        <table border="0" cellpadding="0" cellspacing="0" width="100%">
+          <tr>
+            <td width="48%" align="center" bgcolor="#10B981" style="border-radius: 8px;">
+              <a href="https://example.com/browse-properties" target="_blank" style="display: inline-block; padding: 16px 0; width: 100%; font-size: 16px; color: #ffffff; text-decoration: none; border-radius: 8px; font-weight: semibold;">Browse Properties</a>
+            </td>
+            <td width="4%"></td>
+            <td width="48%" align="center" bgcolor="#F3F4F6" style="border-radius: 8px;">
+              <a href="https://example.com/browse-services" target="_blank" style="display: inline-block; padding: 16px 0; width: 100%; font-size: 16px; color: #4B5563; text-decoration: none; border-radius: 8px; font-weight: semibold;">Find Services</a>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+
+    <!-- Features Highlight -->
+    <tr>
+      <td style="padding: 0 30px 30px 30px;">
+        <table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #ECFDF5; border-radius: 8px;">
+          <tr>
+            <td style="padding: 25px;">
+              <h2 style="margin: 0 0 20px 0; font-size: 20px; color: #1F2937; text-align: center;">✨ Why You'll Love Kliko</h2>
+             
+              <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                <tr>
+                  <td width="50%" style="vertical-align: top; padding-right: 10px;">
+                    <div style="margin-bottom: 15px;">
+                      <h4 style="margin: 0 0 5px 0; font-size: 14px; color: #1F2937; font-weight: bold;">🔒 Secure & Verified</h4>
+                      <p style="margin: 0; font-size: 13px; color: #6B7280; line-height: 1.4;">All listings and users are verified for your safety and peace of mind.</p>
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                      <h4 style="margin: 0 0 5px 0; font-size: 14px; color: #1F2937; font-weight: bold;">⚡ Instant Booking</h4>
+                      <p style="margin: 0; font-size: 13px; color: #6B7280; line-height: 1.4;">Book properties and services instantly without waiting for approval.</p>
+                    </div>
+                  </td>
+                  <td width="50%" style="vertical-align: top; padding-left: 10px;">
+                    <div style="margin-bottom: 15px;">
+                      <h4 style="margin: 0 0 5px 0; font-size: 14px; color: #1F2937; font-weight: bold;">💰 Best Prices</h4>
+                      <p style="margin: 0; font-size: 13px; color: #6B7280; line-height: 1.4;">Competitive pricing with transparent fees and no hidden costs.</p>
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                      <h4 style="margin: 0 0 5px 0; font-size: 14px; color: #1F2937; font-weight: bold;">🎯 Smart Matching</h4>
+                      <p style="margin: 0; font-size: 13px; color: #6B7280; line-height: 1.4;">AI-powered recommendations based on your preferences and needs.</p>
+                    </div>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+
+    <!-- App Download -->
+    <tr>
+      <td style="padding: 0 30px 30px 30px; text-align: center;">
+        <h3 style="margin: 0 0 15px 0; font-size: 18px; color: #1F2937;">📱 Get Our Mobile App</h3>
+        <p style="margin: 0 0 20px 0; font-size: 14px; color: #6B7280;">Take Kliko with you wherever you go. Download our app for the best experience.</p>
+       
+        <table border="0" cellpadding="0" cellspacing="0" style="margin: 0 auto;">
+          <tr>
+            <td style="padding-right: 10px;">
+              <a href="https://apps.apple.com/kliko" target="_blank">
+                <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="Download on App Store" width="120" height="40" style="display: block;" />
+              </a>
+            </td>
+            <td style="padding-left: 10px;">
+              <a href="https://play.google.com/store/apps/kliko" target="_blank">
+                <img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Get it on Google Play" width="135" height="40" style="display: block;" />
+              </a>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+
+    <!-- Support Section -->
+    <tr>
+      <td style="padding: 0 30px 30px 30px;">
+        <table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #FEF3C7; border-radius: 8px;">
+          <tr>
+            <td style="padding: 20px; text-align: center;">
+              <h3 style="margin: 0 0 10px 0; font-size: 16px; color: #92400E;">🤝 Need Help Getting Started?</h3>
+              <p style="margin: 0 0 15px 0; font-size: 14px; color: #92400E;">Our friendly support team is here to help you every step of the way.</p>
+              <a href="https://example.com/support" target="_blank" style="display: inline-block; padding: 12px 24px; background-color: #F59E0B; color: #ffffff; text-decoration: none; border-radius: 6px; font-size: 14px; font-weight: semibold;">Contact Support</a>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+
+    <!-- Social Links -->
+    <tr>
+      <td style="padding: 0 30px 30px 30px; text-align: center;">
+        <p style="margin: 0 0 15px 0; font-size: 14px; color: #6B7280;">Follow us for updates and tips:</p>
+        <table border="0" cellpadding="0" cellspacing="0" style="margin: 0 auto;">
+          <tr>
+            <td style="padding: 0 10px;">
+              <a href="https://facebook.com/kliko" target="_blank" style="color: #10B981; text-decoration: none; font-size: 14px;">Facebook</a>
+            </td>
+            <td style="padding: 0 10px;">
+              <a href="https://twitter.com/kliko" target="_blank" style="color: #10B981; text-decoration: none; font-size: 14px;">Twitter</a>
+            </td>
+            <td style="padding: 0 10px;">
+              <a href="https://instagram.com/kliko" target="_blank" style="color: #10B981; text-decoration: none; font-size: 14px;">Instagram</a>
+            </td>
+            <td style="padding: 0 10px;">
+              <a href="https://linkedin.com/company/kliko" target="_blank" style="color: #10B981; text-decoration: none; font-size: 14px;">LinkedIn</a>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+
+    <!-- Closing -->
+    <tr>
+      <td style="padding: 0 30px 20px 30px; font-size: 16px; line-height: 1.5;">
+        <p>We're thrilled to have you join our community! If you have any questions or need assistance, don't hesitate to <a href="https://example.com/support" style="color: #10B981; text-decoration: none;">reach out to our support team</a>.</p>
+        <p style="margin-bottom: 0;">Welcome aboard! 🚀</p>
+        <p style="margin-bottom: 0; margin-top: 20px; font-weight: semibold;">— The Kliko Team</p>
+      </td>
+    </tr>
+
+    <!-- Footer -->
+    <tr>
+      <td style="padding: 30px; background-color: #F9FAFB; border-top: 1px solid #E5E7EB;">
+        <table border="0" cellpadding="0" cellspacing="0" width="100%">
+          <tr>
+            <td style="text-align: center;">
+              <p style="margin: 0 0 10px 0; font-size: 12px; color: #6B7280;">
+                This email was sent to {{user.email}}. You're receiving this because you signed up for Kliko.
+              </p>
+              <p style="margin: 0; font-size: 12px; color: #6B7280;">
+                <a href="https://example.com/unsubscribe?email=[email]" style="color: #6B7280; text-decoration: underline;">Unsubscribe</a> |
+                <a href="https://example.com/privacy-policy" style="color: #6B7280; text-decoration: underline;">Privacy Policy</a> |
+                <a href="https://example.com/support" style="color: #6B7280; text-decoration: underline;">Support</a>
+              </p>
+              <p style="margin: 15px 0 0 0; font-size: 12px; color: #9CA3AF;">
+                © 2024 Kliko. All rights reserved.<br>
+                123 Tech Street, San Francisco, CA 94105
+              </p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

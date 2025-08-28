@@ -18,4 +18,5 @@ urlpatterns = [
     path('change-password/', vw.ChangePassword.as_view(), name='change-password'),
     path('get-user/', vw.GetUser.as_view(), name='get-user'),
     path('update-user/', vw.UpdateUser.as_view(), name='update-user'),
+    path('update-address/', vw.UpdateAddress.as_view(), name='update-address')
 ]
