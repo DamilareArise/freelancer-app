@@ -55,6 +55,10 @@ class AddressSerializer(serializers.ModelSerializer):
     class Meta:
         model = Address
         fields = ['id', 'country', 'state', 'city', 'street', 'postal_code']
+    
+    def to_representation(self, instance):
+        address = super().to_representation(instance)
+        address['country'] = address['country'].name if address['country'] else None
 
     def create(self, validated_data):
         user = self.context['request'].user
