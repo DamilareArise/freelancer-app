@@ -1,5 +1,7 @@
 #!/bin/sh
 set -e
+ls -la
+cd app/
 
 case "$1" in
   web)
