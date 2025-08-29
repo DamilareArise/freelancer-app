@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     "corsheaders",
     "accounts",
     "django_countries",
+    "storages",
     'django_cleanup.apps.CleanupConfig'
 ]
 
@@ -171,3 +172,21 @@ CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 
+AWS_STORAGE_BUCKET_NAME = config("AWS_STORAGE_BUCKET_NAME")
+AWS_S3_REGION_NAME = config("AWS_S3_REGION_NAME", default="us-east-1")
+
+STORAGES = {
+    "default": {  
+        "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
+        "OPTIONS": {
+            "access_key": config("AWS_ACCESS_KEY_ID"),
+            "secret_key": config("AWS_SECRET_ACCESS_KEY"),
+            "bucket_name": AWS_STORAGE_BUCKET_NAME,
+            "region_name": AWS_S3_REGION_NAME,
+            "custom_domain": "book-freelancer.s3.amazonaws.com",
+        },
+    },
+    "staticfiles": {  
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+    },
+}
