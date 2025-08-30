@@ -17,7 +17,6 @@ class LoginSerializer(serializers.Serializer):
     username = serializers.CharField()  # Can be email or phone
     password = serializers.CharField(write_only=True)
     
-
 class RegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(max_length = 68, min_length = 6, write_only = True)
 
@@ -49,7 +48,6 @@ class RoleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Role
         fields = ['id', 'label', 'description', 'is_admin']
-
 
 class AddressSerializer(serializers.ModelSerializer):
     country_name = serializers.CharField(source='country.name', read_only=True)
@@ -112,7 +110,6 @@ class ChangePasswordSerializer(serializers.Serializer):
         
         return data
     
-
 class DocumentSerializer(serializers.ModelSerializer):
     role = serializers.PrimaryKeyRelatedField(queryset=Role.objects.all(), write_only =True)
     class Meta:
@@ -142,3 +139,4 @@ class DocumentSerializer(serializers.ModelSerializer):
         }
         send_email.delay(context, file='seller_onboarding.html')
         return user
+

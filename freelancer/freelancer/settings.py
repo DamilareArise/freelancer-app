@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt.token_blacklist', 
     "corsheaders",
     "accounts",
+    "adminHandlers",
     "django_countries",
     "storages",
     'django_cleanup.apps.CleanupConfig'

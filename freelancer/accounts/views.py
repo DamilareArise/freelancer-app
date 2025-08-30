@@ -377,3 +377,4 @@ class HandleUserStatus(viewsets.ViewSet):
 
         else:
             return Response({"error": "Invalid action"}, status=status.HTTP_400_BAD_REQUEST)
+        
