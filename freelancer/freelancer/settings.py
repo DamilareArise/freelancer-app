@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 from pathlib import Path
 from decouple import config
 from datetime import timedelta
+from celery.schedules import crontab
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -188,5 +189,12 @@ STORAGES = {
     },
     "staticfiles": {  
         "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+    },
+}
+
+CELERY_BEAT_SCHEDULE = {
+    "delete-inactive-users-daily": {
+        "task": "accounts.tasks.delete_inactive_users",
+        "schedule": crontab(hour=0, minute=0),  # every midnight
     },
 }

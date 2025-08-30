@@ -11,7 +11,7 @@ case "$1" in
     ;;
   celery)
     echo "Starting Celery worker..."
-    exec celery -A freelancer worker -l info
+    exec celery -A freelancer worker -B -l info
     ;;
   *)
     echo "Unknown command: $1"

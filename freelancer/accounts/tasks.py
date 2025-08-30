@@ -3,7 +3,12 @@ from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from django.conf import settings
 from celery import shared_task
-import logging 
+import logging
+from django.utils import timezone
+from datetime import timedelta
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 logger = logging.getLogger(__name__)
 
@@ -25,3 +30,16 @@ def send_email(context, file=None):
 
     except Exception as e:
         logger.error(f"Error sending email: {e}")
+        
+
+@shared_task
+def delete_inactive_users():
+    cutoff = timezone.now() - timedelta(days=23)
+    users = User.objects.filter(status="inactive", deactivation_requested_at__lte=cutoff)
+
+    count = users.count()
+    for user in users:
+        user.is_active = False 
+        user.save()
+    
+    return f"Deleted {count} users"

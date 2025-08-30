@@ -10,6 +10,11 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework import viewsets
 from rest_framework_simplejwt.tokens import RefreshToken 
+from .permissions import IsAdminUser
+from .pagination import CustomOffsetPagination
+from django.db.models import Q
+from rest_framework.decorators import action
+from django.utils import timezone
 
 
 # Create your views here.
@@ -84,7 +89,6 @@ class VerifyOtp(APIView):
 
 
         return Response({'message':'Invalid OTP'}, status=status.HTTP_400_BAD_REQUEST)
-
 
 class LoginView(APIView):
     """
@@ -240,7 +244,6 @@ class UpdateUser(APIView):
         
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-
 class UpdateAddress(APIView):
     permission_classes = [IsAuthenticated]
     def put(self, request):
@@ -265,3 +268,112 @@ class CustomerRoleViewSet(viewsets.ReadOnlyModelViewSet):
     permission_classes = [AllowAny]
     authentication_classes = []
     queryset = Role.objects.filter(is_admin=False)
+    
+class AdminLoginView(APIView):
+    authentication_classes = []
+    permission_classes = [AllowAny]
+    
+    def post(self, request):
+        serializer = sz.LoginSerializer(data=request.data)
+        if serializer.is_valid():
+            username = serializer.validated_data['username']
+            password = serializer.validated_data['password']
+            user = EmailOrPhoneBackend().authenticate(request, username=username, password=password)
+            if user and user.is_admin_role():
+                tokens = sz.get_tokens_for_user(user)
+                return Response({
+                    'id':user.id,
+                    "email":user.email,
+                    'full_name':user.get_full_name,
+                    'access_token':tokens.get('access'),
+                    'refresh_token':tokens.get('refresh'),
+                    }, status=status.HTTP_200_OK)
+                
+            return Response({"error": "Only admin users can log in"}, status=status.HTTP_403_FORBIDDEN)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+class GetAllUser(APIView):
+    permission_classes = [IsAdminUser]
+
+    def get(self, request, type):
+        # Filter base queryset
+        users = User.objects.all()
+        search = request.query_params.get('search', None)
+        
+        if type == 'admin':
+            users = users.filter(user_roles__role__is_admin=True).distinct()
+        else:
+            users = users.filter(user_roles__role__is_admin=False).distinct()
+            
+        if search:
+            users = users.filter(
+                Q(email__icontains=search) | 
+                Q(phone__icontains=search) | 
+                Q(first_name__icontains=search) | 
+                Q(last_name__icontains=search)
+            ).distinct()
+
+        users = users.prefetch_related('user_roles', 'user_roles__role').order_by('-created_at')
+
+        paginator = CustomOffsetPagination()
+        page = paginator.paginate_queryset(users, request)
+
+        serializer = sz.UserSerializer(page, many=True)
+        data = serializer.data
+
+        for user_data, user in zip(data, page):
+            roles = user.user_roles.all()
+            user_data['user_roles'] = [
+                {"id": role.role.id, "label": role.role.label}
+                for role in roles
+            ]
+
+            for doc_field in ['passport', 'document', 'selfie', 'business_reg', 'auth_letter']:
+                user_data[doc_field] = user_data.get(doc_field)
+
+        return paginator.get_paginated_response(data)
+
+class HandleUserStatus(viewsets.ViewSet):
+        
+    @action(detail=True, methods=['post'], url_path='status-action', permission_classes=[IsAdminUser])
+    def handle_user_status(self, request, pk):
+        user = get_object_or_404(User, id=pk)
+        action = request.data.get('action')
+        
+        if request.user.is_admin_role():
+            if action == 'suspend':
+                user.is_active = False
+                user.status = 'suspended'
+                user.save()
+                return Response({"message": "User suspended successfully"}, status=status.HTTP_200_OK)
+        
+            elif action == 'activate':
+                user.is_active = True
+                user.status = 'active'
+                user.deactivation_requested_at = None
+                user.save()
+                return Response({"message": "User activated successfully"}, status=status.HTTP_200_OK)
+            
+            return Response({"error": "Invalid action"}, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response({"error": "You do not have permission to perform this action"}, status=status.HTTP_403_FORBIDDEN)
+        
+    @action(detail=False, methods=['post'], url_path='self-deactivate', permission_classes=[IsAuthenticated])
+    def self_deactivate(self, request):
+        user = request.user
+        action = request.data.get('action')
+        
+        if action == 'deactivate':
+            user.status = 'inactive'
+            user.deactivation_requested_at = timezone.now()
+            user.save()
+            return Response({"message": "Your account is scheduled for deletion in 23 days."}, status=status.HTTP_200_OK)
+        
+        elif action == 'cancel':
+            user.status = 'active'
+            user.deactivation_requested_at = None
+            user.save()
+            return Response({"message": "Your account deactivation has been canceled."}, status=status.HTTP_200_OK)
+
+        else:
+            return Response({"error": "Invalid action"}, status=status.HTTP_400_BAD_REQUEST)
