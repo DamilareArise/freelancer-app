@@ -109,18 +109,10 @@ class LoginView(APIView):
                     )
                 
                 tokens = sz.get_tokens_for_user(user)
-                return Response({
-                    'id':user.id,
-                    "email":user.email,
-                    "phone":user.phone,
-                    'full_name':user.get_full_name,
-                    'access_token':tokens.get('access'),
-                    'refresh_token':tokens.get('refresh'),
-                    'passport': user.passport.url if user.passport else None,
-                    'document_status':user.document_status,
-                    'status': user.status,
-                }, status=status.HTTP_200_OK)
-                
+                userData = sz.UserSerializer(user).data
+                userData['access_token'] = tokens.get('access')
+                userData['refresh_token'] = tokens.get('refresh')
+                return Response(userData, status=status.HTTP_200_OK) 
             return Response({"error": "Invalid credentials"}, status=status.HTTP_400_BAD_REQUEST)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
@@ -214,22 +206,6 @@ class GetUser(APIView):
         user = get_object_or_404(User, id=request.user.id)
         serializer = sz.UserSerializer(user)
         userInfo =  serializer.data
-        
-        if userInfo['passport']:
-            userInfo['passport'] = userInfo.get('passport')
-        if userInfo['document']:
-            userInfo['document'] = userInfo.get('document')
-        if userInfo['selfie']:
-            userInfo['selfie'] = userInfo.get('selfie')
-        if userInfo['business_reg']:
-            userInfo['business_reg'] = userInfo.get('business_reg')
-        if userInfo['auth_letter']:
-            userInfo['auth_letter'] = userInfo.get('auth_letter')
-        if hasattr(user, 'address') and user.address:
-            address_serializer = sz.AddressSerializer(user.address)
-            userInfo['address'] = address_serializer.data
-        
-            
         return Response(userInfo, status=status.HTTP_200_OK)
 
 class UpdateUser(APIView):

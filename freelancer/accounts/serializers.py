@@ -9,9 +9,17 @@ User = get_user_model()
 
 
 class UserSerializer(serializers.ModelSerializer):
+    
+    def to_representation(self, instance):
+        user = super().to_representation(instance)
+        user['roles'] = [role.role.label for role in instance.user_roles.all()] if instance.user_roles.exists() else []
+        user['address'] = AddressSerializer(instance.address).data if instance.address else None
+        return user
+
     class Meta:
         model = User
         fields = ['id', 'first_name', 'last_name', 'email', 'phone','passport', 'is_verified', 'document_status', 'oib', 'vat', 'document_type', 'document', 'selfie', 'business_reg', 'auth_letter', 'status', 'created_at']
+        
         
 class LoginSerializer(serializers.Serializer):
     username = serializers.CharField()  # Can be email or phone
