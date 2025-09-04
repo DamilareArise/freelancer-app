@@ -129,7 +129,10 @@ class DocumentSerializer(serializers.ModelSerializer):
         role = validated_data.pop('role')
         
         if not role:
-            raise serializers.ValidationError({"role": "Role is required."})
+            raise serializers.ValidationError({"error": "Role is required."})
+        
+        if role.id == 'SERVICE_PROVIDER' and user.document_status == 'submitted' and user.user_roles.filter(role__id='SERVICE_PROVIDER').exists():
+            raise serializers.ValidationError({"error": "Document has already been submitted."})
         
         for attr, value in validated_data.items():
             setattr(user, attr, value)
@@ -137,7 +140,8 @@ class DocumentSerializer(serializers.ModelSerializer):
         user.document_status = 'submitted'  
         user.save()
         
-        UserRole.objects.update_or_create(user=user, defaults={'role': role})
+        
+        UserRole.objects.get_or_create(user=user, role=role)
         
         context = {
             "subject": "Document updated",

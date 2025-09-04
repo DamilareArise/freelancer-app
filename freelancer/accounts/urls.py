@@ -5,6 +5,8 @@ from rest_framework.routers import DefaultRouter
 router = DefaultRouter()
 
 router.register('customer-role', vw.CustomerRoleViewSet, basename='customer-role')
+router.register('document', vw.DocumentViewSet, basename='document')
+router.register('handle-status', vw.HandleUserStatus, basename='handle-status')
 
 urlpatterns = [
     path('', include(router.urls)),
