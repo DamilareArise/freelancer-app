@@ -7,6 +7,7 @@ router = DefaultRouter()
 router.register('customer-role', vw.CustomerRoleViewSet, basename='customer-role')
 router.register('document', vw.DocumentViewSet, basename='document')
 router.register('handle-status', vw.HandleUserStatus, basename='handle-status')
+router.register('role', vw.RoleViewSet, basename='role')
 
 urlpatterns = [
     path('', include(router.urls)),
