@@ -4,3 +4,13 @@ from . import views as vw
 
 router = DefaultRouter()
 router.register(r'handle-admin', vw.AdminViewSet, basename='admin')
+router.register(r'charges', vw.ChargesViewSet, basename='charges')
+router.register(r'faq', vw.FAQViewset, basename='faq')
+router.register(r'get-categories', vw.GetCategories, basename='get-categories')
+
+urlpatterns = [
+    path('', include(router.urls)),
+    path('create-category/', vw.PropertyCategoryCreateView.as_view(), name='create-category'),
+    path('update-category/<int:pk>/', vw.PropertyCategoryCreateView.as_view(), name='update-category'),
+    
+]
