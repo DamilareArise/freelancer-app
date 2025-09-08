@@ -220,7 +220,6 @@ class PropertyCategoryUnifiedSerializer(serializers.ModelSerializer):
                 # Update the PropertyCategory instance
                 instance.name = validated_data.get('name', instance.name)
                 instance.icon = validated_data.get('icon', instance.icon)
-                instance.type = validated_data.get('type', instance.type)
                 instance.updated_by = user
                 instance.save()
             
