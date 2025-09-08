@@ -7,6 +7,7 @@ router.register(r'handle-admin', vw.AdminViewSet, basename='admin')
 router.register(r'charges', vw.ChargesViewSet, basename='charges')
 router.register(r'faq', vw.FAQViewset, basename='faq')
 router.register(r'get-categories', vw.GetCategories, basename='get-categories')
+router.register(r'categories', vw.CategoryViewSet, basename='category')
 
 urlpatterns = [
     path('', include(router.urls)),
