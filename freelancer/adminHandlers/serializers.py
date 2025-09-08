@@ -31,7 +31,8 @@ class AdminSerializer(serializers.ModelSerializer):
                     first_name=validated_data['first_name'],
                     last_name=validated_data['last_name'],
                     email=validated_data['email'],
-                    phone=validated_data['phone']
+                    phone=validated_data['phone'],
+                    password= User.objects.make_random_password(length=10) 
                 )
 
                 # Assign roles to the user
