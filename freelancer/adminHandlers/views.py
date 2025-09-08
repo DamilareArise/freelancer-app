@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework import viewsets
 from django.contrib.auth import get_user_model
-from freelancer.accounts.permissions import IsAdminUser
+from accounts.permissions import IsAdminUser
 from . import serializers as sz
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from .models import FAQ, Charges, PropertyCategory
