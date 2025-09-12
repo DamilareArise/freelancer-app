@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     "adminHandlers",
     "django_countries",
     "storages",
+    "listing",
     'django_cleanup.apps.CleanupConfig'
 ]
 
@@ -200,3 +201,5 @@ CELERY_BEAT_SCHEDULE = {
         "schedule": crontab(hour=0, minute=0),  # every midnight
     },
 }
+
+TINIFY_API_KEY = config("TINIFY_API_KEY")

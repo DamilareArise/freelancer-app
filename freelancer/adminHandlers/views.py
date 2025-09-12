@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404
 from rest_framework import viewsets
 from django.contrib.auth import get_user_model
 from accounts.permissions import IsAdminUser
@@ -9,7 +9,7 @@ from django.db.models.deletion import RestrictedError
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
-
+from accounts.tasks import send_email
 
 User = get_user_model()
 
@@ -89,3 +89,38 @@ class GetCategories(viewsets.ReadOnlyModelViewSet):
     authentication_classes = []
     serializer_class = sz.PropertyCategorySerializer
     queryset = PropertyCategory.objects.order_by('-created_at')
+    
+class HandleDocumentApproval(APIView):
+    permission_classes = [IsAdminUser]
+    
+    def patch(self, request, user_id):
+        user = get_object_or_404(User, id=user_id)
+        action = request.data.get('action')
+        message = request.data.get('message')
+        
+        if action not in ['approve', 'reject']:
+            return Response({"error": "Invalid action."}, status=status.HTTP_400_BAD_REQUEST)
+        
+        if action == "approve":
+            user.document_status = 'verified'
+            template = 'document_approved.html'
+            subject = 'Document Verification Approval Notification'
+        else:
+            user.document_status = 'rejected'
+            template = 'document_rejected.html'
+            subject = 'Document Verification Rejection Notification'
+        
+        user.save()
+
+        
+        context = {
+            'subject': subject,
+            'email': user.email,
+            'first_name': user.first_name,          
+            'role': "Service Provider",
+            'message': message
+        }
+
+        send_email.delay(context, template)
+
+        return Response({"message": "Document status updated successfully."}, status=status.HTTP_200_OK)
