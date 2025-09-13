@@ -3,7 +3,8 @@ from accounts.models import User
 
 
 class PropertyCategory(models.Model):
-    name=models.CharField(max_length=255, unique=False)
+    name_en=models.CharField(max_length=255, unique=False)
+    name_hr=models.CharField(max_length=255, null=True, blank=True)
     icon = models.CharField(max_length=50, null=True, blank=True)
     created_by = models.ForeignKey(User, on_delete=models.SET_NULL, related_name='created_categories', null=True, blank=True)
     updated_by = models.ForeignKey(User, on_delete=models.SET_NULL, related_name='updated_categories', null=True, blank=True)
@@ -35,7 +36,8 @@ class CategoryFeaturesField(models.Model):
     )
 
     category = models.ForeignKey(PropertyCategory, on_delete=models.CASCADE, related_name='category_features')
-    label=models.CharField(max_length=255)
+    label_en=models.CharField(max_length=255)
+    label_hr=models.CharField(max_length=255, null=True, blank=True)
     unit=models.CharField(max_length=255, null=True, blank=True),
     type = models.CharField(max_length=255, choices=TYPE_CHOICES)
     required = models.BooleanField(default=False)
@@ -48,7 +50,8 @@ class CategoryFeaturesField(models.Model):
 
 class SubCategory(models.Model):
     category = models.ForeignKey(PropertyCategory, on_delete=models.CASCADE, related_name='subcategories')
-    name=models.CharField(max_length=255)
+    name_en=models.CharField(max_length=255)
+    name_hr=models.CharField(max_length=255, null=True, blank=True)
     created_by = models.ForeignKey(User, on_delete=models.SET_NULL, related_name='created_subcategories', null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -57,8 +60,10 @@ class SubCategory(models.Model):
 
 
 class FAQ(models.Model):
-    question=models.CharField(max_length=255)
-    answer=models.TextField()
+    question_en=models.CharField(max_length=255)
+    question_hr=models.CharField(max_length=255, null=True, blank=True)
+    answer_en=models.TextField()
+    answer_hr=models.TextField(null=True, blank=True)
     rank = models.PositiveIntegerField(default=0)
     created_by = models.ForeignKey(User, on_delete=models.SET_NULL, related_name='created_faqs', null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)

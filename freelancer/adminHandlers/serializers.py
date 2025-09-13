@@ -136,6 +136,17 @@ class CategoryFeaturesFieldSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError({"options": "This field is required when type is 'select'."})
         
         return data
+    
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        request = self.context.get("request")
+        
+        lang = request.headers.get("Accept-Language", "en") if request else "en"
+        
+        data['label'] = instance.label_hr if lang == "hr" and instance.label_hr else instance.label_en
+        
+        return data
+        
 
 class SubCategorySerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(required=False)
@@ -147,6 +158,16 @@ class SubCategorySerializer(serializers.ModelSerializer):
         model = SubCategory
         fields = '__all__'
         
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        request = self.context.get("request")
+        
+        lang = request.headers.get("Accept-Language", "en") if request else "en"
+        
+        data['name'] = instance.name_hr if lang == "hr" and instance.name_hr else instance.name_en
+        
+        return data
+        
 class PropertyCategorySerializer(serializers.ModelSerializer):
     subcategories = SubCategorySerializer(many=True,read_only=True)
     created_by = serializers.PrimaryKeyRelatedField(read_only=True)  
@@ -155,7 +176,17 @@ class PropertyCategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = PropertyCategory
         fields = '__all__'
-        
+
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        request = self.context.get("request")
+
+        lang = request.headers.get("Accept-Language", "en") if request else "en"
+
+        data['name'] = instance.name_hr if lang == "hr" and instance.name_hr else instance.name_en
+
+        return data
+
     def create(self, validated_data):
         return super().create({**validated_data, "created_by": self.context["request"].user})
 
@@ -269,7 +300,18 @@ class FAQSerializer(serializers.ModelSerializer):
     class Meta:
         model = FAQ
         fields = '__all__'
-    
+
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        request = self.context.get("request")
+
+        lang = request.headers.get("Accept-Language", "en") if request else "en"
+
+        data['question'] = instance.question_hr if lang == "hr" and instance.question_hr else instance.question_en
+        data['answer'] = instance.answer_hr if lang == "hr" and instance.answer_hr else instance.answer_en
+
+        return data
+
     def create(self, validated_data):
         validated_data['created_by'] = self.context['request'].user
         instance = FAQ.objects.create(**validated_data)
