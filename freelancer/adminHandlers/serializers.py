@@ -205,6 +205,15 @@ class PropertyCategoryUnifiedSerializer(serializers.ModelSerializer):
         model = PropertyCategory
         fields = '__all__'
         
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        request = self.context.get("request")
+
+        lang = request.headers.get("Accept-Language", "en") if request else "en"
+
+        data['name'] = instance.name_hr if lang == "hr" and instance.name_hr else instance.name_en
+
+        return data
     
     def create(self, validated_data):
         pricing_data = validated_data.pop('category_pricing', [])
