@@ -87,7 +87,7 @@ class PropertyCategoryCreateView(APIView):
 class GetCategories(viewsets.ReadOnlyModelViewSet):
     permission_classes = [AllowAny]
     authentication_classes = []
-    serializer_class = sz.PropertyCategorySerializer
+    serializer_class = sz.PropertyCategoryUnifiedSerializer
     queryset = PropertyCategory.objects.order_by('-created_at')
     
 class HandleDocumentApproval(APIView):
