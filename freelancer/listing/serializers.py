@@ -28,13 +28,19 @@ class ContactSerializer(serializers.ModelSerializer):
         fields = '__all__'
         
 class ResourceSerializer(serializers.ModelSerializer):
+    listing = serializers.PrimaryKeyRelatedField(queryset=Listing.objects.all())
+
     class Meta:
         model = Resource
-        exclude = ["listing"]
+        fields = '__all__'
         extra_kwargs = {
             'resource': {'required': False}
         }
 
+class NestedResourceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Resource
+        exclude = ["listing"]  
 
 class ListingFeatureSerializer(serializers.ModelSerializer):
     feature_field = serializers.PrimaryKeyRelatedField(queryset=CategoryFeaturesField.objects.all())
@@ -61,7 +67,7 @@ class ListingSerializer(serializers.ModelSerializer):
     location = LocationSerializer()
     service = ServiceSerializer()
     contact = ContactSerializer()
-    resources = ResourceSerializer(many=True, required=False)
+    resources = NestedResourceSerializer(many=True, required=False)
     category = serializers.PrimaryKeyRelatedField(queryset=PropertyCategory.objects.all())
     features = ListingFeatureSerializer(many=True, required=False)
     
