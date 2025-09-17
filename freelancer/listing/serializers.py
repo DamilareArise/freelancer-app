@@ -28,11 +28,9 @@ class ContactSerializer(serializers.ModelSerializer):
         fields = '__all__'
         
 class ResourceSerializer(serializers.ModelSerializer):
-    listing = serializers.PrimaryKeyRelatedField(queryset=Listing.objects.all(), required=False, allow_null=True)
-
     class Meta:
         model = Resource
-        fields = '__all__'
+        exclude = ["listing"]
         extra_kwargs = {
             'resource': {'required': False}
         }
