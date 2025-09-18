@@ -100,7 +100,7 @@ class ListingSerializer(serializers.ModelSerializer):
         user = request.user
         
         location_data = validated_data.pop('location')
-        service_data = validated_data.pop('property')
+        service_data = validated_data.pop('service')
         contact_data = validated_data.pop('contact') 
         features_data = validated_data.pop('features', [])
         resources_data = validated_data.pop('resources', [])
