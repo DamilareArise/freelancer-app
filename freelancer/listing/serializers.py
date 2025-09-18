@@ -112,7 +112,7 @@ class ListingSerializer(serializers.ModelSerializer):
         listing = Listing.objects.create(
             created_by=user,
             location=location,
-            property=service_obj,
+            service=service_obj,
             contact=contact_obj,
             **validated_data
         )
