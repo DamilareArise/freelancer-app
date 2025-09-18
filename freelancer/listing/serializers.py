@@ -56,7 +56,12 @@ class ListingFeatureSerializer(serializers.ModelSerializer):
         return obj.feature_field.type if obj.feature_field else None
     
     def get_label(self, obj):
-        return obj.feature_field.label if obj.feature_field else None
+        request = self.context.get("request")
+        lang = request.headers.get("Accept-Language", "en") if request else "en"
+        if obj.feature_field:
+            label = obj.feature_field.label_hr if lang == "hr" else obj.feature_field.label_en
+            return label
+        return None
 
     def get_unit(self, obj):
         return obj.feature_field.unit if obj.feature_field else None
