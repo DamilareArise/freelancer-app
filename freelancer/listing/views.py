@@ -7,7 +7,7 @@ from accounts.permissions import IsAdminOrOwner
 from accounts.pagination import CustomOffsetPagination
 from django.db.models import Q
 import json
-from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from rest_framework.response import Response
 
 
@@ -22,7 +22,7 @@ class ListingViewSet(viewsets.ModelViewSet):
     serializer_class = sz.ListingSerializer
     permission_classes = [IsAuthenticated, IsAdminOrOwner]
     pagination_class = CustomOffsetPagination
-    parser_classes = [MultiPartParser, FormParser]
+    parser_classes = [MultiPartParser, FormParser, JSONParser]
     
     def get_queryset(self):
         """
