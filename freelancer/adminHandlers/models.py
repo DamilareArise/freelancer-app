@@ -38,7 +38,7 @@ class CategoryFeaturesField(models.Model):
     category = models.ForeignKey(PropertyCategory, on_delete=models.CASCADE, related_name='category_features')
     label_en=models.CharField(max_length=255)
     label_hr=models.CharField(max_length=255, null=True, blank=True)
-    unit=models.CharField(max_length=255, null=True, blank=True),
+    unit=models.CharField(max_length=255, null=True, blank=True)
     type = models.CharField(max_length=255, choices=TYPE_CHOICES)
     required = models.BooleanField(default=False)
     options = models.JSONField(null=True, blank=True)

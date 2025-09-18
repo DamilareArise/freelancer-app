@@ -156,8 +156,8 @@ class ListingSerializer(serializers.ModelSerializer):
 
         if service_data:
             for key, value in service_data.items():
-                setattr(instance.property, key, value)
-            instance.property.save()
+                setattr(instance.service, key, value)
+            instance.service.save()
             
         if contact_data:
             for key, value in contact_data.items():
