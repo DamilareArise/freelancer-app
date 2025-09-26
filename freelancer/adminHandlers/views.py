@@ -116,8 +116,7 @@ class HandleDocumentApproval(APIView):
         
         context = {
             'subject': subject,
-            'email': user.email,
-            'first_name': user.first_name,          
+            'user': user.id,         
             'role': "Service Provider",
             'message': message
         }
@@ -152,8 +151,9 @@ class HandleListStatus(APIView):
                     'subject': 'Listing Rejection Notification',
                     'listing': listing,
                     'rejection_reasons': rejection_reasons,
-                    'user': listing.created_by
+                    'user': listing.created_by.id
                 }
+                send_email.delay(context, file='rejected.html')
                 
 
         else:
@@ -162,8 +162,9 @@ class HandleListStatus(APIView):
                 context = {
                     'subject': 'Listing Approval Notification',
                     'listing': listing,
-                    'user': listing.created_by
+                    'user': listing.created_by.id
                 }
+                send_email.delay(context, file='approved.html')
                 
 
         return Response({"message": "Listings updated successfully."}, status=status.HTTP_200_OK)

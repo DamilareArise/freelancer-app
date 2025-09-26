@@ -8,7 +8,7 @@ from accounts.tasks import send_email
 
 User = get_user_model()
 
-class AdminSerializer(serializers.ModelSerializer):
+class AdminSerializer(serializers.ModelSerializer): 
     roles = serializers.ListField(child=serializers.CharField(), write_only=True)
 
     class Meta:
@@ -47,8 +47,7 @@ class AdminSerializer(serializers.ModelSerializer):
 
                 context = {
                     'subject': subject,
-                    'email': user.email,
-                    "first_name": user.first_name,
+                    'user': user.id,
                     'link': f'https://admin.book-freelancer.com/reset-password-otp/?email={user.email}',
                     'roles': list(roles.values_list('label', flat=True)),
                 }

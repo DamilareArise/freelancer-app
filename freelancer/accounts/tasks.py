@@ -7,6 +7,7 @@ import logging
 from django.utils import timezone
 from datetime import timedelta
 from django.contrib.auth import get_user_model
+from accounts.models import User
 
 User = get_user_model()
 
@@ -14,6 +15,8 @@ logger = logging.getLogger(__name__)
 
 @shared_task
 def send_email(context, file=None):
+    user_id = context.get('user')
+    context['user'] = User.objects.filter(id=user_id).first() if user_id else None
     try:
         html_message = render_to_string(file, context=context)
         plain_message = strip_tags(html_message)
@@ -22,7 +25,7 @@ def send_email(context, file=None):
             subject=context['subject'],
             body=plain_message,
             from_email=settings.DEFAULT_FROM_EMAIL,
-            to=[context['email']],
+            to=[context['user'].email],
         )
 
         d_email.attach_alternative(html_message, 'text/html')

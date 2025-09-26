@@ -145,8 +145,7 @@ class DocumentSerializer(serializers.ModelSerializer):
         
         context = {
             "subject": "Document updated",
-            'email': user.email,
-            'first_name': user.first_name,
+            "user": user.id,
             "role": role.label,
         }
         send_email.delay(context, file='seller_onboarding.html')

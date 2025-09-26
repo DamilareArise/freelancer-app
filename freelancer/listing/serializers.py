@@ -132,7 +132,7 @@ class ListingSerializer(serializers.ModelSerializer):
         context = {
             "subject": 'New Listing Created',
             'listing': listing,
-            'user': user,
+            'user': user.id,
         }
         
         # send_email.delay(context, file='pending.html')

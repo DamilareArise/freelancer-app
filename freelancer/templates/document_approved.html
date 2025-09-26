@@ -3,22 +3,22 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>{{role.label}} Verification Approved - Kliko</title>
+  <title>{{role.label}} Verification Approved - Freelancer</title>
 </head>
 <body style="margin: 0; padding: 0; font-family: Arial, sans-serif; color: #333333; background-color: #ffffff;">
   <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px; margin: 0 auto;">
-    <tr>
-      <td style="padding: 40px 30px 20px 30px;">
-        <!-- Logo -->
-        {% include "logo.html" %}
-      </td>
-    </tr>
+    {% include "logo.html" %}
+    
+    <!-- Greeting -->
     <tr>
       <td style="padding: 0 30px 20px 30px; font-size: 16px; line-height: 1.5;">
-        <p style="margin-top: 0;">Hi {{first_name}},</p>
-        <p>Great news! Your seller account on Kliko has been verified and approved. You're now ready to start listing properties! 🎉</p>
+        <p style="margin-top: 0;">Hi {{user.first_name}},</p>
+        <p>Great news! Your {{role.label}} account on <strong>Freelancer</strong> has been verified and approved. 🎉  
+        You’re now ready to start offering your services and connecting with clients!</p>
       </td>
     </tr>
+
+    <!-- Account Details -->
     <tr>
       <td style="padding: 0 30px 30px 30px; font-size: 16px; line-height: 1.5;">
         <table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #F9FAFB; border-radius: 8px;">
@@ -28,24 +28,17 @@
               <table border="0" cellpadding="0" cellspacing="0" width="100%">
                 <tr>
                   <td width="120" style="color: #6B7280;">Email:</td>
-                  <td>{{email}}</td>
+                  <td>{{user.email}}</td>
                 </tr>
-                <tr>
-                  <td height="10"></td>
-                </tr>
-                <tr>
-                  <td height="10"></td>
-                </tr>
+                <tr><td height="10"></td></tr>
                 <tr>
                   <td width="120" style="color: #6B7280;">Account Type:</td>
                   <td>{{role}}</td>
                 </tr>
-                <tr>
-                  <td height="10"></td>
-                </tr>
+                <tr><td height="10"></td></tr>
                 <tr>
                   <td width="120" style="color: #6B7280;">Status:</td>
-                  <td><span style="color: #10B981; font-weight: bold;">Verified ✓</span></td>
+                  <td><span style="color: #003B95; font-weight: bold;">Verified ✓</span></td>
                 </tr>
               </table>
             </td>
@@ -53,50 +46,58 @@
         </table>
       </td>
     </tr>
+
+    <!-- Verification Complete -->
     <tr>
-      <td style="padding: 0 30px 30px 30px; font-size: 16px; line-height: 1.5; background-color: #ECFDF5; border-radius: 8px; margin: 0 30px;">
-        <p style="margin-top: 15px;"><span style="color: #10B981;">✅</span> <strong>Verification Complete</strong></p>
-        <p>We've reviewed your documents and everything looks good! Your {{role}} account has been fully activated, and you now have access to all seller features on Kliko.</p>
-        <p style="margin-bottom: 15px;">You can start creating property listings immediately and connect with potential buyers.</p>
+      <td style="padding: 0 30px 30px 30px; font-size: 16px; line-height: 1.5; background-color: #E6ECF8; border-radius: 8px; margin: 0 30px;">
+        <p style="margin-top: 15px;"><span style="color: #003B95;">✅</span> <strong>Verification Complete</strong></p>
+        <p>We've reviewed your documents and everything looks good! Your {{role}} account has been fully activated, and you now have access to all platform features.</p>
+        <p style="margin-bottom: 15px;">You can now start offering your services and get booked by clients.</p>
       </td>
     </tr>
+
+    <!-- Call to Action -->
     <tr>
       <td style="padding: 20px 30px 10px 30px; font-size: 16px; line-height: 1.5;">
-        <p>Ready to create your first listing? Click below to get started:</p>
+        <p>Ready to showcase your skills? Click below to create your first service listing:</p>
       </td>
     </tr>
     <tr>
       <td style="padding: 0 30px 30px 30px;">
         <table border="0" cellpadding="0" cellspacing="0" width="100%">
           <tr>
-            <td align="center" bgcolor="#10B981" style="border-radius: 8px;">
-              <a href="https://example.com/create-listing" target="_blank" style="display: inline-block; padding: 16px 36px; font-size: 18px; color: #ffffff; text-decoration: none; border-radius: 8px; font-weight: semibold;">Create Your First Listing</a>
+            <td align="center" bgcolor="#003B95" style="border-radius: 8px;">
+              <a href="https://book-freelancer.com/create-listing" target="_blank" style="display: inline-block; padding: 16px 36px; font-size: 18px; color: #ffffff; text-decoration: none; border-radius: 8px; font-weight: semibold;">Create Your First Service</a>
             </td>
           </tr>
         </table>
       </td>
     </tr>
+
+    <!-- Next Steps -->
     <tr>
       <td style="padding: 0 30px 30px 30px; font-size: 16px; line-height: 1.5;">
-        <table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #F0FDF4; border-radius: 8px; border-left: 4px solid #10B981;">
+        <table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #F0F4FA; border-radius: 8px; border-left: 4px solid #003B95;">
           <tr>
             <td style="padding: 15px;">
-              <p style="margin: 0 0 10px 0; color: #166534;"><strong>Next Steps:</strong></p>
-              <ul style="margin: 0 0 0 20px; padding: 0; color: #166534;">
-                <li style="margin-bottom: 5px;">Complete your seller profile with business details</li>
-                <li style="margin-bottom: 5px;">Create your first property listing</li>
-                <li style="margin-bottom: 5px;">Set up payment methods to receive funds</li>
-                <li style="margin-bottom: 0;">Explore premium listing options to boost visibility</li>
+              <p style="margin: 0 0 10px 0; color: #003B95;"><strong>Next Steps:</strong></p>
+              <ul style="margin: 0 0 0 20px; padding: 0; color: #003B95;">
+                <li style="margin-bottom: 5px;">Complete your profile with your skills and experience</li>
+                <li style="margin-bottom: 5px;">Publish your first service listing</li>
+                <li style="margin-bottom: 5px;">Set up payment methods to receive funds securely</li>
+                <li style="margin-bottom: 0;">Explore premium options to boost your visibility</li>
               </ul>
             </td>
           </tr>
         </table>
       </td>
     </tr>
+
+    <!-- Resources & Support -->
     <tr>
       <td style="padding: 0 30px 20px 30px; font-size: 16px; line-height: 1.5;">
-        <p>Have questions about creating listings or managing your {{role}} account? Check out our <a href="https://example.com/seller-resources" style="color: #10B981; text-decoration: none;">{{role}} Resources</a> or <a href="mailto: support@klikoproperty.com" style="color: #10B981; text-decoration: none;">contact our support team</a>.</p>
-        <p style="margin-bottom: 0;">— The Kliko team</p>
+        <p>Have questions about creating services or managing your {{role}} account? Check out our <a href="https://book-freelancer.com/resources" style="color: #003B95; text-decoration: none;">{{role}} Resources</a> or <a href="mailto:support@book-freelancer.com" style="color: #003B95; text-decoration: none;">contact our support team</a>.</p>
+        <p style="margin-bottom: 0;">— The Freelancer Team</p>
       </td>
     </tr>
   </table>

@@ -32,8 +32,7 @@ class RegistrationView(APIView):
             context = {
                 'subject': 'OTP Verification',
                 'otp': otp,
-                'email': user.email,
-                'first_name': user.first_name
+                'user': user.id,
             }
 
             send_email.delay(context, file="otp.html")
@@ -58,8 +57,7 @@ class GetOTP(APIView):
         context = {
             'subject': 'OTP Verification',
             'otp': otp,
-            'email': user.email,
-            'first_name': user.first_name
+            'user': user.id,
         }
         send_email.delay(context, file="otp.html")
 
@@ -80,8 +78,7 @@ class VerifyOtp(APIView):
             
             context = {
                     'subject': 'Welcome to Freelancer',
-                    'email': user.email,
-                    'first_name': user.first_name
+                    'user': user.id,
                 }
             send_email.delay(context, file='onboarding.html')
             
@@ -147,8 +144,7 @@ class PasswordResetRequestView(APIView):
             context = {
                 'subject': 'Password Reset OTP',
                 'otp': otp,
-                'email': user.email,
-                'first_name': user.first_name
+                'user': user.id,
             }
             
             # Send email

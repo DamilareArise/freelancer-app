@@ -3,22 +3,23 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>{{role}} Verification Not Approved - Kliko</title>
+  <title>{{role}} Verification Not Approved - Freelancer</title>
 </head>
 <body style="margin: 0; padding: 0; font-family: Arial, sans-serif; color: #333333; background-color: #ffffff;">
   <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px; margin: 0 auto;">
-    <tr>
-      <td style="padding: 40px 30px 20px 30px;">
-        <!-- Logo -->
-        {% include "logo.html" %}
-      </td>
-    </tr>
+    
+    {% include "logo.html" %}
+      
+    <!-- Greeting -->
     <tr>
       <td style="padding: 0 30px 20px 30px; font-size: 16px; line-height: 1.5;">
-        <p style="margin-top: 0;">Hi {{first_name}},</p>
-        <p>Thank you for your interest in becoming a {{role}} on Kliko. We've reviewed your submitted documents, and unfortunately, we're unable to approve your seller account at this time.</p>
+        <p style="margin-top: 0;">Hi {{user.first_name}},</p>
+        <p>Thank you for your interest in becoming a {{role}} on <strong>Freelancer</strong>.  
+        We've reviewed your submitted documents, and unfortunately, we’re unable to approve your account at this time.</p>
       </td>
     </tr>
+
+    <!-- Account Details -->
     <tr>
       <td style="padding: 0 30px 30px 30px; font-size: 16px; line-height: 1.5;">
         <table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #F9FAFB; border-radius: 8px;">
@@ -28,21 +29,14 @@
               <table border="0" cellpadding="0" cellspacing="0" width="100%">
                 <tr>
                   <td width="120" style="color: #6B7280;">Email:</td>
-                  <td>{{email}}</td>
+                  <td>{{user.email}}</td>
                 </tr>
-                <tr>
-                  <td height="10"></td>
-                </tr>
-                <tr>
-                  <td height="10"></td>
-                </tr>
+                <tr><td height="10"></td></tr>
                 <tr>
                   <td width="120" style="color: #6B7280;">Account Type:</td>
                   <td>{{role}}</td>
                 </tr>
-                <tr>
-                  <td height="10"></td>
-                </tr>
+                <tr><td height="10"></td></tr>
                 <tr>
                   <td width="120" style="color: #6B7280;">Status:</td>
                   <td><span style="color: #EF4444; font-weight: bold;">Not Approved</span></td>
@@ -53,16 +47,19 @@
         </table>
       </td>
     </tr>
+
+    <!-- Verification Issues -->
     <tr>
       <td style="padding: 0 30px 30px 30px; font-size: 16px; line-height: 1.5; background-color: #FEF2F2; border-radius: 8px; margin: 0 30px;">
         <p style="margin-top: 15px;"><span style="color: #EF4444;">⚠️</span> <strong>Verification Issues</strong></p>
-        <p>We were unable to verify your {{role}} account due to the following reasons:</p>
+        <p>We were unable to verify your {{role}} account due to the following reason(s):</p>
         <ul style="margin: 10px 0 15px 20px; padding: 0;">
           <li style="margin-bottom: 8px;">{{message}}</li>
-          
         </ul>
       </td>
     </tr>
+
+    <!-- Call to Action -->
     <tr>
       <td style="padding: 20px 30px 10px 30px; font-size: 16px; line-height: 1.5;">
         <p>You can resubmit your verification documents by clicking the button below:</p>
@@ -73,12 +70,14 @@
         <table border="0" cellpadding="0" cellspacing="0" width="100%">
           <tr>
             <td align="center" bgcolor="#EF4444" style="border-radius: 8px;">
-              <a href="https://example.com/resubmit-verification" target="_blank" style="display: inline-block; padding: 16px 36px; font-size: 18px; color: #ffffff; text-decoration: none; border-radius: 8px; font-weight: semibold;">Resubmit Documents</a>
+              <a href="https://book-freelancer.com/resubmit-verification" target="_blank" style="display: inline-block; padding: 16px 36px; font-size: 18px; color: #ffffff; text-decoration: none; border-radius: 8px; font-weight: semibold;">Resubmit Documents</a>
             </td>
           </tr>
         </table>
       </td>
     </tr>
+
+    <!-- Tips -->
     <tr>
       <td style="padding: 0 30px 30px 30px; font-size: 16px; line-height: 1.5;">
         <table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #FEFBEA; border-radius: 8px; border-left: 4px solid #F59E0B;">
@@ -87,7 +86,7 @@
               <p style="margin: 0 0 10px 0; color: #92400E;"><strong>Tips for Successful Verification:</strong></p>
               <ul style="margin: 0 0 0 20px; padding: 0; color: #92400E;">
                 <li style="margin-bottom: 5px;">Ensure all documents are clear, complete, and legible</li>
-                <li style="margin-bottom: 5px;">Provide official business registration documents</li>
+                <li style="margin-bottom: 5px;">Provide official identification or business registration documents</li>
                 <li style="margin-bottom: 5px;">Make sure personal information matches across all documents</li>
                 <li style="margin-bottom: 0;">Include all required documentation as specified in our guidelines</li>
               </ul>
@@ -96,10 +95,12 @@
         </table>
       </td>
     </tr>
+
+    <!-- Support -->
     <tr>
       <td style="padding: 0 30px 20px 30px; font-size: 16px; line-height: 1.5;">
-        <p>Need help with the verification process? Please review our <a href="https://example.com/verification-guidelines" style="color: #F59E0B; text-decoration: none;">Verification Guidelines</a> or <a href="mailto:support@klikoproperty.com" style="color: #F59E0B; text-decoration: none;">contact our seller support team</a> for assistance.</p>
-        <p style="margin-bottom: 0;">— The Kliko team</p>
+        <p>Need help with the verification process? Please review our <a href="https://book-freelancer.com/verification-guidelines" style="color: #003B95; text-decoration: none;">Verification Guidelines</a> or <a href="mailto:support@book-freelancer.com" style="color: #003B95; text-decoration: none;">contact our support team</a> for assistance.</p>
+        <p style="margin-bottom: 0;">— The Freelancer Team</p>
       </td>
     </tr>
   </table>
