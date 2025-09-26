@@ -10,6 +10,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
 from accounts.tasks import send_email
+from listing.models import Listing
 
 User = get_user_model()
 
@@ -124,3 +125,45 @@ class HandleDocumentApproval(APIView):
         send_email.delay(context, template)
 
         return Response({"message": "Document status updated successfully."}, status=status.HTTP_200_OK)
+    
+class HandleListStatus(APIView):
+    permission_classes = [IsAdminUser]
+    def patch(self, request, *args, **kwargs):
+        listing_ids = request.data.get("listing_ids")
+        action = request.data.get('action')
+        if not listing_ids:
+            return Response({"error": "Listing IDs are required."}, status=status.HTTP_400_BAD_REQUEST)
+        
+        if action not in ['reject', 'approve']:
+            return Response({"error": "Invalid action."}, status=status.HTTP_400_BAD_REQUEST)
+        
+        listings = Listing.objects.filter(id__in=listing_ids)
+        if not listings.exists():
+            return Response({"error": "No valid listings found."}, status=status.HTTP_404_NOT_FOUND)
+
+        if action == "reject":
+            rejection_reasons = request.data.get("rejection_reasons")
+            if not rejection_reasons:
+                return Response({"error": "Rejection reasons are required."}, status=status.HTTP_400_BAD_REQUEST)
+
+            listings.update(status="rejected", rejection_reasons=rejection_reasons)
+            for listing in listings:
+                context = {
+                    'subject': 'Listing Rejection Notification',
+                    'listing': listing,
+                    'rejection_reasons': rejection_reasons,
+                    'user': listing.created_by
+                }
+                
+
+        else:
+            listings.update(status="approved")
+            for listing in listings:
+                context = {
+                    'subject': 'Listing Approval Notification',
+                    'listing': listing,
+                    'user': listing.created_by
+                }
+                
+
+        return Response({"message": "Listings updated successfully."}, status=status.HTTP_200_OK)

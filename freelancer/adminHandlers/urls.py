@@ -14,4 +14,5 @@ urlpatterns = [
     path('create-category/', vw.PropertyCategoryCreateView.as_view(), name='create-category'),
     path('update-category/<int:pk>/', vw.PropertyCategoryCreateView.as_view(), name='update-category'),
     path('handle-doc-aproval/<int:user_id>/', vw.HandleDocumentApproval.as_view(), name='handle-doc-aproval'),
+    path('handle-list-status/', vw.HandleListStatus.as_view(), name='handle-list-status'),
 ]
