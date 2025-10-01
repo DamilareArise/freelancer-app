@@ -110,8 +110,8 @@ class User(AbstractBaseUser, PermissionsMixin):
         Example: user.has_role("SUPER", "FINANCE")
         """
         return self.user_roles.filter(role__id__in=role_ids).exists()
-    
-    def is_admin_role(self) -> bool:
+    @property
+    def is_admin(self) -> bool:
         """Check if user has any role marked as admin"""
         return self.user_roles.filter(role__is_admin=True).exists()
 

@@ -9,6 +9,7 @@ from django.db.models import Q
 import json
 from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
 
 
@@ -247,5 +248,71 @@ class GetFavoritedListings(viewsets.ReadOnlyModelViewSet):
         return Listing.objects.filter(
             id__in=Favorite.objects.filter(user=self.request.user).values_list('listing_id', flat=True)
         )
+
+
+class Summary(APIView):
+    
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        queryset = Listing.objects.all() if request.user.is_admin else Listing.objects.filter(created_by=request.user)
+        
+        total_count = queryset.count()
+        approved_count = queryset.filter(status='approved').count()
+        pending_count = queryset.filter(status='pending').count()
+        rejected_count = queryset.filter(status='rejected').count()
+        expired_count = queryset.filter(status='expired').count()
         
         
+        # queryset2 = Payment.objects.filter(
+        #     listing__in=queryset,
+        #     status='completed',
+        # )
+        # total_revenue = queryset2.aggregate(total=models.Sum('amount_paid'))['total'] or 0
+        # free_listings = queryset2.filter(amount_paid=0).count()
+
+        
+        data = {
+            "total": total_count,
+            "approved": approved_count,
+            "pending": pending_count,
+            "rejected": rejected_count,
+            "expired": expired_count,
+            # "free_listings": free_listings
+        }
+        # if request.user.is_admin:
+        #     data['total_revenue'] = total_revenue
+
+        return Response(data, status=status.HTTP_200_OK)
+    
+class UpdateAvailability(APIView):
+    """
+    Update the availability of a listing.
+    """
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, listing_id):
+        listing = Listing.objects.filter(id=listing_id, created_by=request.user).first()
+        
+        if not listing:
+            return Response({"error": "Listing not found or you do not have permission to update it."}, status=status.HTTP_404_NOT_FOUND)
+        
+        available_raw = request.data.get('available', None)
+        if available_raw is None:
+            return Response({"error": "'available' field is required."}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Normalize to boolean
+        true_values = {"true", "1", True, 1}
+        false_values = {"false", "0", False, 0}
+
+        if available_raw in true_values:
+            available = True
+        elif available_raw in false_values:
+            available = False
+        else:
+            return Response({"error": "Invalid value for 'available'. Must be true/false or 1/0."}, status=status.HTTP_400_BAD_REQUEST)
+
+        listing.available = available
+        listing.save()
+
+        return Response({"message": "Availability updated successfully."}, status=status.HTTP_200_OK)

@@ -251,7 +251,7 @@ class AdminLoginView(APIView):
             username = serializer.validated_data['username']
             password = serializer.validated_data['password']
             user = EmailOrPhoneBackend().authenticate(request, username=username, password=password)
-            if user and user.is_admin_role():
+            if user and user.is_admin:
                 tokens = sz.get_tokens_for_user(user)
                 return Response({
                     'id':user.id,
@@ -312,7 +312,7 @@ class HandleUserStatus(viewsets.ViewSet):
         user = get_object_or_404(User, id=pk)
         action = request.data.get('action')
         
-        if request.user.is_admin_role():
+        if request.user.is_admin:
             if action == 'suspend':
                 user.is_active = False
                 user.status = 'suspended'

@@ -8,7 +8,7 @@ class IsAdminUser(permissions.BasePermission):
         return (
             request.user
             and request.user.is_authenticated
-            and request.user.is_admin_role()
+            and request.user.is_admin
         )
 
 class IsAdminOrOwner(permissions.BasePermission):
@@ -21,7 +21,7 @@ class IsAdminOrOwner(permissions.BasePermission):
             return True
 
          # Allow if the user is an admin
-        if request.user.is_admin_role() and request.user.document_status == 'verified':
+        if request.user.is_admin and request.user.document_status == 'verified':
             return True
 
         # Allow if the user is the owner and their document is verified

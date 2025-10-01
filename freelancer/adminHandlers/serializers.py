@@ -257,7 +257,8 @@ class PropertyCategoryUnifiedSerializer(serializers.ModelSerializer):
                 user = self.context['request'].user
                 
                 # Update the PropertyCategory instance
-                instance.name = validated_data.get('name', instance.name)
+                instance.name_hr = validated_data.get('name_hr', instance.name_hr)
+                instance.name_en = validated_data.get('name_en', instance.name_en)
                 instance.icon = validated_data.get('icon', instance.icon)
                 instance.updated_by = user
                 instance.save()

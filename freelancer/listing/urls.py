@@ -12,5 +12,6 @@ router.register(r'favorited-listings', vw.GetFavoritedListings, basename='favori
 
 urlpatterns = [
     path('user/', include(router.urls)),
-    
+    path('summary/', vw.Summary.as_view(), name='summary'), 
+    path('listing-availability/<int:listing_id>/', vw.UpdateAvailability.as_view(),name='listing-availability'),
 ]
