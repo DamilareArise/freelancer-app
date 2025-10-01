@@ -45,7 +45,7 @@ class CategoryFeaturesField(models.Model):
     created_by = models.ForeignKey(User, on_delete=models.SET_NULL, related_name='created_features', null=True, blank=True)
 
     def __str__(self):
-        return f"{self.category.name} - {self.label}"
+        return f"{self.category.name_en} - {self.label_en}"
 
 
 class SubCategory(models.Model):
@@ -56,7 +56,7 @@ class SubCategory(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.name
+        return self.name_en
 
 
 class FAQ(models.Model):
