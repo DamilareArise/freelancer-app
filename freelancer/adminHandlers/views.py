@@ -11,6 +11,12 @@ from rest_framework import status
 from rest_framework.views import APIView
 from accounts.tasks import send_email
 from listing.models import Listing
+from rest_framework.generics import RetrieveAPIView
+from bookingApp.models import Booking
+from bookingApp.serializers import BookingSerializer
+from django.db.models import Q
+from accounts.pagination import CustomOffsetPagination
+
 
 User = get_user_model()
 
@@ -168,3 +174,35 @@ class HandleListStatus(APIView):
                 
 
         return Response({"message": "Listings updated successfully."}, status=status.HTTP_200_OK)
+    
+class UserWithListingsAndBookings(RetrieveAPIView):
+    permission_classes = [IsAdminUser]
+    queryset = User.objects.prefetch_related('listings', 'user_roles__role', 'booking_requester__listing').all()
+    serializer_class = sz.UserWithListingsSerializer
+    lookup_field = 'id'
+    
+class AllBookings(viewsets.ReadOnlyModelViewSet):
+    permission_classes = [IsAdminUser]
+    queryset = Booking.objects.all().order_by('-created_at')
+    serializer_class = BookingSerializer
+    pagination_class = CustomOffsetPagination
+    
+    def get_queryset(self):
+        
+        params = self.request.query_params
+        status = params.get('status')
+        search = params.get('search')
+        queryset = self.queryset
+        if status:
+            queryset = queryset.filter(status=status)
+        if search:
+            queryset = queryset.filter(
+                Q(listing__property__header__icontains=search) | 
+                Q(requester__first_name__icontains=search) |
+                Q(requester__last_name__icontains=search) |
+                Q(listing__location__city__icontains=search) |
+                Q(listing__location__country__icontains=search) |
+                Q(listing__location__county__icontains=search) 
+            )
+        return queryset
+

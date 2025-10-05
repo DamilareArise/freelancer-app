@@ -5,6 +5,9 @@ from .models import ServiceCategory, CategoryPricing, CategoryFeaturesField, Sub
 from decimal import Decimal
 from django.db import transaction
 from accounts.tasks import send_email
+from listing.serializers import ListingSerializer
+from bookingApp.serializers import BookingSerializer
+from bookingApp.models import Booking
 
 User = get_user_model()
 
@@ -146,7 +149,6 @@ class CategoryFeaturesFieldSerializer(serializers.ModelSerializer):
         
         return data
         
-
 class SubCategorySerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(required=False)
     category = serializers.PrimaryKeyRelatedField(required=False, queryset=ServiceCategory.objects.all())
@@ -330,3 +332,36 @@ class ChargesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Charges
         fields = '__all__'
+ 
+class SimpleRoleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Role
+        fields = ['id', 'label']
+        
+class UserWithListingsSerializer(serializers.ModelSerializer):
+    listings = ListingSerializer(many=True, read_only=True)
+    user_roles = serializers.SerializerMethodField()
+    total_listings = serializers.SerializerMethodField()
+    my_bookings = BookingSerializer(source='booking_requester', many=True, read_only=True)
+    incoming_bookings = serializers.SerializerMethodField()
+    total_bookings = serializers.SerializerMethodField() 
+
+    class Meta:
+        model = User
+        fields = ['id', 'first_name', 'last_name', 'email', 'status', 'document_status','total_listings', 'total_bookings', 'user_roles', 'listings', 'my_bookings', 'incoming_bookings']
+        
+    def get_user_roles(self, obj):
+        roles = [ur.role for ur in obj.user_roles.all()]
+        return SimpleRoleSerializer(roles, many=True).data
+    
+    def get_total_listings(self, obj):
+        return obj.listings.count()
+    
+    def get_total_bookings(self, obj):
+        counts = Booking.objects.filter(listing__created_by=obj).count()
+        return counts
+    
+    def get_incoming_bookings(self, obj):
+        bookings = Booking.objects.filter(listing__created_by=obj)
+        return BookingSerializer(bookings, many=True, context=self.context).data
+    
