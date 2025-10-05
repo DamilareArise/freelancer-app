@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from .models import (Listing, Favorite, Location, Service, Contact, Resource, ListingFeatures, CategoryFeaturesField)
 from accounts.serializers import UserSerializer
-from adminHandlers.models import PropertyCategory
+from adminHandlers.models import ServiceCategory
 from accounts.tasks import send_email
 
 
@@ -73,7 +73,7 @@ class ListingSerializer(serializers.ModelSerializer):
     service = ServiceSerializer()
     contact = ContactSerializer()
     resources = NestedResourceSerializer(many=True, required=False)
-    category = serializers.PrimaryKeyRelatedField(queryset=PropertyCategory.objects.all())
+    category = serializers.PrimaryKeyRelatedField(queryset=ServiceCategory.objects.all())
     features = ListingFeatureSerializer(many=True, required=False)
     
 
@@ -99,7 +99,7 @@ class ListingSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         """
-        Custom create method to handle nested location, property, and features.
+        Custom create method to handle nested location, service, and features.
         """
         request = self.context['request']
         user = request.user
@@ -122,7 +122,7 @@ class ListingSerializer(serializers.ModelSerializer):
             **validated_data
         )
         
-        # Save property features dynamically
+        # Save service features dynamically
         for feature in features_data:
             ListingFeatures.objects.create(listing=listing, **feature)
             
@@ -178,3 +178,38 @@ class ListingSerializer(serializers.ModelSerializer):
                 Resource.objects.create(listing=instance, **resource_data)
 
         return super().update(instance, validated_data)
+    
+    
+class ListingMinimalSerializer(serializers.ModelSerializer):
+    service = ServiceSerializer(read_only=True)
+    category = serializers.CharField(source='category.name')
+    type = serializers.CharField(source='category.type')
+    created_by = serializers.SerializerMethodField()
+    resources = ResourceSerializer(many=True, read_only=True)
+    location = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Listing
+        fields = ['id', 'price','service', 'category', 'type', 'location', 'created_by', 'resources']
+
+    def get_location(self, obj):
+        return {
+            'street': f"{obj.location.street_number} {obj.location.street_name}",
+            'street_number': obj.location.street_number,
+            'street_name': obj.location.street_name,
+            'city': obj.location.city,
+            'county': obj.location.county,
+            'country': obj.location.country,
+        }
+
+    def get_created_by(self, obj):
+        request = self.context.get('request')
+        passport_url = obj.created_by.passport.url if obj.created_by.passport else None
+        return {
+            'id': obj.created_by.id,
+            'first_name': obj.created_by.first_name,
+            'last_name': obj.created_by.last_name,
+            'passport': passport_url,
+            'email': obj.created_by.email,
+            'phone': obj.created_by.phone,
+        }

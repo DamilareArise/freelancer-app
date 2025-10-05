@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     "django_countries",
     "storages",
     "listing",
+    "adsApp",
     'django_cleanup.apps.CleanupConfig'
 ]
 
@@ -202,6 +203,10 @@ CELERY_BEAT_SCHEDULE = {
         "task": "accounts.tasks.delete_inactive_users",
         "schedule": crontab(hour=0, minute=0),  # every midnight
     },
+    "expire-ads-if-needed": {
+        "task": "accounts.tasks.expire_ads_if_needed",
+        "schedule": crontab(minute='*/30'),  # every 30 minutes
+    }
 }
 
 TINIFY_API_KEY = config("TINIFY_API_KEY")

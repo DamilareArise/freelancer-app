@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from accounts.models import Role, UserRole
-from .models import PropertyCategory, CategoryPricing, CategoryFeaturesField, SubCategory, FAQ, Charges
+from .models import ServiceCategory, CategoryPricing, CategoryFeaturesField, SubCategory, FAQ, Charges
 from decimal import Decimal
 from django.db import transaction
 from accounts.tasks import send_email
@@ -90,7 +90,7 @@ class AdminSerializer(serializers.ModelSerializer):
         
 class CategoryPricingSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(required=False)
-    category = serializers.PrimaryKeyRelatedField(required=False, queryset=PropertyCategory.objects.all())
+    category = serializers.PrimaryKeyRelatedField(required=False, queryset=ServiceCategory.objects.all())
     action = serializers.CharField(write_only=True, required=False) 
     created_by = serializers.PrimaryKeyRelatedField(read_only=True)
     class Meta:
@@ -119,7 +119,7 @@ class CategoryPricingSerializer(serializers.ModelSerializer):
 
 class CategoryFeaturesFieldSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(required=False)
-    category = serializers.PrimaryKeyRelatedField(required=False, queryset=PropertyCategory.objects.all())
+    category = serializers.PrimaryKeyRelatedField(required=False, queryset=ServiceCategory.objects.all())
     action = serializers.CharField(write_only=True, required=False) 
     created_by = serializers.PrimaryKeyRelatedField(read_only=True)
     class Meta:
@@ -149,7 +149,7 @@ class CategoryFeaturesFieldSerializer(serializers.ModelSerializer):
 
 class SubCategorySerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(required=False)
-    category = serializers.PrimaryKeyRelatedField(required=False, queryset=PropertyCategory.objects.all())
+    category = serializers.PrimaryKeyRelatedField(required=False, queryset=ServiceCategory.objects.all())
     action = serializers.CharField(write_only=True, required=False) 
     created_by = serializers.PrimaryKeyRelatedField(read_only=True)
     
@@ -167,13 +167,13 @@ class SubCategorySerializer(serializers.ModelSerializer):
         
         return data
         
-class PropertyCategorySerializer(serializers.ModelSerializer):
+class ServiceCategorySerializer(serializers.ModelSerializer):
     subcategories = SubCategorySerializer(many=True,read_only=True)
     created_by = serializers.PrimaryKeyRelatedField(read_only=True)  
     updated_by = serializers.PrimaryKeyRelatedField(read_only=True)
     
     class Meta:
-        model = PropertyCategory
+        model = ServiceCategory
         fields = '__all__'
 
     def to_representation(self, instance):
@@ -192,7 +192,7 @@ class PropertyCategorySerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         return super().update(instance, {**validated_data, "updated_by": self.context["request"].user})
 
-class PropertyCategoryUnifiedSerializer(serializers.ModelSerializer):   
+class ServiceCategoryUnifiedSerializer(serializers.ModelSerializer):   
     # Accept nested lists for pricing, features and subcategories
     category_pricing = CategoryPricingSerializer(many=True, required=False)
     category_features = CategoryFeaturesFieldSerializer(many=True, required=False)
@@ -201,7 +201,7 @@ class PropertyCategoryUnifiedSerializer(serializers.ModelSerializer):
     updated_by = serializers.PrimaryKeyRelatedField(read_only=True)
     
     class Meta:
-        model = PropertyCategory
+        model = ServiceCategory
         fields = '__all__'
         
     def to_representation(self, instance):
@@ -221,7 +221,7 @@ class PropertyCategoryUnifiedSerializer(serializers.ModelSerializer):
         user = self.context['request'].user
         
         # Create a new property category
-        category = PropertyCategory.objects.create(created_by=user, **validated_data)
+        category = ServiceCategory.objects.create(created_by=user, **validated_data)
         
         # Prepare CategoryPricing objects
         pricing_objs = [
@@ -256,7 +256,7 @@ class PropertyCategoryUnifiedSerializer(serializers.ModelSerializer):
                 subcategory_data = validated_data.pop('subcategories', [])
                 user = self.context['request'].user
                 
-                # Update the PropertyCategory instance
+                # Update the ServiceCategory instance
                 instance.name_hr = validated_data.get('name_hr', instance.name_hr)
                 instance.name_en = validated_data.get('name_en', instance.name_en)
                 instance.icon = validated_data.get('icon', instance.icon)

@@ -2,7 +2,7 @@ from django.db import models
 from accounts.models import User
 
 
-class PropertyCategory(models.Model):
+class ServiceCategory(models.Model):
     name_en=models.CharField(max_length=255, unique=False)
     name_hr=models.CharField(max_length=255, null=True, blank=True)
     icon = models.CharField(max_length=50, null=True, blank=True)
@@ -16,7 +16,7 @@ class PropertyCategory(models.Model):
 
 
 class CategoryPricing(models.Model):
-    category = models.ForeignKey(PropertyCategory, on_delete=models.CASCADE, related_name='category_pricing')
+    category = models.ForeignKey(ServiceCategory, on_delete=models.CASCADE, related_name='category_pricing')
     price = models.DecimalField(max_digits=10, decimal_places=2)
     duration = models.PositiveIntegerField(null=True, blank=True)
     discount = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
@@ -35,7 +35,7 @@ class CategoryFeaturesField(models.Model):
         ('radio', 'Radio'),
     )
 
-    category = models.ForeignKey(PropertyCategory, on_delete=models.CASCADE, related_name='category_features')
+    category = models.ForeignKey(ServiceCategory, on_delete=models.CASCADE, related_name='category_features')
     label_en=models.CharField(max_length=255)
     label_hr=models.CharField(max_length=255, null=True, blank=True)
     unit=models.CharField(max_length=255, null=True, blank=True)
@@ -49,7 +49,7 @@ class CategoryFeaturesField(models.Model):
 
 
 class SubCategory(models.Model):
-    category = models.ForeignKey(PropertyCategory, on_delete=models.CASCADE, related_name='subcategories')
+    category = models.ForeignKey(ServiceCategory, on_delete=models.CASCADE, related_name='subcategories')
     name_en=models.CharField(max_length=255)
     name_hr=models.CharField(max_length=255, null=True, blank=True)
     created_by = models.ForeignKey(User, on_delete=models.SET_NULL, related_name='created_subcategories', null=True, blank=True)

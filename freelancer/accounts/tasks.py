@@ -8,6 +8,8 @@ from django.utils import timezone
 from datetime import timedelta
 from django.contrib.auth import get_user_model
 from accounts.models import User
+from django.utils.timezone import now
+from adsApp.models import Ad
 
 User = get_user_model()
 
@@ -17,6 +19,11 @@ logger = logging.getLogger(__name__)
 def send_email(context, file=None):
     user_id = context.get('user')
     context['user'] = User.objects.filter(id=user_id).first() if user_id else None
+    
+    if context.get('booking'):
+        from bookingApp.models import Booking
+        context['booking'] = Booking.objects.filter(id=context['booking']).first()
+    
     try:
         html_message = render_to_string(file, context=context)
         plain_message = strip_tags(html_message)
@@ -46,3 +53,12 @@ def delete_inactive_users():
         user.save()
     
     return f"Deleted {count} users"
+
+
+
+@shared_task
+def expire_ads_if_needed():
+    Ad.objects.filter(
+        end_date__lt=now(),
+        status='active'
+    ).update(status='expired')

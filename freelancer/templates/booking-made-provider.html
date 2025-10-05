@@ -1,0 +1,117 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>New Service Booking Request</title>
+</head>
+<body style="margin: 0; padding: 0; font-family: Arial, sans-serif; color: #1F2937; background-color: #ffffff;">
+  <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px; margin: 0 auto;">
+    
+        <!-- Logo -->
+        {% include "logo.html" %}
+     
+    <tr>
+      <td style="padding: 0 30px 20px 30px; font-size: 16px; line-height: 1.6;">
+        <p style="margin-top: 0;">Hi {{ user.first_name }},</p>
+        <p>You’ve received a new <strong>service booking request</strong> on <span style="color:#2563EB;">Freelancer</span> 🎉</p>
+      </td>
+    </tr>
+
+    <!-- Booking Details Card -->
+    <tr>
+      <td style="padding: 0 30px 30px 30px;">
+        <table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #F9FAFB; border-radius: 8px;">
+          <tr>
+            <td style="padding: 20px;">
+              <p style="margin: 0 0 15px 0; font-weight: bold; color: #111827;">Booking Details</p>
+              <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                <tr>
+                  <td width="150" style="color: #6B7280;">Service:</td>
+                  <td>{{ booking.service.title }}</td>
+                </tr>
+                <tr><td height="8"></td></tr>
+                <tr>
+                  <td width="150" style="color: #6B7280;">Category:</td>
+                  <td>{{ booking.service.category.name }}</td>
+                </tr>
+                <tr><td height="8"></td></tr>
+                <tr>
+                  <td width="150" style="color: #6B7280;">Requested Date:</td>
+                  <td>{{ booking.date_time|date:"d M Y" }}</td>
+                </tr>
+                <tr><td height="8"></td></tr>
+                <tr>
+                  <td width="150" style="color: #6B7280;">Requested Time:</td>
+                  <td>{{ booking.date_time|time:"h:i A" }}</td>
+                </tr>
+                <tr><td height="8"></td></tr>
+                <tr>
+                  <td width="150" style="color: #6B7280;">Client Name:</td>
+                  <td>{{ booking.requester.get_full_name }}</td>
+                </tr>
+                <tr><td height="8"></td></tr>
+                <tr>
+                  <td width="150" style="color: #6B7280;">Client Phone:</td>
+                  <td>{{ booking.requester.phone }}</td>
+                </tr>
+                <tr><td height="8"></td></tr>
+                <tr>
+                  <td width="150" style="color: #6B7280;">Client Email:</td>
+                  <td>{{ booking.requester.email }}</td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+
+    <!-- Action Reminder -->
+    <tr>
+      <td style="padding: 0 30px 20px 30px; font-size: 16px; line-height: 1.6;">
+        <p>Please review and respond to this booking request promptly to confirm your availability.</p>
+      </td>
+    </tr>
+
+    <!-- Tip Box -->
+    <tr>
+      <td style="padding: 0 30px 30px 30px;">
+        <table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #EFF6FF; border-radius: 8px;">
+          <tr>
+            <td style="padding: 20px;">
+              <p style="margin-top: 0; color: #1E40AF;"><strong>💡 Quick Tip:</strong></p>
+              <p style="margin-bottom: 0;">Providers who respond within 6 hours are twice as likely to secure bookings. Stay active and keep your calendar updated!</p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+
+    <!-- CTA Button -->
+    <tr>
+      <td style="padding: 30px;">
+        <table border="0" cellpadding="0" cellspacing="0" width="100%">
+          <tr>
+            <td align="center" bgcolor="#2563EB" style="border-radius: 8px;">
+              <a href="https://freelancerapp.com/provider-dashboard" target="_blank"
+                 style="display: inline-block; padding: 16px 36px; font-size: 18px; color: #ffffff; text-decoration: none; border-radius: 8px; font-weight: bold;">
+                 View Booking Request
+              </a>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+
+    <!-- Footer -->
+    <tr>
+      <td style="padding: 0 30px 30px 30px; font-size: 15px; line-height: 1.6; color: #4B5563;">
+        <p>Need help? Reach out to our <a href="mailto:support@freelancerapp.com" style="color: #2563EB; text-decoration: none;">support team</a>.</p>
+        <p style="margin-bottom: 0;">— The Freelancer Team</p>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

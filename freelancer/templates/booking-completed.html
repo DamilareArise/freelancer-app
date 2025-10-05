@@ -1,0 +1,126 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Service Completed</title>
+</head>
+<body style="margin: 0; padding: 0; font-family: Arial, sans-serif; color: #333333; background-color: #ffffff;">
+  <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px; margin: 0 auto;">
+   
+        <!-- Logo -->
+        {% include "logo.html" %}
+      
+
+    <tr>
+      <td style="padding: 0 30px 20px 30px; font-size: 16px; line-height: 1.5;">
+        <p style="margin-top: 0;">Hi {{user.first_name}},</p>
+        <p>
+          Thank you for choosing <strong>{{booking.service.title}}</strong> on <strong>Freelancer</strong>! 🎉<br>
+          We hope you had a great experience with your service provider.
+        </p>
+      </td>
+    </tr>
+
+    <!-- Service Details -->
+    <tr>
+      <td style="padding: 0 30px 30px 30px; font-size: 16px; line-height: 1.5;">
+        <table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #F9FAFB; border-radius: 8px;">
+          <tr>
+            <td style="padding: 20px;">
+              <p style="margin: 0 0 15px 0;"><strong>Service Details:</strong></p>
+              <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                <tr>
+                  <td width="140" style="color: #6B7280;">Service:</td>
+                  <td>{{booking.service.title}}</td>
+                </tr>
+                <tr><td height="10"></td></tr>
+                <tr>
+                  <td width="140" style="color: #6B7280;">Category:</td>
+                  <td>{{booking.service.category.name}}</td>
+                </tr>
+                <tr><td height="10"></td></tr>
+                <tr>
+                  <td width="140" style="color: #6B7280;">Location:</td>
+                  <td>{{booking.service.location}}</td>
+                </tr>
+                <tr><td height="10"></td></tr>
+                <tr>
+                  <td width="140" style="color: #6B7280;">Date:</td>
+                  <td>{{booking.date_time|date:"d M Y"}}</td>
+                </tr>
+                <tr><td height="10"></td></tr>
+                <tr>
+                  <td width="140" style="color: #6B7280;">Time:</td>
+                  <td>{{booking.date_time|time:"h:i A"}}</td>
+                </tr>
+                <tr><td height="10"></td></tr>
+                <tr>
+                  <td width="140" style="color: #6B7280;">Provider:</td>
+                  <td>{{booking.service.provider.first_name}} {{booking.service.provider.last_name}}</td>
+                </tr>
+                <tr><td height="10"></td></tr>
+                <tr>
+                  <td width="140" style="color: #6B7280;">Status:</td>
+                  <td><span style="color: #2563EB; font-weight: bold;">Completed</span></td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+
+    <!-- Review Section -->
+    <tr>
+      <td style="padding: 0 30px 30px 30px; font-size: 16px; line-height: 1.5; background-color: #EFF6FF; border-radius: 8px;">
+        <p style="margin-top: 15px;"><span style="color: #2563EB;">⭐</span> <strong>Share Your Experience</strong></p>
+        <p>Your feedback helps other clients find trusted professionals and helps us improve the Freelancer experience.</p>
+      </td>
+    </tr>
+
+    <!-- Leave Review Button -->
+    <tr>
+      <td style="padding: 30px;">
+        <table border="0" cellpadding="0" cellspacing="0" width="100%">
+          <tr>
+            <td align="center" bgcolor="#2563EB" style="border-radius: 8px;">
+              <a href="https://freelancerapp.com/review/{{booking.id}}" target="_blank"
+                 style="display: inline-block; padding: 16px 36px; font-size: 18px; color: #ffffff; text-decoration: none; border-radius: 8px; font-weight: semibold;">
+                 Leave a Review
+              </a>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+
+    <!-- Browse Similar Services -->
+    <tr>
+      <td style="padding: 0 30px 30px 30px;">
+        <table border="0" cellpadding="0" cellspacing="0" width="100%">
+          <tr>
+            <td align="center" bgcolor="#E5E7EB" style="border-radius: 8px;">
+              <a href="https://freelancerapp.com/browse/{{booking.service.category.id}}" target="_blank"
+                 style="display: inline-block; padding: 16px 36px; font-size: 18px; color: #374151; text-decoration: none; border-radius: 8px; font-weight: semibold;">
+                 Browse Similar Services
+              </a>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+
+    <!-- Footer -->
+    <tr>
+      <td style="padding: 0 30px 20px 30px; font-size: 16px; line-height: 1.5;">
+        <p>
+          Thank you for using <strong>Freelancer</strong> to find skilled professionals for your needs.<br>
+          Need help? <a href="mailto:support@freelancerapp.com" style="color: #2563EB; text-decoration: none;">Contact our support team</a>.
+        </p>
+        <p style="margin-bottom: 0;">— The Freelancer Team</p>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

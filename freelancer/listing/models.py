@@ -1,6 +1,6 @@
 from django.db import models
 from accounts.models import User
-from adminHandlers.models import PropertyCategory, SubCategory, CategoryFeaturesField
+from adminHandlers.models import ServiceCategory, SubCategory, CategoryFeaturesField
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 import tinify
@@ -56,7 +56,7 @@ class Listing(models.Model):
     )
     
     
-    category = models.ForeignKey(PropertyCategory, on_delete=models.RESTRICT, related_name='listings')
+    category = models.ForeignKey(ServiceCategory, on_delete=models.RESTRICT, related_name='listings')
     subcategory = models.ForeignKey(SubCategory, on_delete=models.SET_NULL, null=True, blank=True)
     user_type = models.CharField(max_length=50, choices=USER_TYPE_CHOICES, default='private')
     location = models.OneToOneField(Location, on_delete=models.CASCADE)

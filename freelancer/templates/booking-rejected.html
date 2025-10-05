@@ -1,0 +1,102 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Service Booking Update</title>
+</head>
+<body style="margin: 0; padding: 0; font-family: Arial, sans-serif; color: #333333; background-color: #ffffff;">
+  <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px; margin: 0 auto;">
+    
+        <!-- Logo -->
+        {% include "logo.html" %}
+      
+
+    <tr>
+      <td style="padding: 0 30px 20px 30px; font-size: 16px; line-height: 1.5;">
+        <p style="margin-top: 0;">Hi {{ user.first_name }},</p>
+        <p>Unfortunately, your booking request for <strong>{{ booking.service.title }}</strong> could not be accommodated at your selected time.</p>
+      </td>
+    </tr>
+
+    <tr>
+      <td style="padding: 0 30px 30px 30px; font-size: 16px; line-height: 1.5;">
+        <table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #F9FAFB; border-radius: 8px;">
+          <tr>
+            <td style="padding: 20px;">
+              <p style="margin: 0 0 15px 0;"><strong>Booking Details:</strong></p>
+              <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                <tr>
+                  <td width="140" style="color: #6B7280;">Service:</td>
+                  <td>{{ booking.service.title }}</td>
+                </tr>
+                <tr><td height="10"></td></tr>
+                <tr>
+                  <td width="140" style="color: #6B7280;">Provider:</td>
+                  <td>{{ booking.service.provider.get_full_name }}</td>
+                </tr>
+                <tr><td height="10"></td></tr>
+                <tr>
+                  <td width="140" style="color: #6B7280;">Requested Date:</td>
+                  <td>{{ booking.date_time|date:"d M Y" }}</td>
+                </tr>
+                <tr><td height="10"></td></tr>
+                <tr>
+                  <td width="140" style="color: #6B7280;">Requested Time:</td>
+                  <td>{{ booking.date_time|time:"h:i A" }}</td>
+                </tr>
+                <tr><td height="10"></td></tr>
+                <tr>
+                  <td width="140" style="color: #6B7280;">Status:</td>
+                  <td><span style="color: #EF4444; font-weight: bold;">Not Available</span></td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr>
+      <td style="padding: 20px 30px 10px 30px; font-size: 16px; line-height: 1.5;">
+        <p>Would you like to choose a different time for this service?</p>
+      </td>
+    </tr>
+
+    <tr>
+      <td style="padding: 0 30px 30px 30px;">
+        <table border="0" cellpadding="0" cellspacing="0" width="100%">
+          <tr>
+            <td align="center" bgcolor="#1E88E5" style="border-radius: 8px;">
+              <a href="https://example.com/reschedule-booking?id={{ booking.id }}" target="_blank" style="display: inline-block; padding: 16px 36px; font-size: 18px; color: #ffffff; text-decoration: none; border-radius: 8px; font-weight: semibold;">
+                Reschedule Booking
+              </a>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr>
+      <td style="padding: 0 30px 30px 30px;">
+        <table border="0" cellpadding="0" cellspacing="0" width="100%">
+          <tr>
+            <td align="center" bgcolor="#F3F4F6" style="border-radius: 8px;">
+              <a href="https://example.com/browse-services" target="_blank" style="display: inline-block; padding: 16px 36px; font-size: 18px; color: #374151; text-decoration: none; border-radius: 8px; font-weight: semibold;">
+                Browse Similar Services
+              </a>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr>
+      <td style="padding: 0 30px 20px 30px; font-size: 16px; line-height: 1.5;">
+        <p>Need assistance? <a href="mailto:support@freelancerapp.com" style="color: #1E88E5; text-decoration: none;">Contact our support team</a> and we’ll be happy to help you find a suitable provider.</p>
+        <p style="margin-bottom: 0;">— The Freelancer Team</p>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

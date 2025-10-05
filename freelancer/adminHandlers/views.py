@@ -4,7 +4,7 @@ from django.contrib.auth import get_user_model
 from accounts.permissions import IsAdminUser
 from . import serializers as sz
 from rest_framework.permissions import IsAuthenticated, AllowAny
-from .models import FAQ, Charges, PropertyCategory
+from .models import FAQ, Charges, ServiceCategory
 from django.db.models.deletion import RestrictedError
 from rest_framework.response import Response
 from rest_framework import status
@@ -33,14 +33,14 @@ class ChargesViewSet(viewsets.ModelViewSet):
     
 class CategoryViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAdminUser]
-    queryset = PropertyCategory.objects.order_by('-created_at')
-    serializer_class = sz.PropertyCategoryUnifiedSerializer
+    queryset = ServiceCategory.objects.order_by('-created_at')
+    serializer_class = sz.ServiceCategoryUnifiedSerializer
     
     
     # def get_serializer_class(self):
     #     if self.action == 'retrieve' or self.action == 'list':
-    #         return sz.PropertyCategoryUnifiedSerializer
-    #     return sz.PropertyCategorySerializer
+    #         return sz.ServiceCategoryUnifiedSerializer
+    #     return sz.ServiceCategorySerializer
     
     def perform_create(self, serializer):
         """Set the created_by field automatically"""
@@ -64,32 +64,32 @@ class CategoryViewSet(viewsets.ModelViewSet):
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
         
-class PropertyCategoryCreateView(APIView):
+class ServiceCategoryCreateView(APIView):
     permission_classes = [IsAdminUser]
     
     def post(self, request):
-        serializer = sz.PropertyCategoryUnifiedSerializer(data=request.data, context={'request': request})
+        serializer = sz.ServiceCategoryUnifiedSerializer(data=request.data, context={'request': request})
         serializer.is_valid(raise_exception=True)
         category = serializer.save()
-        return Response(sz.PropertyCategoryUnifiedSerializer(category).data, status=status.HTTP_201_CREATED)
+        return Response(sz.ServiceCategoryUnifiedSerializer(category).data, status=status.HTTP_201_CREATED)
     
     def put(self, request, pk):
         try:
-            category_instance = PropertyCategory.objects.get(pk=pk)
-        except PropertyCategory.DoesNotExist:
+            category_instance = ServiceCategory.objects.get(pk=pk)
+        except ServiceCategory.DoesNotExist:
             return Response({"detail": "Not found."}, status=status.HTTP_404_NOT_FOUND)
         
-        serializer = sz.PropertyCategoryUnifiedSerializer(category_instance, data=request.data, context={'request': request})
+        serializer = sz.ServiceCategoryUnifiedSerializer(category_instance, data=request.data, context={'request': request})
         serializer.is_valid(raise_exception=True)
         category = serializer.save()
-        return Response(sz.PropertyCategoryUnifiedSerializer(category).data, status=status.HTTP_200_OK)
+        return Response(sz.ServiceCategoryUnifiedSerializer(category).data, status=status.HTTP_200_OK)
         
 # Api for the mobile phase
 class GetCategories(viewsets.ReadOnlyModelViewSet):
     permission_classes = [AllowAny]
     authentication_classes = []
-    serializer_class = sz.PropertyCategoryUnifiedSerializer
-    queryset = PropertyCategory.objects.order_by('-created_at')
+    serializer_class = sz.ServiceCategoryUnifiedSerializer
+    queryset = ServiceCategory.objects.order_by('-created_at')
     
 class HandleDocumentApproval(APIView):
     permission_classes = [IsAdminUser]
