@@ -23,4 +23,6 @@ urlpatterns = [
     path("api/v1/", include("accounts.urls")),
     path("api/v1/admin/", include("adminHandlers.urls")),
     path("api/v1/", include("listing.urls")),
+    path("api/v1/ads/", include("adsApp.urls")),
+    path("api/v1/book/", include("bookingApp.urls")),
 ]
