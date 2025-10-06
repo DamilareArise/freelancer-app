@@ -8,6 +8,7 @@ from accounts.tasks import send_email
 from listing.serializers import ListingSerializer
 from bookingApp.serializers import BookingSerializer
 from bookingApp.models import Booking
+from bookingApp.serializers import ReviewSerializer
 
 User = get_user_model()
 
@@ -365,3 +366,5 @@ class UserWithListingsSerializer(serializers.ModelSerializer):
         bookings = Booking.objects.filter(listing__created_by=obj)
         return BookingSerializer(bookings, many=True, context=self.context).data
     
+class AdminReviewSerializer(ReviewSerializer):
+    booking = BookingSerializer(read_only=True)

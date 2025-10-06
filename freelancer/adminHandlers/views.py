@@ -16,6 +16,11 @@ from bookingApp.models import Booking
 from bookingApp.serializers import BookingSerializer
 from django.db.models import Q
 from accounts.pagination import CustomOffsetPagination
+from adsApp.models import Ad
+from datetime import timedelta
+from adsApp.models import SuperAdsCategory
+from bookingApp.models import Reviews
+
 
 
 User = get_user_model()
@@ -206,3 +211,60 @@ class AllBookings(viewsets.ReadOnlyModelViewSet):
             )
         return queryset
 
+class ChangeSuperAdStatus(APIView):
+    permission_classes = [IsAdminUser]
+    
+    def patch(self, request, id):
+        action = request.data.get('action')
+        if action not in ['paused', 'active']:
+            return Response({"error": "Invalid action."}, status=status.HTTP_400_BAD_REQUEST)
+        super_ad = get_object_or_404(Ad, id=id, type='super_ads')
+        super_ad.status = action
+        super_ad.save()
+        return Response({"message": f"Super Ad status changed to {action}."}, status=status.HTTP_200_OK) 
+    
+class DeleteSuperAd(APIView):
+    permission_classes = [IsAdminUser]
+    
+    def delete(self, request, id):
+        super_ad = get_object_or_404(Ad, id=id, type='super_ads')
+        super_ad.delete()
+        return Response({"message": "Super Ad deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
+    
+class ExtendSuperAd(APIView):
+    permission_classes = [IsAdminUser]
+    
+    def patch(self, request, id):
+        super_ad = get_object_or_404(Ad, id=id, type='super_ads')
+        days= request.data.get('days')
+        if not days:
+            return Response({"error": "Days are required."}, status=status.HTTP_400_BAD_REQUEST)
+        
+        if not isinstance(days, int) or days <= 0:
+            return Response({"error": "Days must be a positive integer."}, status=status.HTTP_400_BAD_REQUEST)
+        
+        super_ad.end_date += timedelta(days=days)
+        super_ad.save()
+        return Response({"message": f"Super Ad extended by {days} day(s) successfully."}, status=status.HTTP_200_OK)
+    
+class ChangeSuperAdCategory(APIView):
+    permission_classes = [IsAdminUser]
+    
+    def patch(self, request, id):
+        super_ad = get_object_or_404(Ad, id=id, type='super_ads')
+        new_category_id = request.data.get('category_id')
+        if not new_category_id:
+            return Response({"error": "New category ID is required."}, status=status.HTTP_400_BAD_REQUEST)
+        
+        new_category = get_object_or_404(SuperAdsCategory, id=new_category_id)
+        super_ad.super_ads_category = new_category
+        super_ad.save()
+        
+        return Response({"message": "Super Ad category changed successfully."}, status=status.HTTP_200_OK)
+    
+class GetReviews(viewsets.ReadOnlyModelViewSet):
+    permission_classes = [IsAdminUser]
+    pagination_class = CustomOffsetPagination
+    serializer_class = sz.AdminReviewSerializer
+    queryset = Reviews.objects.all().order_by('-created_at')
+    
