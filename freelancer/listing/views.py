@@ -2,14 +2,16 @@ from rest_framework import viewsets, status
 from rest_framework.permissions import IsAuthenticated
 from .models import Listing, Resource, Favorite
 from rest_framework.decorators import action
-from .  import serializers as sz
+from . import serializers as sz
 from accounts.permissions import IsAdminOrOwner
 from accounts.pagination import CustomOffsetPagination
-from django.db.models import Q
+from django.db.models import Q, OuterRef, Exists
 import json
 from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from adsApp.models import Ad
+
 
 
 
