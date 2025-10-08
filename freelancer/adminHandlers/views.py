@@ -43,7 +43,7 @@ class ChargesViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAdminUser]
     
 class CategoryViewSet(viewsets.ModelViewSet):
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsAuthenticated]
     queryset = ServiceCategory.objects.order_by('-created_at')
     serializer_class = sz.ServiceCategoryUnifiedSerializer
     
