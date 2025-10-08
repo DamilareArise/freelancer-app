@@ -160,7 +160,7 @@ class HandleListStatus(APIView):
             for listing in listings:
                 context = {
                     'subject': 'Listing Rejection Notification',
-                    'listing': listing,
+                    'listing': listing.id,
                     'rejection_reasons': rejection_reasons,
                     'user': listing.created_by.id
                 }
@@ -172,7 +172,7 @@ class HandleListStatus(APIView):
             for listing in listings:
                 context = {
                     'subject': 'Listing Approval Notification',
-                    'listing': listing,
+                    'listing': listing.id,
                     'user': listing.created_by.id
                 }
                 send_email.delay(context, file='approved.html')

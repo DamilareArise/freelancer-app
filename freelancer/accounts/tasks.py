@@ -24,6 +24,10 @@ def send_email(context, file=None):
         from bookingApp.models import Booking
         context['booking'] = Booking.objects.filter(id=context['booking']).first()
     
+    if context.get('listing'):
+        from listing.models import Listing
+        context['listing'] = Listing.objects.filter(id=context['listing']).first()
+    
     try:
         html_message = render_to_string(file, context=context)
         plain_message = strip_tags(html_message)
