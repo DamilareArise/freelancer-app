@@ -187,9 +187,9 @@ class UserListings(viewsets.ReadOnlyModelViewSet):
         )
         if not self_param:
             filters &= Q(available=True)  # Only show available listings if not self
-            queryset = queryset.filter(filters).annotate(
-                has_active_ad=Exists(active_ads)
-                ).filter(has_active_ad=True)
+            # queryset = queryset.filter(filters).annotate(
+            #     has_active_ad=Exists(active_ads)
+            #     ).filter(has_active_ad=True)
 
             return queryset.distinct()
     
