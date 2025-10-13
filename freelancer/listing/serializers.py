@@ -182,16 +182,24 @@ class ListingSerializer(serializers.ModelSerializer):
     
 class ListingMinimalSerializer(serializers.ModelSerializer):
     service = ServiceSerializer(read_only=True)
-    category = serializers.CharField(source='category.name')
-    type = serializers.CharField(source='category.type')
+    category = serializers.SerializerMethodField()
     created_by = serializers.SerializerMethodField()
     resources = ResourceSerializer(many=True, read_only=True)
     location = serializers.SerializerMethodField()
 
     class Meta:
         model = Listing
-        fields = ['id', 'price','service', 'category', 'type', 'location', 'created_by', 'resources']
-
+        fields = ['id', 'price','service', 'category', 'location', 'created_by', 'resources']
+        
+    def get_category(self, obj):
+        request = self.context.get('request')
+        lang = request.headers.get('Accept-Language', 'en').lower() if request else 'en'
+        
+        # fallback to English if the requested language field is empty
+        if lang.startswith('hr') and getattr(obj.category, 'name_hr', None):
+            return obj.category.name_hr
+        return obj.category.name_en
+    
     def get_location(self, obj):
         return {
             'street': f"{obj.location.street_number} {obj.location.street_name}",
