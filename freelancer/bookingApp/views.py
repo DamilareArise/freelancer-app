@@ -48,7 +48,7 @@ class BookingViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(status=status)
         if search:
             queryset = queryset.filter(
-                Q(listing__property__header__icontains=search) | 
+                Q(listing__service__header__icontains=search) | 
                 Q(listing__created_by__first_name__icontains=search) |
                 Q(listing__created_by__last_name__icontains=search) |
                 Q(listing__location__city__icontains=search) |
@@ -82,7 +82,7 @@ class BookingManagementViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(status=status)
         if search:
             queryset = queryset.filter(
-                Q(listing__property__header__icontains=search) | 
+                Q(listing__service__header__icontains=search) | 
                 Q(requester__first_name__icontains=search) |
                 Q(requester__last_name__icontains=search) |
                 Q(listing__location__city__icontains=search) |
