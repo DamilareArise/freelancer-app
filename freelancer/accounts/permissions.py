@@ -5,6 +5,8 @@ class IsAdminUser(permissions.BasePermission):
     Custom permission to only allow users with an admin role.
     """
     def has_permission(self, request, view):
+        if request.method in permissions.SAFE_METHODS:
+                return True
         return (
             request.user
             and request.user.is_authenticated
