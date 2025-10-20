@@ -156,7 +156,7 @@ class UserListings(viewsets.ReadOnlyModelViewSet):
             if status in ["pending", "approved", "rejected"]:
                 filters &= Q(status=status)
         else:
-            filters = Q(status='approved')  
+            filters = Q(status='approved')  & Q(available=True)
 
         # Add filters dynamically
         if category_ids:
@@ -178,22 +178,20 @@ class UserListings(viewsets.ReadOnlyModelViewSet):
             price_range = json.loads(price_range)
             filters &= Q(price__gte=price_range[0], price__lte=price_range[1])
             
+        queryset = queryset.filter(filters)
+            
         # Ensure listing has at least one active ad
-        active_ads = Ad.objects.filter(
-            listing=OuterRef('pk'),
-            start_date__lte=now(),
-            end_date__gte=now(),
-            status='active',
-        )
         if not self_param:
-            filters &= Q(available=True)  # Only show available listings if not self
-            # queryset = queryset.filter(filters).annotate(
-            #     has_active_ad=Exists(active_ads)
-            #     ).filter(has_active_ad=True)
+            active_ads = Ad.objects.filter(
+                listing=OuterRef('pk'),
+                start_date__lte=now(),
+                end_date__gte=now(),
+                status='active',
+            )
+            
+            # queryset = queryset.annotate(has_active_ad=Exists(active_ads)).filter(has_active_ad=True)
 
-            return queryset.distinct()
-    
-        return queryset.filter(filters).distinct()
+        return queryset.distinct()
             
 
     def list(self, request, *args, **kwargs):

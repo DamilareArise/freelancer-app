@@ -32,13 +32,6 @@ class SuperAdsCategorySerializer(serializers.ModelSerializer):
         price_charges = (price * charge_percent / Decimal('100.0')) + charge_fixed
         total_price = price + price_charges
         
-        
-        # charge_percent = float(charges.charge_percent) if charges else 0.0
-        # charge_fixed = float(charges.charge_fixed) if charges else 0.0
-        # price = float(representation.get('price', 0.0))
-        # price_charges = (price * charge_percent / 100) + charge_fixed
-        # total_price = price + price_charges
-        
         representation['total_price'] = total_price
         representation['charges'] = price_charges
         
