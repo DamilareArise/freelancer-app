@@ -1,0 +1,128 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Super Ad (Tier 2) Payment Confirmation — Book-Freelancer</title>
+</head>
+<body style="margin:0; padding:0; font-family:Arial, sans-serif; color:#333333; background-color:#ffffff;">
+  <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width:600px; margin:0 auto;">
+
+    <!-- Logo -->
+    {% include "logo.html" %}
+
+    <!-- Greeting -->
+    <tr>
+      <td style="padding:30px; font-size:16px; line-height:1.6;">
+        <p style="margin-top:0;">Hi {{ user.first_name }},</p>
+        <p>
+          Thank you for purchasing a <strong>Super Ad (Tier 2)</strong> for your service listing 
+          <strong>{{ payment.listing.service.header }}</strong>! 🎉  
+          Your payment has been successfully processed, and your ad is now <strong style="color:#1E40AF;">live</strong> for more clients to discover. 🚀
+        </p>
+      </td>
+    </tr>
+
+    <!-- Payment Details -->
+    <tr>
+      <td style="padding:0 30px 30px 30px;">
+        <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#F9FAFB; border-radius:8px;">
+          <tr>
+            <td style="padding:20px;">
+              <p style="margin:0 0 15px 0; font-weight:bold;">Payment Details</p>
+              <table width="100%" cellpadding="0" cellspacing="0">
+                <tr><td width="140" style="color:#6B7280;">Transaction ID:</td><td>{{ payment.transaction_id }}</td></tr>
+                <tr><td height="10"></td></tr>
+                <tr><td width="140" style="color:#6B7280;">Date:</td><td>{{ payment.created_at }}</td></tr>
+                <tr><td height="10"></td></tr>
+                <tr><td width="140" style="color:#6B7280;">Amount:</td><td>&euro;{{ payment.amount_paid }}</td></tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+
+    <!-- Ad Summary -->
+    <tr>
+      <td style="padding:0 30px 30px 30px;">
+        <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#DBEAFE; border-radius:8px; border:1px solid #BFDBFE;">
+          <tr>
+            <td style="padding:20px;">
+              <p style="margin:0 0 5px 0; font-size:18px; font-weight:bold; color:#1E40AF;">Super Ad – Tier 2 🌟🌟</p>
+              <p style="margin:0 0 15px 0; color:#1E3A8A;">Premium exposure for your freelance service</p>
+              <table width="100%" cellpadding="0" cellspacing="0">
+                <tr><td width="140" style="color:#6B7280;">Service:</td><td>{{ payment.listing.service.header }}</td></tr>
+                <tr><td height="10"></td></tr>
+                <tr><td width="140" style="color:#6B7280;">Start Date:</td><td>{{ ad.start_date }}</td></tr>
+                <tr><td height="10"></td></tr>
+                <tr><td width="140" style="color:#6B7280;">Expiration Date:</td><td><strong>{{ ad.end_date }}</strong></td></tr>
+                <tr><td height="10"></td></tr>
+                <tr><td width="140" style="color:#6B7280;">Duration:</td><td>{{ duration }} days</td></tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+
+    <!-- Benefits -->
+    <tr>
+      <td style="padding:0 30px 30px 30px; background-color:#EFF6FF; border-radius:8px;">
+        <p style="margin-top:15px; color:#1E40AF;"><strong>✓ Your Super Ad (Tier 2) Benefits:</strong></p>
+        <ul style="margin:0 0 15px 0; padding-left:20px;">
+          <li style="margin-bottom:8px;">Top placement in search results</li>
+          <li style="margin-bottom:8px;">Featured in the “Premium Services” section on the homepage</li>
+          <li style="margin-bottom:8px;">Highlighted listing with a “Super Ad Tier 2” badge</li>
+          <li style="margin-bottom:8px;">Up to 10 additional portfolio images</li>
+          <li style="margin-bottom:8px;">Advanced analytics & weekly insights</li>
+          <li style="margin-bottom:0;">Priority customer support</li>
+        </ul>
+      </td>
+    </tr>
+
+    <!-- CTA Button -->
+    <tr>
+      <td style="padding:20px 30px 10px 30px; font-size:16px; line-height:1.5;">
+        <p>Track your Super Ad performance:</p>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding:0 30px 30px 30px;">
+        <table border="0" cellpadding="0" cellspacing="0" width="100%">
+          <tr>
+            <td align="center" bgcolor="#1E40AF" style="border-radius:8px;">
+              <a href="https://book-freelancer.com/my-ads/analytics" target="_blank" 
+                 style="display:inline-block; padding:14px 32px; font-size:17px; color:#ffffff; text-decoration:none; font-weight:bold; border-radius:8px;">
+                View Ad Performance
+              </a>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+
+    <!-- Reminder -->
+    <tr>
+      <td style="padding:0 30px 30px 30px; font-size:16px; line-height:1.6; background-color:#EFF6FF; border-radius:8px; border-left:4px solid #1E40AF;">
+        <p style="margin-top:15px;"><span style="color:#1E40AF;">⏰</span> <strong>Important Reminder:</strong></p>
+        <p>Your Super Ad will expire on <strong>{{ ad.end_date }}</strong>. We’ll send a reminder email 5 days before expiration so you can renew on time.</p>
+        <p style="margin-bottom:15px;">You can also enable auto-renewal in your dashboard for uninterrupted visibility.</p>
+      </td>
+    </tr>
+
+    <!-- Footer -->
+    <tr>
+      <td style="padding:20px 30px; font-size:15px; line-height:1.5;">
+        <p>Need help with your ad or account?  
+          <a href="mailto:support@book-freelancer.com" style="color:#1E40AF; text-decoration:none;">Contact our support team</a>.
+        </p>
+        <p style="margin:0;">— The Book-Freelancer Team</p>
+        <hr style="margin:25px 0; border:none; border-top:1px solid #E5E7EB;" />
+        <p style="text-align:center; font-size:13px; color:#6B7280;">© 2025 Book-Freelancer. All rights reserved.</p>
+      </td>
+    </tr>
+
+  </table>
+</body>
+</html>

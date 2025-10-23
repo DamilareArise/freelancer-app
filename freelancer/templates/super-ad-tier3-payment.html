@@ -1,0 +1,136 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Premium Ad Payment Confirmation</title>
+</head>
+<body style="margin:0; padding:0; font-family: Arial, sans-serif; color:#333; background-color:#ffffff;">
+  <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width:600px; margin:0 auto;">
+    
+    <!-- Logo -->
+    <tr>
+      <td style="padding:40px 30px 20px 30px;">
+        {% include "logo.html" %}
+      </td>
+    </tr>
+
+    <!-- Greeting -->
+    <tr>
+      <td style="padding:0 30px 20px 30px; font-size:16px; line-height:1.5;">
+        <p>Hi {{ user.first_name }},</p>
+        <p>
+          Thank you for purchasing a <strong>Premium Ad</strong> for your service 
+          <strong>{{ payment.listing.service.header }}</strong>!  
+          Your payment has been successfully processed. 🎉
+        </p>
+      </td>
+    </tr>
+
+    <!-- Payment Details -->
+    <tr>
+      <td style="padding:0 30px 30px 30px;">
+        <table border="0" cellpadding="0" cellspacing="0" width="100%" 
+          style="background-color:#F9FAFB; border-radius:8px;">
+          <tr>
+            <td style="padding:20px;">
+              <p style="margin:0 0 15px 0;"><strong>Payment Details:</strong></p>
+              <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                <tr><td width="140" style="color:#6B7280;">Transaction ID:</td><td>{{ payment.transaction_id }}</td></tr>
+                <tr><td height="10"></td></tr>
+                <tr><td width="140" style="color:#6B7280;">Date:</td><td>{{ payment.created_at }}</td></tr>
+                <tr><td height="10"></td></tr>
+                <tr><td width="140" style="color:#6B7280;">Amount:</td><td>&euro;{{ payment.amount_paid }}</td></tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+
+    <!-- Premium Ad Info -->
+    <tr>
+      <td style="padding:0 30px 30px 30px;">
+        <table border="0" cellpadding="0" cellspacing="0" width="100%"
+          style="background-color:#E0F2FE; border-radius:8px; border:1px solid #BFDBFE;">
+          <tr>
+            <td style="padding:20px;">
+              <p style="margin:0 0 5px 0; font-size:18px; font-weight:bold; color:#1D4ED8;">
+                Premium Ad 🌟🌟🌟
+              </p>
+              <p style="margin:0 0 15px 0; color:#1E40AF;">
+                Boost your visibility and attract more clients
+              </p>
+              <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                <tr><td width="140" style="color:#6B7280;">Service:</td><td>{{ payment.listing.service.header }}</td></tr>
+                <tr><td height="10"></td></tr>
+                <tr><td width="140" style="color:#6B7280;">Start Date:</td><td>{{ ad.start_date }}</td></tr>
+                <tr><td height="10"></td></tr>
+                <tr><td width="140" style="color:#6B7280;">Expiration Date:</td><td><strong>{{ ad.end_date }}</strong></td></tr>
+                <tr><td height="10"></td></tr>
+                <tr><td width="140" style="color:#6B7280;">Duration:</td><td>{{ duration }} days</td></tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+
+    <!-- Benefits -->
+    <tr>
+      <td style="padding:0 30px 30px 30px; font-size:16px; line-height:1.5; background-color:#EFF6FF; border-radius:8px;">
+        <p style="margin-top:15px;"><span style="color:#1D4ED8;">✓</span> <strong>Your Premium Ad Benefits:</strong></p>
+        <ul style="margin:0 0 15px 0; padding:0 0 0 20px;">
+          <li style="margin-bottom:8px;">Top placement in search results</li>
+          <li style="margin-bottom:8px;">Highlighted profile on the homepage</li>
+          <li style="margin-bottom:8px;">Premium “Verified Freelancer” badge</li>
+          <li style="margin-bottom:8px;">Increased visibility across related categories</li>
+          <li style="margin-bottom:8px;">Social media promotion to target audiences</li>
+          <li style="margin-bottom:8px;">Access to advanced analytics and insights</li>
+        </ul>
+      </td>
+    </tr>
+
+    <!-- Analytics Button -->
+    <tr>
+      <td style="padding:20px 30px 10px 30px; text-align:center;">
+        <p>View your Ad performance and insights:</p>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding:0 30px 30px 30px;">
+        <table border="0" cellpadding="0" cellspacing="0" width="100%">
+          <tr>
+            <td align="center" bgcolor="#1D4ED8" style="border-radius:8px;">
+              <a href="https://book-freelancer.com/dashboard/ads/analytics" target="_blank"
+                 style="display:inline-block; padding:16px 36px; font-size:18px; color:#ffffff; text-decoration:none; border-radius:8px; font-weight:600;">
+                View Ad Performance
+              </a>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+
+    <!-- Reminder -->
+    <tr>
+      <td style="padding:0 30px 30px 30px; font-size:16px; line-height:1.5; background-color:#DBEAFE; border-radius:8px; border-left:4px solid #1D4ED8;">
+        <p style="margin-top:15px;"><span style="color:#1D4ED8;">⏰</span> <strong>Reminder:</strong></p>
+        <p>Your Premium Ad will expire on <strong>{{ ad.end_date }}</strong>.  
+        You’ll receive a reminder email 5 days before expiration to renew easily.</p>
+        <p style="margin-bottom:15px;">You can also enable auto-renewal in your account settings.</p>
+      </td>
+    </tr>
+
+    <!-- Footer -->
+    <tr>
+      <td style="padding:20px 30px; font-size:15px; line-height:1.5; color:#555;">
+        <p>If you have any questions, please contact our <a href="mailto:support@book-freelancer.com" style="color:#1D4ED8; text-decoration:none;">support team</a>.</p>
+        <p style="margin-bottom:0;">— The Book-Freelancer Team</p>
+        <p style="font-size:13px; color:#94A3B8; margin-top:15px;">© 2025 Book-Freelancer. All rights reserved.</p>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

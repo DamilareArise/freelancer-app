@@ -28,6 +28,14 @@ def send_email(context, file=None):
         from listing.models import Listing
         context['listing'] = Listing.objects.filter(id=context['listing']).first()
     
+    if context.get('payment'):
+        from paymentApp.models import Payment
+        context['payment'] = Payment.objects.filter(id=context['payment']).first()
+    
+    if context.get('ad'):
+        from adsApp.models import Ad
+        context['ad'] = Ad.objects.filter(id=context['ad']).first()
+    
     try:
         html_message = render_to_string(file, context=context)
         plain_message = strip_tags(html_message)
