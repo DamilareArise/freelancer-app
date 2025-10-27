@@ -334,7 +334,7 @@ class UserPaymentListView(generics.ListAPIView):
         ad_type = params.get('ad_type', 'regular_ads')
         ad_qs = Ad.objects.filter(type=ad_type).order_by('-end_date')
         
-        queryset = Payment.objects.filter(listing__created_by=user).select_related('listing__property', 'listing__category').prefetch_related(Prefetch('listing__ads', queryset=ad_qs))
+        queryset = Payment.objects.filter(listing__created_by=user).select_related('listing__service', 'listing__category').prefetch_related(Prefetch('listing__ads', queryset=ad_qs))
         
         # Only show super_ad payments if that's the ad_type selected
         if ad_type == 'super_ads':
