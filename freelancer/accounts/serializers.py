@@ -18,7 +18,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['id', 'first_name', 'last_name', 'email', 'phone','passport', 'is_verified', 'document_status', 'oib', 'vat', 'document_type', 'document', 'selfie', 'business_reg', 'auth_letter', 'status', 'created_at']
+        fields = ['id', 'first_name', 'last_name', 'email', 'phone','passport', 'is_verified', 'document_status', 'oib', 'vat', 'document_type', 'document_front', 'document_back', 'selfie', 'business_reg', 'auth_letter', 'status', 'created_at']
         
         
 class LoginSerializer(serializers.Serializer):
@@ -122,7 +122,7 @@ class DocumentSerializer(serializers.ModelSerializer):
     role = serializers.PrimaryKeyRelatedField(queryset=Role.objects.all(), write_only =True)
     class Meta:
         model = User
-        fields = ['oib', 'vat', 'document_type', 'document', 'selfie', 'business_reg', 'auth_letter', 'auth_letter', 'role']
+        fields = ['oib', 'vat', 'document_type', 'document_front', 'document_back' 'selfie', 'business_reg', 'auth_letter', 'auth_letter', 'role']
         
     def update(self, instance, validated_data):
         user = instance

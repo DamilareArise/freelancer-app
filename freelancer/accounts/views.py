@@ -101,7 +101,9 @@ class LoginView(APIView):
                 # Check if user is verified
                 if not user.is_verified:
                     return Response(
-                        {"error": "Account not verified. Please verify your OTP before logging in."},
+                        {
+                            "error": "Account not verified. Please verify your OTP before logging in."
+                        },
                         status=status.HTTP_403_FORBIDDEN
                     )
                 
