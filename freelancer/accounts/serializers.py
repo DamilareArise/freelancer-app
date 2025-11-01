@@ -122,7 +122,7 @@ class DocumentSerializer(serializers.ModelSerializer):
     role = serializers.PrimaryKeyRelatedField(queryset=Role.objects.all(), write_only =True)
     class Meta:
         model = User
-        fields = ['oib', 'vat', 'document_type', 'document_front', 'document_back' 'selfie', 'business_reg', 'auth_letter', 'auth_letter', 'role']
+        fields = ['oib', 'vat', 'document_type', 'document_front', 'document_back', 'selfie', 'business_reg', 'auth_letter', 'auth_letter', 'role']
         
     def update(self, instance, validated_data):
         user = instance
