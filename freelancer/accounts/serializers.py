@@ -143,6 +143,13 @@ class DocumentSerializer(serializers.ModelSerializer):
         
         UserRole.objects.get_or_create(user=user, role=role)
         
+        # Assign CUSTOMER role by default
+        try:
+            customer_role = Role.objects.get(id='CUSTOMER')
+            UserRole.objects.get_or_create(user=user, role=customer_role)
+        except Role.DoesNotExist:
+            raise serializers.ValidationError({"error": "Default CUSTOMER role not found."})
+        
         context = {
             "subject": "Document updated",
             "user": user.id,
