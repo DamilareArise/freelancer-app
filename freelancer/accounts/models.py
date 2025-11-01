@@ -73,6 +73,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     document_type = models.CharField(max_length=30, choices=DOC_TYPE, null=True, blank=True)
     document_front = models.FileField(upload_to='user_document_front/', null=True, blank=True)
     document_back = models.FileField(upload_to='user_document_back/', null=True, blank=True)
+    certificate = models.FileField(upload_to='certificates/', null=True, blank=True)
     business_reg = models.FileField(upload_to='business_reg/', null=True, blank=True)
     auth_letter = models.FileField(upload_to='auth_letter/', null=True, blank=True)
     document_status = models.CharField(max_length=20, choices=DOC_VERIFICATION_STATUS, default='pending')
