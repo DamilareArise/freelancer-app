@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     "adsApp",
     'bookingApp',
     "paymentApp",
+    'drf_spectacular',
     'django_cleanup.apps.CleanupConfig'
 ]
 
@@ -61,6 +62,15 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Freelancer API',
+    'DESCRIPTION': 'API documentation for the Freelancer project',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    'COMPONENT_SPLIT_REQUEST': True,
 }
 
 SIMPLE_JWT = {

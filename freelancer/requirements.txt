@@ -1,5 +1,6 @@
 amqp==5.3.1
 asgiref==3.9.1
+attrs==25.4.0
 billiard==4.2.1
 boto3==1.40.20
 botocore==1.40.20
@@ -19,9 +20,13 @@ django-decouple==2.1
 django-storages==1.14.6
 djangorestframework==3.16.1
 djangorestframework_simplejwt==5.5.1
+drf-spectacular==0.27.2
 gunicorn==23.0.0
 idna==3.10
+inflection==0.5.1
 jmespath==1.0.1
+jsonschema==4.25.1
+jsonschema-specifications==2025.9.1
 kombu==5.5.4
 mysqlclient==2.2.7
 packaging==25.0
@@ -30,8 +35,11 @@ prompt_toolkit==3.0.51
 PyJWT==2.10.1
 pyotp==2.9.0
 python-dateutil==2.9.0.post0
+PyYAML==6.0.3
 redis==6.4.0
+referencing==0.37.0
 requests==2.32.5
+rpds-py==0.28.0
 s3transfer==0.13.1
 six==1.17.0
 sqlparse==0.5.3
@@ -39,6 +47,7 @@ stripe==13.0.1
 tinify==1.7.0
 typing_extensions==4.15.0
 tzdata==2025.2
+uritemplate==4.2.0
 urllib3==2.5.0
 vine==5.1.0
 wcwidth==0.2.13
