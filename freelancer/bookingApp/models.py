@@ -39,6 +39,7 @@ class Booking(models.Model):
     canceled_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='booking_canceled_by', null=True)
     canceled_at = models.DateTimeField(null=True)
     cancel_reason = models.TextField(blank=True, null=True)
+    note = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
