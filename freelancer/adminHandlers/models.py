@@ -1,5 +1,6 @@
 from django.db import models
 from accounts.models import User
+from decimal import Decimal
 
 
 class ServiceCategory(models.Model):
@@ -70,9 +71,16 @@ class FAQ(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
 class Charges(models.Model):
+    base_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     charge_percent = models.DecimalField(max_digits=5, decimal_places=2, default=0.00)
     charge_fixed = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     for_key = models.CharField(max_length=50, unique=True, blank=True, null=True)
     for_label = models.CharField(max_length=100, unique=True, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    
+    def total_with_charges(self):
+        """Compute total including Stripe charges."""
+        percent_fee = (self.charge_percent / Decimal(100)) * self.base_amount
+        total = self.base_amount + percent_fee + self.charge_fixed
+        return total.quantize(Decimal("0.01"))  # Round to 2 decimal places
