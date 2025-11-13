@@ -79,8 +79,9 @@ class Charges(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
-    def total_with_charges(self):
+    def total_with_charges(self, months:int=1) -> Decimal:
         """Compute total including Stripe charges."""
-        percent_fee = (self.charge_percent / Decimal(100)) * self.base_amount
-        total = self.base_amount + percent_fee + self.charge_fixed
+        base_amount = self.base_amount * months
+        percent_fee = (self.charge_percent / Decimal(100)) * base_amount
+        total = base_amount + percent_fee + self.charge_fixed
         return total.quantize(Decimal("0.01"))  # Round to 2 decimal places

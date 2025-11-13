@@ -13,7 +13,9 @@ class Payment(models.Model):
         ('canceled', 'Canceled')
     )
     
-    listing = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name='payments')
+    user = models.ForeignKey('accounts.User', on_delete=models.CASCADE, related_name='payments', null=True, blank=True)
+    
+    listing = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name='payments', null=True, blank=True)
     price = models.ForeignKey(CategoryPricing, on_delete=models.CASCADE, related_name='payments', null=True, blank=True)
     status = models.CharField(max_length=30, choices=STATUS_CHOICES, default='pending')
     transaction_id = models.CharField(max_length=255, unique=True)
@@ -23,5 +25,15 @@ class Payment(models.Model):
     super_ad = models.ForeignKey(SuperAdsCategory, on_delete=models.CASCADE, related_name='payments', null=True, blank=True)
     super_ad_month = models.IntegerField(null=True, blank=True)
     
+    covers_all = models.BooleanField(default=False)
+    covers_all_month = models.IntegerField(null=True, blank=True)
+    
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    
+    def coversall_due_date(self):
+        if self.covers_all and self.covers_all_month:
+            from django.utils.timezone import now
+            from dateutil.relativedelta import relativedelta
+            return now() + relativedelta(months=self.covers_all_month)
+        

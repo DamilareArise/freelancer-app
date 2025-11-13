@@ -5,21 +5,21 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         charges_obj = [
             {
-                'charge_percent': 0.00,
-                'charge_fixed': 0.00,
+                'charge_percent': 2.9,
+                'charge_fixed': 0.30,
                 'for_key': 'super_ad',
                 'for_label': 'Super Ad'
             },
             {
-                'charge_percent': 0.00,
-                'charge_fixed': 0.00,
+                'charge_percent': 2.9,
+                'charge_fixed': 0.30,
                 'for_key': 'regular_ad',
                 'for_label': 'Regular Ad'
             },
             {
                 'base_amount': 80.00,
-                'charge_percent': 0.00,
-                'charge_fixed': 0.00,
+                'charge_percent': 2.9,
+                'charge_fixed': 0.30,
                 'for_key': 'all_category',
                 'for_label': 'All Category'
             },

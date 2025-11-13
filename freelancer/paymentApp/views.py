@@ -66,6 +66,17 @@ def successful_payment(transaction_id=None):
                     template = 'super-ad-tier3-payment.html'
                     
                 send_email.delay(context, template)
+            
+            elif payment.covers_all:
+                # Handle covers all category payment
+                context = {
+                    "subject": "Covers all category payment successful",
+                    "user": payment.listing.created_by.id,
+                    "payment":payment.id,
+                    "months": payment.covers_all_month
+                }
+                
+                send_email.delay(context, 'covers-all-category-payment.html')
         
             else:
                 ad = Ad.objects.create(
@@ -101,15 +112,16 @@ def create_payment_intent(request):
         listing_id = data.get("listing_id")
         super_ad_id = data.get("super_ad_id")
         super_ad_month = data.get("super_ad_month")
+        covers_all = data.get("covers_all", False)
+        covers_all_month = data.get("covers_all_month")
 
-        listing = get_object_or_404(Listing, id=listing_id)
-
-        
         categoryPricing = None
         super_ad = None
+        listing = None
 
         # ✅ REGULAR AD
-        if price_id and not super_ad_id:
+        if price_id and not super_ad_id and not covers_all:
+            listing = get_object_or_404(Listing, id=listing_id)
             categoryPricing = get_object_or_404(CategoryPricing, id=price_id)
             charges = Charges.objects.filter(for_key='regular_ad').first()
 
@@ -128,6 +140,7 @@ def create_payment_intent(request):
 
         # ✅ SUPER AD
         elif super_ad_id:
+            listing = get_object_or_404(Listing, id=listing_id)
             super_ad = get_object_or_404(SuperAdsCategory, id=super_ad_id)
 
             if not super_ad_month:
@@ -143,6 +156,18 @@ def create_payment_intent(request):
             net_amount = super_ad.price * Decimal(str(super_ad_month))
             price_charges = (net_amount * charge_percent / Decimal('100.0')) + charge_fixed
             total_amount = net_amount + price_charges
+            
+        # ✅ COVERS ALL CATEGORY
+        elif covers_all:
+            charges = Charges.objects.filter(for_key='all_category').first()
+            if not charges:
+                return JsonResponse({"error": "Charges for all category not found"}, status=404)
+
+            if not covers_all_month:
+                return JsonResponse({"error": "covers_all_month is required for covers all category"}, status=400)
+
+            net_amount = charges.base_amount * Decimal(str(covers_all_month))
+            total_amount = charges.total_with_charges(months=int(covers_all_month))
 
         else:
             return JsonResponse({"error": "Either price_id or super_ad_id is required"}, status=400)
@@ -165,6 +190,8 @@ def create_payment_intent(request):
             super_ad_month=super_ad_month,
             amount_paid=total_amount,
             net_amount=net_amount,
+            covers_all=covers_all,
+            covers_all_month=covers_all_month,
             status="pending",
         )
 

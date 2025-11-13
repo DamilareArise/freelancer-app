@@ -12,6 +12,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from adsApp.models import Ad
 from django.utils.timezone import now
+from paymentApp.models import Payment
 
 
 
@@ -182,6 +183,13 @@ class UserListings(viewsets.ReadOnlyModelViewSet):
             
         # Ensure listing has at least one active ad
         if not self_param:
+            covers_all = Payment.objects.filter(
+                user= OuterRef('created_by'),
+                covers_all=True,
+                status='completed',
+            )
+            
+            
             active_ads = Ad.objects.filter(
                 listing=OuterRef('pk'),
                 start_date__lte=now(),
@@ -189,8 +197,10 @@ class UserListings(viewsets.ReadOnlyModelViewSet):
                 status='active',
             )
             
-            # queryset = queryset.annotate(has_active_ad=Exists(active_ads)).filter(has_active_ad=True)
-
+            queryset = queryset.annotate(has_active_ad=Exists(active_ads))
+            queryset = queryset.annotate(covers_all_ad=Exists(covers_all))
+            queryset = queryset.filter(Q(has_active_ad=True) | Q(covers_all_ad=True))
+            
         return queryset.distinct()
             
 
