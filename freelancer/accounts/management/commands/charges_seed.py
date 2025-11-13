@@ -25,6 +25,14 @@ class Command(BaseCommand):
             },
         ]
         for charge in charges_obj:
-            Charges.objects.get_or_create(**charge)
+            obj, created = Charges.objects.get_or_create(
+                for_key=charge['for_key'],
+                defaults=charge
+            )
+            if not created:
+                for key, value in charge.items():
+                    setattr(obj, key, value)
+                obj.save()
+                
         self.stdout.write(self.style.SUCCESS("Charges created successfully."))
             
