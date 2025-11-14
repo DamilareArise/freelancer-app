@@ -5,7 +5,7 @@ from rest_framework.decorators import action
 from . import serializers as sz
 from accounts.permissions import IsAdminOrOwner
 from accounts.pagination import CustomOffsetPagination
-from django.db.models import Q, OuterRef, Exists
+from django.db.models import Q, OuterRef, Exists, F, ExpressionWrapper, DateTimeField
 import json
 from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from rest_framework.response import Response
@@ -13,6 +13,8 @@ from rest_framework.views import APIView
 from adsApp.models import Ad
 from django.utils.timezone import now
 from paymentApp.models import Payment
+from dateutil.relativedelta import relativedelta
+
 
 
 
@@ -184,11 +186,11 @@ class UserListings(viewsets.ReadOnlyModelViewSet):
         # Ensure listing has at least one active ad
         if not self_param:
             covers_all = Payment.objects.filter(
+                due_date__gte=now(),
                 user= OuterRef('created_by'),
                 covers_all=True,
                 status='completed',
             )
-            
             
             active_ads = Ad.objects.filter(
                 listing=OuterRef('pk'),

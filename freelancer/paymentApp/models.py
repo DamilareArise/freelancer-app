@@ -27,13 +27,25 @@ class Payment(models.Model):
     
     covers_all = models.BooleanField(default=False)
     covers_all_month = models.IntegerField(null=True, blank=True)
+    due_date = models.DateTimeField(null=True, blank=True)
     
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
     def coversall_due_date(self):
-        if self.covers_all and self.covers_all_month:
-            from django.utils.timezone import now
+        if self.covers_all and self.covers_all_month and self.status == 'completed':
+            
             from dateutil.relativedelta import relativedelta
-            return now() + relativedelta(months=self.covers_all_month)
-        
+            return self.created_at + relativedelta(months=self.covers_all_month)
+    
+    def save(self, *args, **kwargs):
+        from dateutil.relativedelta import relativedelta
+
+        # Only compute due_date if valid (covers_all paid)
+        if self.covers_all and self.covers_all_month and self.status == "completed":
+            # If created_at is not yet available (before first save), save first
+            if not self.pk:
+                super().save(*args, **kwargs)
+            self.due_date = self.created_at + relativedelta(months=self.covers_all_month)
+
+        super().save(*args, **kwargs)
