@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     "adsApp",
     'bookingApp',
     "paymentApp",
+    "supportApp",
     'drf_spectacular',
     'django_cleanup.apps.CleanupConfig'
 ]

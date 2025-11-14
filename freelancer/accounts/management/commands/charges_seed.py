@@ -1,22 +1,9 @@
 from django.core.management.base import BaseCommand
 from adminHandlers.models import Charges
-from paymentApp.models import Payment
-from dateutil.relativedelta import relativedelta
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
-        
-        payments = Payment.objects.filter(
-            covers_all=True,
-            covers_all_month__isnull=False,
-            status='completed'
-        )
 
-        for p in payments:
-            if p.created_at:  # should always be true
-                p.due_date = p.created_at + relativedelta(months=p.covers_all_month)
-                p.save()
-        self.stdout.write(self.style.SUCCESS("Payment due dates updated successfully."))
         charges_obj = [
             {
                 'charge_percent': 2.9,
