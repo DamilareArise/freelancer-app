@@ -10,6 +10,8 @@ router.register(r'user-listings', vw.UserListings, basename='user-listings')
 router.register(r'favorites', vw.FavoriteViewset, basename='favorites')
 router.register(r'favorited-listings', vw.GetFavoritedListings, basename='favorited')
 router.register(r'location-listings', vw.GetSuperAdLocationListings, basename='location-listings')
+router.register(r'superad-listings', vw.SuperadListings, basename='superad-listings')
+
 
 urlpatterns = [
     path('user/', include(router.urls)),

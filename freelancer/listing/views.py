@@ -3,9 +3,9 @@ from rest_framework.permissions import IsAuthenticated
 from .models import Listing, Resource, Favorite
 from rest_framework.decorators import action
 from . import serializers as sz
-from accounts.permissions import IsAdminOrOwner
+from accounts.permissions import IsAdminOrOwner, IsAdminUser
 from accounts.pagination import CustomOffsetPagination
-from django.db.models import Q, OuterRef, Exists, F, ExpressionWrapper, DateTimeField
+from django.db.models import Q, OuterRef, Exists, Prefetch
 import json
 from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from rest_framework.response import Response
@@ -386,3 +386,45 @@ class GetSuperAdLocationListings(viewsets.ViewSet):
                 location_map.setdefault(loc_id, []).append(serialized)
                 
         return Response(location_map, status=status.HTTP_200_OK)
+    
+    
+class SuperadListings(viewsets.ReadOnlyModelViewSet):
+    """
+    Handles listing of super ads.
+    """
+    serializer_class = sz.ListingSerializer
+    permission_classes = [IsAdminUser]
+    pagination_class = CustomOffsetPagination
+    
+    def get_queryset(self):
+        """
+        Filter super ads based on various parameters.
+        """
+        params = self.request.query_params
+        search = params.get("search")
+        payment_status = params.get('payment_status')
+        ad_type = params.get('ad_type')
+        provider_id = params.get('provider')
+        
+        # Initialize queryset
+        queryset = Listing.objects.filter(ads__type = 'super_ads').prefetch_related(
+            Prefetch('ads', queryset=Ad.objects.filter(type='super_ads').prefetch_related('impressions')),
+            'payments'
+        ).order_by('-created_at', '-updated_at')
+        
+        # Initialize filters with an empty Q object
+        filters = Q()
+        if search:
+            filters &= Q(category__name__icontains=search) | \
+                    Q(service__description_en__icontains=search) | \
+                    Q(service__description_hr__icontains=search) | \
+                    Q(service__header__icontains=search)
+        if payment_status:
+            filters &= Q(payments__status__in=payment_status.split(","))
+        if ad_type:
+            filters &= Q(ads__super_ads_category__id__in=ad_type.split(","))
+        if provider_id:
+            filters &= Q(created_by__id=provider_id)
+            
+        # Apply the accumulated filters in one go
+        return queryset.filter(filters).distinct()
