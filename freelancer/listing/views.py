@@ -342,3 +342,47 @@ class UpdateAvailability(APIView):
         listing.save()
 
         return Response({"message": "Availability updated successfully."}, status=status.HTTP_200_OK)
+    
+    
+
+class GetSuperAdLocationListings(viewsets.ViewSet):
+    permission_classes = [IsAuthenticated]
+
+    def list(self, request):
+        ad_locations = request.query_params.get('locations')
+        country = request.query_params.get('country')
+        
+        location_filter = ad_locations.split(',') if ad_locations else None
+        
+        ads = (
+            Ad.objects.filter(
+                status='active',
+                type='super_ads',
+                start_date__lte=now(),
+                end_date__gte=now(),
+                super_ads_category__isnull=False,
+                listing__available = True,
+                listing__status = 'approved',
+                **({"listing__location__country": country} if country else {})
+            )
+            .select_related('listing', 'super_ads_category')
+            .prefetch_related('super_ads_category__locations__app_location')
+        )
+        
+        location_map = {}
+
+        for ad in ads:
+            listing = ad.listing
+            
+            category_locations = ad.super_ads_category.locations.all()
+
+            for loc in category_locations:
+                loc_id = loc.app_location.id
+                
+                if location_filter and loc_id not in location_filter:
+                    continue
+                
+                serialized = sz.ListingSerializer(listing, context={'request': request}).data
+                location_map.setdefault(loc_id, []).append(serialized)
+                
+        return Response(location_map, status=status.HTTP_200_OK)

@@ -1,0 +1,68 @@
+from django.db import models
+
+# Create your models here.
+
+class NotificationTemplate(models.Model):
+    class TriggerType(models.TextChoices):
+        IMMEDIATELY = "immediately", "Immediately"
+        RECURRING = "recurring", "Recurring"
+        CUSTOM = "custom", "Custom"
+
+    class Type(models.TextChoices):
+        EMAIL = "email", "Email"
+        IN_APP = "in_app", "In-App"
+        PUSH = "push", "Push Notification"
+        IN_APP_BANNER = "in_app_banner", "In-App Banner"
+
+    class Recipient(models.TextChoices):
+        USER = "user", "User"
+        PROVIDER = "service_provider", "Service Provider"
+        
+    class RecurringFrequency(models.TextChoices):
+        DAILY = "daily", "Daily"
+        WEEKLY = "weekly", "Weekly"
+        MONTHLY = "monthly", "Monthly"
+        HOURLY = "hourly", "Hourly"
+        INTERVAL_DAYS = "interval_days", "Every X Days"
+        INTERVAL_HOURS = "interval_hours", "Every X Hours"
+
+    types = models.JSONField()  # list: ["email", "push"]
+    recipients = models.JSONField()  # list: ["user", "service_provider"]
+
+    category = models.CharField(max_length=100)
+    header = models.CharField(max_length=255)
+    body = models.TextField() 
+
+    trigger_type = models.CharField(max_length=20, choices=TriggerType.choices)
+    date = models.DateField(null=True, blank=True)
+    time = models.TimeField(null=True, blank=True)
+    
+    recurring_frequency = models.CharField(max_length=20, choices=RecurringFrequency.choices, null=True, blank=True)
+    recurring_interval = models.PositiveIntegerField(null=True, blank=True, help_text="Used when frequency is interval_days or interval_hours")
+    recurring_start = models.DateTimeField(null=True, blank=True)
+    recurring_end = models.DateTimeField(null=True, blank=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return f"{self.category} - {self.header}"
+    
+    
+
+class Notification(models.Model):
+    class Status(models.TextChoices):
+        SENT = "sent", "Sent"
+        FAILED = "failed", "Failed"
+        PENDING = "pending", "Pending"  
+    
+    
+    template = models.ForeignKey(NotificationTemplate, on_delete=models.CASCADE, related_name="logs")
+    recipient_user = models.ForeignKey('accounts.User', on_delete=models.CASCADE, related_name="notifications")
+    sent_at = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(max_length=50, choices=Status.choices)  # e.g., "sent", "failed"
+    read = models.BooleanField(default=False)
+    error_message = models.TextField(null=True, blank=True)
+
+    def __str__(self):
+        return f"Notification to {self.recipient_user.email} at {self.sent_at} - {self.status}"
+    
