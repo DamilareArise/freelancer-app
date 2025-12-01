@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404
-from rest_framework import status, viewsets , mixins
+from rest_framework import status, viewsets , mixins, filters
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from .models import Availability, Booking, Reviews
@@ -36,6 +36,9 @@ class BookingViewSet(viewsets.ModelViewSet):
     queryset = Booking.objects.all()
     serializer_class = BookingSerializer
     permission_classes = [IsAuthenticated]
+    filter_backends = [ filters.OrderingFilter ]
+    ordering_fields = ['created_at', 'status']
+    ordering = ['-created_at']
     
     def get_queryset(self):
         user = self.request.user
@@ -56,7 +59,7 @@ class BookingViewSet(viewsets.ModelViewSet):
                 Q(listing__location__county__icontains=search) 
             )
             
-        return queryset.order_by('-created_at')
+        return queryset
         
     def perform_create(self, serializer):
         serializer.save(requester=self.request.user)
