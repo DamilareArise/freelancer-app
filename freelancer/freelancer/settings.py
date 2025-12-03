@@ -222,7 +222,7 @@ CELERY_BEAT_SCHEDULE = {
         "schedule": crontab(minute='*/30'),  # every 30 minutes
     },
     "dispatch-notifications-every-10-minutes": {
-        "task": "notifications.tasks.run_notification_dispatcher",
+        "task": "notificationApp.tasks.run_notification_dispatcher",
         "schedule": crontab(minute="*/10"),
     },
 }
