@@ -4,6 +4,7 @@ import datetime
 from listing.serializers import ListingMinimalSerializer
 from listing.models import Listing
 from accounts.tasks import send_email
+from notificationApp.models import Notification
 
 
 
@@ -118,6 +119,23 @@ class BookingSerializer(serializers.ModelSerializer):
         
         send_email.delay(context_req, 'booking-made-customer.html')
         send_email.delay(context_lister, 'booking-made-provider.html')
+        
+        # IN-APP NOTIFICATIONS
+        Notification.objects.create(
+            recipient_user=booking.requester,
+            title="Booking Successful",
+            message=f"You successfully booked {booking.listing.title}.",
+            data={"booking_id": booking.id},
+            status=Notification.Status.SENT
+        )
+
+        Notification.objects.create(
+            recipient_user=booking.listing.created_by,
+            title="New Booking",
+            message=f"You received a new booking from {booking.requester.get_full_name}.",
+            data={"booking_id": booking.id},
+            status=Notification.Status.SENT
+        )
         
         return booking
 

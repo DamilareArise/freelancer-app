@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import NotificationTemplate
+from .models import NotificationTemplate, Notification
 
 
 class NotificationTemplateSerializer(serializers.ModelSerializer):
@@ -45,3 +45,26 @@ class NotificationTemplateSerializer(serializers.ModelSerializer):
                 )
                 
         return data
+    
+class NotificationSerializer(serializers.ModelSerializer):
+    template = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Notification
+        fields = [
+            "id",
+            "template",
+            "status",
+            "read",
+            "sent_at",
+            "error_message",
+        ]
+
+    def get_template(self, obj):
+        return {
+            "id": obj.template.id,
+            "category": obj.template.category,
+            "header": obj.template.header,
+            "body": obj.template.body,
+            "types": obj.template.types,
+        }

@@ -220,7 +220,11 @@ CELERY_BEAT_SCHEDULE = {
     "expire-ads-if-needed": {
         "task": "accounts.tasks.expire_ads_if_needed",
         "schedule": crontab(minute='*/30'),  # every 30 minutes
-    }
+    },
+    "dispatch-notifications-every-10-minutes": {
+        "task": "notifications.tasks.run_notification_dispatcher",
+        "schedule": crontab(minute="*/10"),
+    },
 }
 
 TINIFY_API_KEY = config("TINIFY_API_KEY")

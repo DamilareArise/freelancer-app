@@ -42,6 +42,7 @@ class NotificationTemplate(models.Model):
     recurring_start = models.DateTimeField(null=True, blank=True)
     recurring_end = models.DateTimeField(null=True, blank=True)
 
+    last_sent_at = models.DateTimeField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
@@ -56,7 +57,20 @@ class Notification(models.Model):
         PENDING = "pending", "Pending"  
     
     
-    template = models.ForeignKey(NotificationTemplate, on_delete=models.CASCADE, related_name="logs")
+    # TEMPLATE NOTIFICATION (optional)
+    template = models.ForeignKey(
+        NotificationTemplate,
+        on_delete=models.CASCADE,
+        related_name="logs",
+        null=True, 
+        blank=True
+    )
+
+    # EVENT-BASED NOTIFICATION (optional)
+    title = models.CharField(max_length=255, null=True, blank=True)
+    message = models.TextField(null=True, blank=True)
+    data = models.JSONField(null=True, blank=True)
+    
     recipient_user = models.ForeignKey('accounts.User', on_delete=models.CASCADE, related_name="notifications")
     sent_at = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=50, choices=Status.choices)  # e.g., "sent", "failed"

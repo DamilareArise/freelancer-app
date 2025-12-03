@@ -1,4 +1,4 @@
-from rest_framework import viewsets, status
+from rest_framework import viewsets, status, filters
 from rest_framework.permissions import IsAuthenticated
 from .models import Listing, Resource, Favorite
 from rest_framework.decorators import action
@@ -132,10 +132,13 @@ class ListingViewSet(viewsets.ModelViewSet):
 
 # All listings for the user end(mobile app)  
 class UserListings(viewsets.ReadOnlyModelViewSet):
-    queryset = Listing.objects.all().order_by('-created_at','-updated_at')
+    queryset = Listing.objects.all()
     serializer_class = sz.ListingSerializer
     permission_classes = [IsAuthenticated]
     pagination_class = CustomOffsetPagination
+    filter_backends = [ filters.OrderingFilter ]
+    ordering_fields = ['created_at', 'status']
+    ordering = ['-created_at', '-updated_at']
     
     
     def get_queryset(self):

@@ -1,12 +1,40 @@
+from accounts.tasks import send_email
 
 class BaseNotificationSender:
-    def __init__(self, notification):
-        self.notification = notification
+    def __init__(self, notification_obj):
+        self.notification = notification_obj
 
     def send(self):
         raise NotImplementedError("Subclasses must implement send()")
-    
+
 class EmailNotificationSender(BaseNotificationSender):
     def send(self):
-        # Logic to send email notification
+        # TODO: Implement actual email sending logic
+        context = {
+            'user': self.notification.recipient_user.id,
+            'subject': self.notification.template.subject,
+            'body': self.notification.template.body,
+        }
+        send_email.delay(context, file='notification.html')
+
+class PushNotificationSender(BaseNotificationSender):
+    def send(self):
         pass
+
+class InAppNotificationSender(BaseNotificationSender):
+    def send(self):
+        pass
+
+class InAppBannerSender(BaseNotificationSender):
+    def send(self):
+        pass
+
+
+
+SENDER_REGISTRY = {
+    "email": EmailNotificationSender,
+    "push": PushNotificationSender,
+    "in_app": InAppNotificationSender,
+    "in_app_banner": InAppBannerSender,
+}
+
