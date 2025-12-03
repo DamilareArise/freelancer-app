@@ -71,3 +71,6 @@ def dispatch_notifications():
                     notification_log.error_message = str(e)
 
                 notification_log.save()
+                
+        template.last_sent_at = timezone.now()
+        template.save()
