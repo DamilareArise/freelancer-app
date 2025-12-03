@@ -55,6 +55,7 @@ def dispatch_notifications():
                 notification_log = Notification.objects.create(
                     template=template,
                     recipient_user=user,
+                    channel=notif_type,
                     status=Notification.Status.PENDING,
                 )
 

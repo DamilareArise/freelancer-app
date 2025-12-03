@@ -54,13 +54,19 @@ class NotificationSerializer(serializers.ModelSerializer):
         fields = [
             "id",
             "template",
+            "title",
+            "message",
+            "data",
             "status",
             "read",
             "sent_at",
             "error_message",
         ]
-
+        
     def get_template(self, obj):
+        if obj.template is None:
+            return None
+        
         return {
             "id": obj.template.id,
             "category": obj.template.category,

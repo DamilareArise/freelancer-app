@@ -76,6 +76,7 @@ class Notification(models.Model):
     status = models.CharField(max_length=50, choices=Status.choices)  # e.g., "sent", "failed"
     read = models.BooleanField(default=False)
     error_message = models.TextField(null=True, blank=True)
+    channel = models.CharField(max_length=20, default="in_app")  # e.g., "email", "push", "in_app"
 
     def __str__(self):
         return f"Notification to {self.recipient_user.email} at {self.sent_at} - {self.status}"

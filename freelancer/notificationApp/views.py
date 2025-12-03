@@ -34,7 +34,7 @@ class NotificationViewSet(viewsets.ReadOnlyModelViewSet):
     
     def get_queryset(self):
         user = self.request.user
-        return Notification.objects.filter(recipient_user=user, template__types__contains = ["in_app"]).order_by('-sent_at')
+        return Notification.objects.filter(recipient_user=user, channel = 'in_app').order_by('-sent_at')
     
     
     @action(detail=True, methods=["POST"])

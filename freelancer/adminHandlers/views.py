@@ -20,7 +20,7 @@ from adsApp.models import Ad
 from datetime import timedelta
 from adsApp.models import SuperAdsCategory
 from bookingApp.models import Reviews
-
+from notificationApp.models import Notification
 
 
 User = get_user_model()
@@ -133,6 +133,15 @@ class HandleDocumentApproval(APIView):
         }
 
         send_email.delay(context, template)
+        
+        # in-app Notification 
+        Notification.objects.create(
+            recipient_user=user,
+            title="Document Verification Update",
+            message=f"Your document verification has been {action}ed.",
+            data={"status": user.document_status},
+            status=Notification.Status.SENT
+        )
 
         return Response({"message": "Document status updated successfully."}, status=status.HTTP_200_OK)
     
