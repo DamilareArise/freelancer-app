@@ -8,28 +8,38 @@ from .scheduler import should_send_template
 
 def _resolve_recipients(recipient_list):
     """Return queryset of users based on the recipients field."""
-    
-    users = User.objects.none()
 
-    # Fetch customers (normal users)
+    qs = User.objects.filter(is_active=True)
+
+    selected_roles = []
+
     if "user" in recipient_list:
-        customer_qs = User.objects.filter(
-            is_active=True,
+        selected_roles.append("CUSTOMER")
+
+    if "service_provider" in recipient_list:
+        selected_roles.append("SERVICE_PROVIDER")
+
+    # If both roles were selected → return all users that match ANY of them
+    if len(selected_roles) == 2:
+        return qs.filter(user_roles__role__id__in=selected_roles).distinct()
+
+    # If only "user"
+    if selected_roles == ["CUSTOMER"]:
+        return qs.filter(
             user_roles__role__id="CUSTOMER"
         ).exclude(
             user_roles__role__id="SERVICE_PROVIDER"
-        )
-        users = users.union(customer_qs)
+        ).distinct()
 
-    # Fetch service providers
-    if "service_provider" in recipient_list:
-        provider_qs = User.objects.filter(
-            is_active=True,
+    # If only "service_provider"
+    if selected_roles == ["SERVICE_PROVIDER"]:
+        return qs.filter(
             user_roles__role__id="SERVICE_PROVIDER"
-        )
-        users = users.union(provider_qs)
+        ).distinct()
 
-    return users.distinct()
+    # Default fallback: no recipients
+    return User.objects.none()
+
 
 
 def dispatch_notifications():
