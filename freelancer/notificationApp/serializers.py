@@ -47,13 +47,12 @@ class NotificationTemplateSerializer(serializers.ModelSerializer):
         return data
     
 class NotificationSerializer(serializers.ModelSerializer):
-    template = serializers.SerializerMethodField()
-
+    title = serializers.SerializerMethodField()
+    message = serializers.SerializerMethodField()
     class Meta:
         model = Notification
         fields = [
             "id",
-            "template",
             "title",
             "message",
             "data",
@@ -63,14 +62,12 @@ class NotificationSerializer(serializers.ModelSerializer):
             "error_message",
         ]
         
-    def get_template(self, obj):
-        if obj.template is None:
-            return None
-        
-        return {
-            "id": obj.template.id,
-            "category": obj.template.category,
-            "header": obj.template.header,
-            "body": obj.template.body,
-            "types": obj.template.types,
-        }
+    def get_title(self, obj):
+        if obj.template:
+            return obj.template.header
+        return obj.title
+    
+    def get_message(self, obj):
+        if obj.template:
+            return obj.template.body
+        return obj.message
