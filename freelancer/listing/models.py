@@ -35,7 +35,7 @@ class Location(models.Model):
     
 class Service(models.Model):
     header = models.CharField(max_length=255)
-    description_en = models.TextField()
+    description_en = models.TextField(blank=True, null=True)
     description_hr = models.TextField(blank=True, null=True)
 
     def __str__(self):
