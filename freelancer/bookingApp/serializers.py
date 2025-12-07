@@ -124,7 +124,7 @@ class BookingSerializer(serializers.ModelSerializer):
         Notification.objects.create(
             recipient_user=booking.requester,
             title="Booking Successful",
-            message=f"You successfully booked {booking.listing.title}.",
+            message=f"You successfully booked {booking.listing.service.header}.",
             data={"booking_id": booking.id},
             status=Notification.Status.SENT
         )
