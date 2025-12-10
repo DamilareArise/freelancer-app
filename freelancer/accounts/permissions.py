@@ -27,4 +27,4 @@ class IsAdminOrOwner(permissions.BasePermission):
             return True
 
         # Allow if the user is the owner and their document is verified
-        return obj.created_by == request.user and request.user.document_status == 'verified'
+        return obj.created_by == request.user and request.user.document_status == 'verified' and request.user.user_roles.filter(role__id='SERVICE_PROVIDER').exists()
