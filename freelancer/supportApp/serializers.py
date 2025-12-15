@@ -171,7 +171,7 @@ class SupportConversationSerializer(serializers.ModelSerializer):
         validated_data['type'] = 'support'
         validated_data['sender'] = sender
         
-        if ticket.complainant != sender and not request.user.is_staff:
+        if ticket.complainant != sender and not request.user.is_admin:
             raise serializers.ValidationError("You are not the complainant of this ticket.")
         
         if ticket.conversation:
