@@ -128,7 +128,7 @@ class SupportConversationViewSet(viewsets.ModelViewSet):
         user = self.request.user
         role = self.request.query_params.get('role')
         
-        if user.is_staff:
+        if user.is_admin:
             # Admin sees all support tickets
             queryset = Conversation.objects.filter(type='support')
             if role and role == 'user':
