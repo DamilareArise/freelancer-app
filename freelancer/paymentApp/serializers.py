@@ -6,18 +6,46 @@ from .models import Payment
 
 
 class PaymentSerializer(serializers.ModelSerializer):
-    listing = ListingMinimalSerializer()
+    listing = ListingMinimalSerializer(allow_null=True)
     due_date = serializers.SerializerMethodField()
     amount_paid = serializers.DecimalField(max_digits=10, decimal_places=2, read_only=True)
-    
+    payment_type = serializers.SerializerMethodField()
+
     class Meta:
         model = Payment
-        fields = ['id', 'status', 'transaction_id', 'due_date', 'amount_paid', 'listing', 'created_at', 'updated_at']
-        
+        fields = [
+            'id',
+            'payment_type',
+            'status',
+            'transaction_id',
+            'due_date',
+            'amount_paid',
+            'listing',
+            'created_at',
+            'updated_at',
+        ]
+
+    def get_payment_type(self, obj):
+        if obj.covers_all:
+            return 'covers_all'
+        if obj.super_ad:
+            return 'super_ads'
+        return 'regular_ads'
+
     def get_due_date(self, obj):
-        ads = obj.listing.ads.all()
-        latest_ad = ads[0] if ads else None
+     
+        # Covers-all payments
+        if obj.covers_all:
+            return obj.due_date
+
+        # listing may be None
+        if not obj.listing:
+            return None
+
+        # Regular ads
+        latest_ad = obj.listing.ads.order_by('-end_date').first()
         return latest_ad.end_date if latest_ad else None
+
     
     
 class PaymentSerializerForSuperAd(serializers.ModelSerializer):

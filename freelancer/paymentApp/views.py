@@ -21,6 +21,7 @@ from datetime import datetime
 from django.utils.timezone import make_aware, get_current_timezone
 from .serializers import PaymentSerializer, PaymentSerializerForSuperAd
 from rest_framework.permissions import IsAuthenticated
+from django.contrib.auth.decorators import login_required
 
 
 logger = logging.getLogger(__name__)
@@ -69,6 +70,10 @@ def successful_payment(transaction_id=None):
             
             elif payment.covers_all:
                 # Handle covers all category payment
+                payment.due_date = timezone.now() + relativedelta(
+                    months=int(payment.covers_all_month)
+                )
+                payment.save(update_fields=["due_date"])
                 context = {
                     "subject": "Covers all category payment successful",
                     "user": payment.listing.created_by.id,
@@ -101,7 +106,9 @@ def successful_payment(transaction_id=None):
         logger.exception(f"Payment processing failed for transaction {transaction_id}: {e}") 
 
 # Create your views here.
+
 @csrf_exempt
+@login_required
 def create_payment_intent(request):
     if request.method != "POST":
         return JsonResponse({"error": "Invalid request method"}, status=405)
@@ -183,6 +190,7 @@ def create_payment_intent(request):
 
         # ✅ Save Payment
         Payment.objects.create(
+            user = request.user,
             listing=listing,
             price=categoryPricing,
             transaction_id=intent.id,
@@ -297,16 +305,28 @@ class PaymentListView(generics.ListAPIView):
     def get_queryset(self):
         params = self.request.query_params
         ad_type = params.get('ad_type', 'regular_ads')
-        ad_qs = Ad.objects.filter(type=ad_type).order_by('-end_date')
-        
-        queryset = Payment.objects.select_related('listing__service', 'listing__category') \
-            .prefetch_related(Prefetch('listing__ads', queryset=ad_qs)) 
-            
-        # Only show super_ad payments if that's the ad_type selected
-        if ad_type == 'super_ads':
-            queryset = queryset.filter(super_ad__isnull=False)
-        else:
-            queryset = queryset.filter(price__isnull=False)
+        queryset = Payment.objects.select_related(
+            'listing__service',
+            'listing__category'
+        )
+
+        # REGULAR ADS
+        if ad_type == 'regular_ads':
+            ad_qs = Ad.objects.filter(type='regular_ads').order_by('-end_date')
+            queryset = queryset.filter(price__isnull=False).prefetch_related(
+                Prefetch('listing__ads', queryset=ad_qs)
+            )
+
+        # SUPER ADS
+        elif ad_type == 'super_ads':
+            ad_qs = Ad.objects.filter(type='super_ads').order_by('-end_date')
+            queryset = queryset.filter(super_ad__isnull=False).prefetch_related(
+                Prefetch('listing__ads', queryset=ad_qs)
+            )
+
+        # COVERS ALL
+        elif ad_type == 'covers_all':
+            queryset = queryset.filter(covers_all=True)
                 
         # Filter by status if provided
         status = params.get('status')
@@ -352,22 +372,31 @@ class UserPaymentListView(generics.ListAPIView):
         ad_type = self.request.query_params.get('ad_type', 'regular_ads')
         if ad_type == 'super_ads':
             return PaymentSerializerForSuperAd
-        else: 
-            return PaymentSerializer
+        return PaymentSerializer
 
     def get_queryset(self):
         user = self.request.user
         params = self.request.query_params
         ad_type = params.get('ad_type', 'regular_ads')
-        ad_qs = Ad.objects.filter(type=ad_type).order_by('-end_date')
-        
-        queryset = Payment.objects.filter(listing__created_by=user).select_related('listing__service', 'listing__category').prefetch_related(Prefetch('listing__ads', queryset=ad_qs))
-        
-        # Only show super_ad payments if that's the ad_type selected
-        if ad_type == 'super_ads':
-            queryset = queryset.filter(super_ad__isnull=False)
-        else:
-            queryset = queryset.filter(price__isnull=False)
+        queryset = Payment.objects.filter(user=user)
+
+        # REGULAR ADS
+        if ad_type == 'regular_ads':
+            ad_qs = Ad.objects.filter(type='regular_ads').order_by('-end_date')
+            queryset = queryset.filter(price__isnull=False).prefetch_related(
+                Prefetch('listing__ads', queryset=ad_qs)
+            )
+
+        # SUPER ADS
+        elif ad_type == 'super_ads':
+            ad_qs = Ad.objects.filter(type='super_ads').order_by('-end_date')
+            queryset = queryset.filter(super_ad__isnull=False).prefetch_related(
+                Prefetch('listing__ads', queryset=ad_qs)
+            )
+
+        # COVERS ALL
+        elif ad_type == 'covers_all':
+            queryset = queryset.filter(covers_all=True)
             
         # Filter by status if provided
         status = params.get('status')
