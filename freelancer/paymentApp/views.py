@@ -325,7 +325,7 @@ class PaymentListView(generics.ListAPIView):
             )
 
         # COVERS ALL
-        elif ad_type == 'covers_all':
+        elif ad_type == 'covers_all' or ad_type == 'earnings':
             queryset = queryset.filter(covers_all=True)
                 
         # Filter by status if provided
