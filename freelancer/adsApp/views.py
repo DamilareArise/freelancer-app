@@ -1,4 +1,4 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, filters
 from .models import SuperAdsCategory, AppLocation, SuperAdsCategoryLocation, Ad, Impression
 from .serializers import (
     SuperAdsCategorySerializer, 
@@ -30,6 +30,8 @@ class AdViewSet(viewsets.ModelViewSet):
     queryset = Ad.objects.all()
     serializer_class = AdSerializer
     permission_classes = [IsAuthenticated]
+    filter_backends = [filters.SearchFilter, filters.OrderingFilter]
+    search_fields = ['title', 'listing__title', 'type']
 
 class AdImpressionViewSet(viewsets.ModelViewSet):
     queryset = Impression.objects.all()
