@@ -31,7 +31,7 @@ class AdViewSet(viewsets.ModelViewSet):
     serializer_class = AdSerializer
     permission_classes = [IsAuthenticated]
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
-    search_fields = ['title', 'listing__title', 'type']
+    search_fields = ['type']
 
 class AdImpressionViewSet(viewsets.ModelViewSet):
     queryset = Impression.objects.all()
