@@ -113,6 +113,7 @@ class AdSerializer(serializers.ModelSerializer):
         queryset=CategoryPricing.objects.all(),
         write_only = True
     )
+    has_super_ads = serializers.BooleanField(read_only=True)
     
     class Meta:
         model = Ad

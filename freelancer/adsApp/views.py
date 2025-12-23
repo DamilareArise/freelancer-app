@@ -9,6 +9,9 @@ from .serializers import (
 )
 from accounts.permissions import IsAdminUser
 from rest_framework.permissions import IsAuthenticated
+from django.db.models import OuterRef, Exists
+from django.utils.timezone import now
+
 
 
 class SuperAdsCategoryViewSet(viewsets.ModelViewSet):
@@ -32,6 +35,21 @@ class AdViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     search_fields = ['type']
+    
+    def get_queryset(self):
+        active_super_ads = Ad.objects.filter(
+            listing=OuterRef('listing_id'),
+            type='super_ads',
+            status='active',
+            start_date__lte=now(),
+            end_date__gte=now()
+        )
+
+        queryset = Ad.objects.annotate(
+            has_super_ads=Exists(active_super_ads)
+        )
+        
+        return queryset
 
 class AdImpressionViewSet(viewsets.ModelViewSet):
     queryset = Impression.objects.all()
