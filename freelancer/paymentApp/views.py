@@ -21,7 +21,9 @@ from datetime import datetime
 from django.utils.timezone import make_aware, get_current_timezone
 from .serializers import PaymentSerializer, PaymentSerializerForSuperAd
 from rest_framework.permissions import IsAuthenticated
-from django.contrib.auth.decorators import login_required
+from rest_framework.decorators import permission_classes
+from rest_framework.decorators import api_view
+
 
 
 logger = logging.getLogger(__name__)
@@ -108,7 +110,7 @@ def successful_payment(transaction_id=None):
 # Create your views here.
 
 @csrf_exempt
-@login_required
+@permission_classes([IsAuthenticated])
 def create_payment_intent(request):
     if request.method != "POST":
         return JsonResponse({"error": "Invalid request method"}, status=405)
