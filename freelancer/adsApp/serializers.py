@@ -133,6 +133,14 @@ class AdSerializer(serializers.ModelSerializer):
             listing = instance.listing
             listing = ListingMinimalSerializer(listing).data
             representation['listing'] = listing
+            
+        # ✅ Duration calculation (end_date - start_date)
+        if instance.start_date and instance.end_date:
+            duration = instance.end_date - instance.start_date
+            representation['duration_days'] = duration.days
+        else:
+            representation['duration_days'] = None    
+        
         return representation
 
     def create(self, validated_data):
