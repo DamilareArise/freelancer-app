@@ -5,6 +5,7 @@ from datetime import datetime
 from adminHandlers.models import CategoryPricing, Charges
 from dateutil.relativedelta import relativedelta
 from decimal import Decimal
+from listing.serializers import ListingMinimalSerializer
 
 
 class SuperAdsCategorySerializer(serializers.ModelSerializer):
@@ -126,6 +127,11 @@ class AdSerializer(serializers.ModelSerializer):
                 "title": instance.super_ads_category.title,
                 "tier": instance.super_ads_category.tier
             }
+        
+        if instance.listing:
+            listing = instance.listing
+            listing = ListingMinimalSerializer(listing).data
+            representation['listing'] = listing
         return representation
 
     def create(self, validated_data):
