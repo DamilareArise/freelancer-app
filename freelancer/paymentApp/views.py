@@ -407,3 +407,12 @@ class UserPaymentListView(generics.ListAPIView):
             queryset = queryset.filter(status__in=status)
 
         return queryset.order_by('-created_at','-updated_at')
+    
+
+class CoverAllSubscriptionsView(generics.ListAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = PaymentSerializer
+    pagination_class = CustomOffsetPagination
+
+    def get_queryset(self):
+        return Payment.objects.filter(covers_all=True, user=self.request.user)

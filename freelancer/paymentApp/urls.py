@@ -7,4 +7,5 @@ urlpatterns = [
     path("stripe/requery-payment/", vw.requery_payment_intent, name="requery-payment"),
     path("payment-list/", vw.PaymentListView.as_view(), name="payment-list"),
     path("user-payment-list/", vw.UserPaymentListView.as_view(), name="user-payment-list"),
+    path("covers-all/", vw.CoverAllSubscriptionsView.as_view(), name="covers-all"),
 ]
