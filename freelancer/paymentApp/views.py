@@ -23,6 +23,8 @@ from .serializers import PaymentSerializer, PaymentSerializerForSuperAd
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import permission_classes
 from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import status
 
 
 
@@ -109,14 +111,12 @@ def successful_payment(transaction_id=None):
 
 # Create your views here.
 
-@csrf_exempt
+@api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def create_payment_intent(request):
-    if request.method != "POST":
-        return JsonResponse({"error": "Invalid request method"}, status=405)
-
     try:
-        data = json.loads(request.body)
+        data = request.data
+        
         price_id = data.get("price_id")
         listing_id = data.get("listing_id")
         super_ad_id = data.get("super_ad_id")
@@ -135,7 +135,7 @@ def create_payment_intent(request):
             charges = Charges.objects.filter(for_key='regular_ad').first()
 
             if not charges:
-                return JsonResponse({"error": "Charges for regular ad not found"}, status=404)
+                return Response({"error": "Charges for regular ad not found"}, status=status.HTTP_404_NOT_FOUND)
 
             net_amount = categoryPricing.price
             if categoryPricing.discount:
@@ -153,11 +153,11 @@ def create_payment_intent(request):
             super_ad = get_object_or_404(SuperAdsCategory, id=super_ad_id)
 
             if not super_ad_month:
-                return JsonResponse({"error": "super_ad_month is required for super ads"}, status=400)
+                return Response({"error": "super_ad_month is required for super ads"}, status=400)
 
             charges = Charges.objects.filter(for_key='super_ad').first()
             if not charges:
-                return JsonResponse({"error": "Charges for super ads not found"}, status=404)
+                return Response({"error": "Charges for super ads not found"}, status=status.HTTP_404_NOT_FOUND)
 
             charge_percent = charges.charge_percent or Decimal('0.0')
             charge_fixed = charges.charge_fixed or Decimal('0.0')
@@ -170,16 +170,16 @@ def create_payment_intent(request):
         elif covers_all:
             charges = Charges.objects.filter(for_key='all_category').first()
             if not charges:
-                return JsonResponse({"error": "Charges for all category not found"}, status=404)
+                return Response({"error": "Charges for all category not found"}, status=status.HTTP_404_NOT_FOUND)
 
             if not covers_all_month:
-                return JsonResponse({"error": "covers_all_month is required for covers all category"}, status=400)
+                return Response({"error": "covers_all_month is required for covers all category"}, status=status.HTTP_400_BAD_REQUEST)
 
             net_amount = charges.base_amount * Decimal(str(covers_all_month))
             total_amount = charges.total_with_charges(months=int(covers_all_month))
 
         else:
-            return JsonResponse({"error": "Either price_id or super_ad_id is required"}, status=400)
+            return Response({"error": "Either price_id or super_ad_id is required"}, status=status.HTTP_400_BAD_REQUEST)
 
         # ✅ Stripe amount in cents (int)
         stripe_amount = int(total_amount * 100)
@@ -205,10 +205,10 @@ def create_payment_intent(request):
             status="pending",
         )
 
-        return JsonResponse({"client_secret": intent.client_secret})
+        return Response({"client_secret": intent.client_secret})
 
     except Exception as e:
-        return JsonResponse({"error": str(e)}, status=400)
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 @csrf_exempt
