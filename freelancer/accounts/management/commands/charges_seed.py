@@ -21,8 +21,22 @@ class Command(BaseCommand):
                 'base_amount': 80.00,
                 'charge_percent': 2.9,
                 'charge_fixed': 0.30,
-                'for_key': 'all_category',
-                'for_label': 'All Category'
+                'for_key': 'all_category_1year',
+                'for_label': 'All Category - 1 Year'
+            },
+            {
+                'base_amount': 150.00,
+                'charge_percent': 2.9,
+                'charge_fixed': 0.30,
+                'for_key': 'all_category_2year',
+                'for_label': 'All Category - 2 Year'
+            },
+            {
+                'base_amount': 210.00,
+                'charge_percent': 2.9,
+                'charge_fixed': 0.30,
+                'for_key': 'all_category_3year',
+                'for_label': 'All Category - 3 Year'
             },
         ]
         for charge in charges_obj:

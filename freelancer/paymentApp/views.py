@@ -2,7 +2,7 @@ from django.shortcuts import get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse, HttpResponse
 from listing.models import Listing
-from paymentApp.models import Payment
+from paymentApp.models import Payment, CoversAllSubscription
 import json, stripe, logging
 from adminHandlers.models import CategoryPricing, Charges
 from django.conf import settings
@@ -19,12 +19,13 @@ from accounts.pagination import CustomOffsetPagination
 from django.db.models import Prefetch, Q, OuterRef, Subquery 
 from datetime import datetime
 from django.utils.timezone import make_aware, get_current_timezone
-from .serializers import PaymentSerializer, PaymentSerializerForSuperAd
+from .serializers import PaymentSerializer, PaymentSerializerForSuperAd, CoversAllSubscriptionSerializer
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.decorators import permission_classes
-from rest_framework.decorators import api_view
+from rest_framework.decorators import permission_classes, api_view
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.exceptions import NotFound
+
 
 
 
@@ -40,8 +41,6 @@ def successful_payment(transaction_id=None):
     try:
         with transaction.atomic():
             
-            payment.status = "completed"
-            payment.save()
             ad = None
             if payment.super_ad:
                 ad = Ad.objects.create(
@@ -56,7 +55,7 @@ def successful_payment(transaction_id=None):
                 ad_duration = (ad.end_date - ad.start_date).days
                 context = {
                     "subject": "Superad payment successful",
-                    "user": payment.listing.created_by.id,
+                    "user": payment.user.id,
                     "payment":payment.id,
                     "ad": ad.id,
                     "duration": ad_duration
@@ -70,22 +69,46 @@ def successful_payment(transaction_id=None):
                 elif payment.super_ad.tier == 3:
                     template = 'super-ad-tier3-payment.html'
                     
-                send_email.delay(context, template)
+                transaction.on_commit(
+                    lambda: send_email.delay(context, template)
+                )
             
             elif payment.covers_all:
-                # Handle covers all category payment
-                payment.due_date = timezone.now() + relativedelta(
-                    months=int(payment.covers_all_month)
-                )
-                payment.save(update_fields=["due_date"])
+                
+                active_sub = CoversAllSubscription.objects.filter(
+                    user=payment.user,
+                    end_date__gte=timezone.now()
+                ).first()
+                
+                if active_sub:
+                    # Extend existing subscription
+                    active_sub.end_date += relativedelta(months=payment.covers_all_month)
+                    active_sub.save()
+                    end_date = active_sub.end_date
+                    
+                else:
+                    # Create new subscription
+                    start_date = timezone.now()
+                    end_date = start_date + relativedelta(months=payment.covers_all_month)
+
+                    CoversAllSubscription.objects.create(
+                        user=payment.user,
+                        payment=payment,
+                        start_date=start_date,
+                        end_date=end_date,
+                    )
+
+                payment.due_date = end_date
                 context = {
                     "subject": "Covers all category payment successful",
-                    "user": payment.listing.created_by.id,
+                    "user": payment.user.id,
                     "payment":payment.id,
                     "months": payment.covers_all_month
                 }
                 
-                send_email.delay(context, 'covers-all-category-payment.html')
+                transaction.on_commit(
+                    lambda: send_email.delay(context, 'covers-all-category-payment.html')
+                )
         
             else:
                 ad = Ad.objects.create(
@@ -98,13 +121,18 @@ def successful_payment(transaction_id=None):
                 ad_duration = (ad.end_date - ad.start_date).days
                 context = {
                     "subject": "Regular ad payment successful",
-                    "user": payment.listing.created_by.id,
+                    "user": payment.user.id,
                     "payment":payment.id,
                     "ad": ad.id,
                     "duration": ad_duration
                 }
                 
-                send_email.delay(context, 'regular-ad-payment.html')    
+                transaction.on_commit(
+                    lambda: send_email.delay(context, 'regular-ad-payment.html')
+                )   
+                
+            payment.status = "completed"
+            payment.save()
             
     except Exception as e:
         logger.exception(f"Payment processing failed for transaction {transaction_id}: {e}") 
@@ -166,17 +194,39 @@ def create_payment_intent(request):
             price_charges = (net_amount * charge_percent / Decimal('100.0')) + charge_fixed
             total_amount = net_amount + price_charges
             
-        # ✅ COVERS ALL CATEGORY
+        # ✅ COVERS ALL CATEGORY    
         elif covers_all:
-            charges = Charges.objects.filter(for_key='all_category').first()
-            if not charges:
-                return Response({"error": "Charges for all category not found"}, status=status.HTTP_404_NOT_FOUND)
-
             if not covers_all_month:
-                return Response({"error": "covers_all_month is required for covers all category"}, status=status.HTTP_400_BAD_REQUEST)
+                return Response(
+                    {"error": "covers_all_month is required"},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
 
-            net_amount = charges.base_amount * Decimal(str(covers_all_month))
-            total_amount = charges.total_with_charges(months=int(covers_all_month))
+            covers_all_month = int(covers_all_month)
+
+            duration_map = {
+                12: 'all_category_1year',
+                24: 'all_category_2year',
+                36: 'all_category_3year',
+            }
+
+            key = duration_map.get(covers_all_month)
+            if not key:
+                return Response(
+                    {"error": "Invalid covers_all_month. Allowed: 12, 24, 36"},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+
+            charges = Charges.objects.filter(for_key=key).first()
+            if not charges:
+                return Response(
+                    {"error": "Charges for all category not found"},
+                    status=status.HTTP_404_NOT_FOUND
+                )
+
+            net_amount = charges.base_amount
+            total_amount = charges.total_with_charges()
+
 
         else:
             return Response({"error": "Either price_id or super_ad_id is required"}, status=status.HTTP_400_BAD_REQUEST)
@@ -409,10 +459,20 @@ class UserPaymentListView(generics.ListAPIView):
         return queryset.order_by('-created_at','-updated_at')
     
 
-class CoverAllSubscriptionsView(generics.ListAPIView):
+class CoverAllSubscriptionView(generics.RetrieveAPIView):
+    serializer_class = CoversAllSubscriptionSerializer
     permission_classes = [IsAuthenticated]
-    serializer_class = PaymentSerializer
-    pagination_class = CustomOffsetPagination
 
-    def get_queryset(self):
-        return Payment.objects.filter(covers_all=True, user=self.request.user)
+    def get_object(self):
+        subscription = (
+            CoversAllSubscription.objects
+            .filter(user=self.request.user)
+            .order_by('-start_date')
+            .first()
+        )
+
+        if not subscription:
+            raise NotFound("No covers-all subscription found")
+
+        return subscription
+    

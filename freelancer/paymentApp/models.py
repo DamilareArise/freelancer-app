@@ -34,3 +34,18 @@ class Payment(models.Model):
     
     def __str__(self):
         return f"Payment {self.id} - {self.status}"
+    
+    
+class CoversAllSubscription(models.Model):
+    user = models.ForeignKey('accounts.User', on_delete=models.CASCADE, related_name='covers_all_subscriptions')
+    payment = models.OneToOneField(Payment, on_delete=models.CASCADE, related_name='covers_all_subscription')
+    start_date = models.DateTimeField()
+    end_date = models.DateTimeField()
+    
+    def __str__(self):
+        return f"Covers All Subscription {self.id} for User {self.user.id}"
+    
+    def is_active(self):
+        from django.utils import timezone
+        now = timezone.now()
+        return self.start_date <= now <= self.end_date

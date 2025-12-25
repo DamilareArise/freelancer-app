@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from listing.serializers import ListingMinimalSerializer
-from .models import Payment
+from .models import Payment, CoversAllSubscription
+from django.utils import timezone
 
 
 
@@ -81,3 +82,44 @@ class PaymentSerializerForSuperAd(serializers.ModelSerializer):
             }
 
         return None
+    
+
+class CoversAllSubscriptionSerializer(serializers.ModelSerializer):
+    is_active = serializers.SerializerMethodField()
+    remaining_days = serializers.SerializerMethodField()
+    payment = serializers.SerializerMethodField()
+
+    class Meta:
+        model = CoversAllSubscription
+        fields = [
+            "id",
+            "start_date",
+            "end_date",
+            "is_active",
+            "remaining_days",
+            "payment",
+        ]
+
+    def get_is_active(self, obj):
+        now = timezone.now()
+        return obj.start_date <= now <= obj.end_date
+
+    def get_remaining_days(self, obj):
+        now = timezone.now()
+        if obj.end_date < now:
+            return 0
+        return (obj.end_date - now).days
+
+    def get_payment(self, obj):
+        if not obj.payment:
+            return None
+
+        return {
+            "id": obj.payment.id,
+            "net_amount": obj.payment.net_amount,
+            "amount_paid": obj.payment.amount_paid,
+            "status": obj.payment.status,
+            "months": obj.payment.covers_all_month,
+            "transaction_id": obj.payment.transaction_id,
+            "created_at": obj.payment.created_at,
+        }
