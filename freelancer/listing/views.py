@@ -295,7 +295,7 @@ class Summary(APIView):
         approved_count = queryset.filter(status='approved', has_active_ad= True).count()
         pending_count = queryset.filter(status='pending').count()
         rejected_count = queryset.filter(status='rejected').count()
-        expired_count = queryset.filter(status='expired', has_active_ad=False).count()
+        expired_count = queryset.filter(status='approved', has_active_ad=False).count()
         
         
         data = {
