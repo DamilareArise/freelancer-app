@@ -5,7 +5,7 @@ from rest_framework.decorators import action
 from . import serializers as sz
 from accounts.permissions import IsAdminOrOwner, IsAdminUser
 from accounts.pagination import CustomOffsetPagination
-from django.db.models import Q, OuterRef, Exists, Prefetch
+from django.db.models import Q, OuterRef, Exists, Prefetch, ExpressionWrapper, BooleanField
 import json
 from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from rest_framework.response import Response
@@ -145,10 +145,11 @@ class UserListings(viewsets.ReadOnlyModelViewSet):
         params = self.request.query_params
         user = self.request.user
 
+        # Self param
         self_param = params.get('self', 'false').lower() == 'true'
-        status = params.get('status')
+        status_param = params.get('status')
 
-        #  Common annotations 
+        # Annotate listings with active ads
         active_ads = Ad.objects.filter(
             listing=OuterRef('pk'),
             start_date__lte=now(),
@@ -157,48 +158,45 @@ class UserListings(viewsets.ReadOnlyModelViewSet):
         )
 
         queryset = queryset.annotate(
-            has_active_ad=Exists(active_ads)
+            has_active_ad=ExpressionWrapper(Exists(active_ads), output_field=BooleanField())
         )
 
-        #  Base filters
+        # Base filters
         if self_param:
-            filters = Q(created_by=user)
+            queryset = queryset.filter(created_by=user)
 
-            if status in ["pending", "rejected"]:
-                filters &= Q(status=status)
-                
-            elif status == "approved":
-                filters &= Q(status='approved') & Q(has_active_ad=True)
-                
-            elif status == "expired":
-                filters &= Q(status='approved') & Q(has_active_ad=False)
+            if status_param in ["pending", "rejected", "approved"]:
+                queryset = queryset.filter(status=status_param)
+
+            elif status_param == "expired":
+                # Expired = approved listing with no active ads
+                queryset = queryset.filter(status='approved', has_active_ad=False)
 
         else:
-            filters = Q(status='approved', available=True)
+            # Public listings: approved and available
+            queryset = queryset.filter(status='approved', available=True)
 
-        #  Dynamic filters
+        # Dynamic filters
         if params.get('category_ids'):
-            filters &= Q(category__id__in=json.loads(params['category_ids']))
+            queryset = queryset.filter(category__id__in=json.loads(params['category_ids']))
 
         if params.get('subcategory_ids'):
-            filters &= Q(subcategory__id__in=json.loads(params['subcategory_ids']))
+            queryset = queryset.filter(subcategory__id__in=json.loads(params['subcategory_ids']))
 
         if params.get('country'):
-            filters &= Q(location__country=params['country'])
+            queryset = queryset.filter(location__country=params['country'])
 
         if params.get('city'):
-            filters &= Q(location__city=params['city'])
+            queryset = queryset.filter(location__city=params['city'])
 
         if params.get('county'):
-            filters &= Q(location__county=params['county'])
+            queryset = queryset.filter(location__county=params['county'])
 
         if params.get('price_range'):
             price_range = json.loads(params['price_range'])
-            filters &= Q(price__gte=price_range[0], price__lte=price_range[1])
+            queryset = queryset.filter(price__gte=price_range[0], price__lte=price_range[1])
 
-        queryset = queryset.filter(filters)
-
-        #  Public listings visibility (ads OR covers-all)
+        # Public listings visibility (covers-all subscription)
         if not self_param:
             covers_all = CoversAllSubscription.objects.filter(
                 user=OuterRef('created_by'),
@@ -207,7 +205,7 @@ class UserListings(viewsets.ReadOnlyModelViewSet):
             )
 
             queryset = queryset.annotate(
-                covers_all_ad=Exists(covers_all)
+                covers_all_ad=ExpressionWrapper(Exists(covers_all), output_field=BooleanField())
             ).filter(
                 Q(has_active_ad=True) | Q(covers_all_ad=True)
             )
