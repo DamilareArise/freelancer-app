@@ -15,6 +15,7 @@ from .pagination import CustomOffsetPagination
 from django.db.models import Q
 from rest_framework.decorators import action
 from django.utils import timezone
+from paymentApp.models import CoversAllSubscription
 
 
 # Create your views here.
@@ -111,6 +112,14 @@ class LoginView(APIView):
                 userData = sz.UserSerializer(user).data
                 userData['access_token'] = tokens.get('access')
                 userData['refresh_token'] = tokens.get('refresh')
+                
+                # Add subscription info
+                has_covers_all = CoversAllSubscription.objects.filter(
+                    user=user,
+                    end_date__gte=timezone.now()
+                ).exists()
+                userData['has_covers_all'] = has_covers_all
+                
                 return Response(userData, status=status.HTTP_200_OK) 
             return Response({"error": "Invalid credentials"}, status=status.HTTP_400_BAD_REQUEST)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
