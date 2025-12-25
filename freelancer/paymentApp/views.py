@@ -43,15 +43,31 @@ def successful_payment(transaction_id=None):
             
             ad = None
             if payment.super_ad:
-                ad = Ad.objects.create(
-                    listing= payment.listing,
+                active_ad = Ad.objects.filter(
+                    listing=payment.listing,
+                    type='super_ads',
                     super_ads_category=payment.super_ad,
-                    type = 'super_ads',
-                    status = 'active',
-                    start_date=timezone.now(),
-                    end_date=timezone.now() + relativedelta(months=int(payment.super_ad_month))
-                )
-                
+                    status='active',
+                    end_date__gte=timezone.now()
+                ).first()
+
+                if active_ad:
+                    # Extend the existing ad
+                    active_ad.end_date += relativedelta(months=int(payment.super_ad_month))
+                    active_ad.save()
+                    ad = active_ad
+                    
+                else:
+                    # Create a new super ad    
+                    ad = Ad.objects.create(
+                        listing= payment.listing,
+                        super_ads_category=payment.super_ad,
+                        type = 'super_ads',
+                        status = 'active',
+                        start_date=timezone.now(),
+                        end_date=timezone.now() + relativedelta(months=int(payment.super_ad_month))
+                    )
+                    
                 ad_duration = (ad.end_date - ad.start_date).days
                 context = {
                     "subject": "Superad payment successful",
@@ -111,13 +127,29 @@ def successful_payment(transaction_id=None):
                 )
         
             else:
-                ad = Ad.objects.create(
+                active_ad = Ad.objects.filter(
                     listing=payment.listing,
                     type='regular_ads',
-                    start_date=timezone.now(),
-                    end_date=timezone.now() + relativedelta(months=payment.price.duration),
-                    status='active'
-                )
+                    status='active',
+                    end_date__gte=timezone.now()
+                ).first()
+                
+                if active_ad:
+                    # Extend existing ad
+                    active_ad.end_date += relativedelta(months=payment.price.duration)
+                    active_ad.save()
+                    ad = active_ad
+                
+                else:
+                    # Create new regular ad
+                    ad = Ad.objects.create(
+                        listing=payment.listing,
+                        type='regular_ads',
+                        start_date=timezone.now(),
+                        end_date=timezone.now() + relativedelta(months=payment.price.duration),
+                        status='active'
+                    )
+                    
                 ad_duration = (ad.end_date - ad.start_date).days
                 context = {
                     "subject": "Regular ad payment successful",
