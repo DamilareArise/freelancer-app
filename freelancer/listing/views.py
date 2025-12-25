@@ -12,7 +12,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from adsApp.models import Ad
 from django.utils.timezone import now
-from paymentApp.models import Payment
+from paymentApp.models import CoversAllSubscription
 from dateutil.relativedelta import relativedelta
 
 
@@ -188,11 +188,10 @@ class UserListings(viewsets.ReadOnlyModelViewSet):
             
         # Ensure listing has at least one active ad
         if not self_param:
-            covers_all = Payment.objects.filter(
-                due_date__gte=now(),
-                user= OuterRef('created_by'),
-                covers_all=True,
-                status='completed',
+            covers_all = CoversAllSubscription.objects.filter(
+                user=OuterRef('created_by'),
+                start_date__lte=now(),
+                end_date__gte=now(),
             )
             
             active_ads = Ad.objects.filter(
