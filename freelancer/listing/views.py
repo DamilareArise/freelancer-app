@@ -136,89 +136,81 @@ class UserListings(viewsets.ReadOnlyModelViewSet):
     serializer_class = sz.ListingSerializer
     permission_classes = [IsAuthenticated]
     pagination_class = CustomOffsetPagination
-    filter_backends = [ filters.OrderingFilter ]
+    filter_backends = [filters.OrderingFilter]
     ordering_fields = ['created_at', 'status']
     ordering = ['-created_at', '-updated_at']
-    
-    
+
     def get_queryset(self):
-        
         queryset = super().get_queryset()
         params = self.request.query_params
         user = self.request.user
-        category_ids = params.get('category_ids')
-        subcategory_ids = params.get('subcategory_ids')
-        country =  params.get('country')
-        city = params.get('city')
-        county = params.get('county')
-        price_range = params.get('price_range')
+
         self_param = params.get('self', 'false').lower() == 'true'
         status = params.get('status')
-        
-        
-        # Base filter: Show only the current user's listings if self=true
+
+        #  Common annotations 
+        active_ads = Ad.objects.filter(
+            listing=OuterRef('pk'),
+            start_date__lte=now(),
+            end_date__gte=now(),
+            status='active',
+        )
+
+        queryset = queryset.annotate(
+            has_active_ad=Exists(active_ads)
+        )
+
+        #  Base filters
         if self_param:
             filters = Q(created_by=user)
+
             if status in ["pending", "approved", "rejected"]:
                 filters &= Q(status=status)
-        else:
-            filters = Q(status='approved')  & Q(available=True)
 
-        # Add filters dynamically
-        if category_ids:
-            filters &= Q(category__id__in=json.loads(category_ids))
-        
-        if subcategory_ids:
-            filters &= Q(subcategory__id__in=json.loads(subcategory_ids))
-        
-        if country:
-            filters &= Q(location__country=country)
-        
-        if city:
-            filters &= Q(location__city=city)
-        
-        if county:
-            filters &= Q(location__county=county)
-        
-        if price_range:
-            price_range = json.loads(price_range)
+            elif status == "expired":
+                filters &= Q(status='approved') & Q(has_active_ad=False)
+
+        else:
+            filters = Q(status='approved', available=True)
+
+        #  Dynamic filters
+        if params.get('category_ids'):
+            filters &= Q(category__id__in=json.loads(params['category_ids']))
+
+        if params.get('subcategory_ids'):
+            filters &= Q(subcategory__id__in=json.loads(params['subcategory_ids']))
+
+        if params.get('country'):
+            filters &= Q(location__country=params['country'])
+
+        if params.get('city'):
+            filters &= Q(location__city=params['city'])
+
+        if params.get('county'):
+            filters &= Q(location__county=params['county'])
+
+        if params.get('price_range'):
+            price_range = json.loads(params['price_range'])
             filters &= Q(price__gte=price_range[0], price__lte=price_range[1])
-            
+
         queryset = queryset.filter(filters)
-            
-        # Ensure listing has at least one active ad
+
+        #  Public listings visibility (ads OR covers-all)
         if not self_param:
             covers_all = CoversAllSubscription.objects.filter(
                 user=OuterRef('created_by'),
                 start_date__lte=now(),
                 end_date__gte=now(),
             )
-            
-            active_ads = Ad.objects.filter(
-                listing=OuterRef('pk'),
-                start_date__lte=now(),
-                end_date__gte=now(),
-                status='active',
+
+            queryset = queryset.annotate(
+                covers_all_ad=Exists(covers_all)
+            ).filter(
+                Q(has_active_ad=True) | Q(covers_all_ad=True)
             )
-            
-            queryset = queryset.annotate(has_active_ad=Exists(active_ads))
-            queryset = queryset.annotate(covers_all_ad=Exists(covers_all))
-            queryset = queryset.filter(Q(has_active_ad=True) | Q(covers_all_ad=True))
-            
+
         return queryset.distinct()
-            
 
-    def list(self, request, *args, **kwargs):
-        
-        queryset = self.filter_queryset(self.get_queryset())
-        page = self.paginate_queryset(queryset)
-
-        if page is not None:
-            serializer = self.get_serializer(page, many=True)
-            return self.paginator.get_paginated_response(serializer.data)
-
-        serializer = self.get_serializer(queryset, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class ResourceViewSet(viewsets.ModelViewSet):
