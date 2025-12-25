@@ -156,10 +156,18 @@ class UserListings(viewsets.ReadOnlyModelViewSet):
             status='active',
         )
 
+        covers_all = CoversAllSubscription.objects.filter(
+            user=OuterRef('created_by'),
+            start_date__lte=now(),
+            end_date__gte=now(),
+        )
+        
         queryset = queryset.annotate(
-            has_active_ad=Exists(active_ads)
+            has_active_ad=Exists(active_ads),
+            covers_all_ad=Exists(covers_all)
         )
 
+         
         #  Base filters
         if self_param:
             filters = Q(created_by=user)
@@ -168,7 +176,7 @@ class UserListings(viewsets.ReadOnlyModelViewSet):
                 filters &= Q(status=status)
                 
             elif status == "approved":
-                filters &= Q(status='approved') & Q(has_active_ad=True)
+                filters &= Q(status='approved') & Q(has_active_ad=True) | Q(status='approved') & Q(covers_all_ad=True)
                 
             elif status == "expired":
                 filters &= Q(status='approved') & Q(has_active_ad=False)
@@ -200,15 +208,7 @@ class UserListings(viewsets.ReadOnlyModelViewSet):
 
         #  Public listings visibility (ads OR covers-all)
         if not self_param:
-            covers_all = CoversAllSubscription.objects.filter(
-                user=OuterRef('created_by'),
-                start_date__lte=now(),
-                end_date__gte=now(),
-            )
-
-            queryset = queryset.annotate(
-                covers_all_ad=Exists(covers_all)
-            ).filter(
+            queryset = queryset.filter(
                 Q(has_active_ad=True) | Q(covers_all_ad=True)
             )
 
@@ -287,12 +287,18 @@ class Summary(APIView):
             status='active',
         )
         
+        has_covers_all = CoversAllSubscription.objects.filter(
+            user=OuterRef('created_by'),
+            start_date__lte=now(),
+            end_date__gte=now(),
+        )
+        
         queryset =queryset.annotate(
             has_active_ad=Exists(active_ads)
         )
         
         total_count = queryset.count()
-        approved_count = queryset.filter(status='approved', has_active_ad= True).count()
+        approved_count = queryset.filter(status='approved').count() if has_covers_all else queryset.filter(status='approved', has_active_ad= True).count()
         pending_count = queryset.filter(status='pending').count()
         rejected_count = queryset.filter(status='rejected').count()
         expired_count = queryset.filter(status='approved', has_active_ad=False).count()
