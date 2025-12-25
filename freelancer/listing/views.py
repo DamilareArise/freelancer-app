@@ -280,20 +280,23 @@ class Summary(APIView):
     def get(self, request):
         queryset = Listing.objects.all() if request.user.is_admin else Listing.objects.filter(created_by=request.user)
         
+        active_ads = Ad.objects.filter(
+            listing=OuterRef('pk'),
+            start_date__lte=now(),
+            end_date__gte=now(),
+            status='active',
+        )
+        
+        queryset =queryset.annotate(
+            has_active_ad=Exists(active_ads)
+        )
+        
         total_count = queryset.count()
-        approved_count = queryset.filter(status='approved').count()
+        approved_count = queryset.filter(status='approved', has_active_ad= True).count()
         pending_count = queryset.filter(status='pending').count()
         rejected_count = queryset.filter(status='rejected').count()
-        expired_count = queryset.filter(status='expired').count()
+        expired_count = queryset.filter(status='expired', has_active_ad=False).count()
         
-        
-        # queryset2 = Payment.objects.filter(
-        #     listing__in=queryset,
-        #     status='completed',
-        # )
-        # total_revenue = queryset2.aggregate(total=models.Sum('amount_paid'))['total'] or 0
-        # free_listings = queryset2.filter(amount_paid=0).count()
-
         
         data = {
             "total": total_count,
@@ -303,9 +306,7 @@ class Summary(APIView):
             "expired": expired_count,
             # "free_listings": free_listings
         }
-        # if request.user.is_admin:
-        #     data['total_revenue'] = total_revenue
-
+       
         return Response(data, status=status.HTTP_200_OK)
     
 class UpdateAvailability(APIView):
