@@ -164,9 +164,12 @@ class UserListings(viewsets.ReadOnlyModelViewSet):
         if self_param:
             filters = Q(created_by=user)
 
-            if status in ["pending", "approved", "rejected"]:
+            if status in ["pending", "rejected"]:
                 filters &= Q(status=status)
-
+                
+            elif status == "approved":
+                filters &= Q(status='approved') & Q(has_active_ad=True)
+                
             elif status == "expired":
                 filters &= Q(status='approved') & Q(has_active_ad=False)
 
