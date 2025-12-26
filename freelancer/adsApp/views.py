@@ -30,7 +30,6 @@ class SuperAdsCategoryLocationViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
 
 class AdViewSet(viewsets.ModelViewSet):
-    queryset = Ad.objects.all()
     serializer_class = AdSerializer
     permission_classes = [IsAuthenticated]
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
@@ -49,7 +48,7 @@ class AdViewSet(viewsets.ModelViewSet):
             has_super_ads=Exists(active_super_ads)
         )
         
-        return queryset
+        return queryset.filter(listing__created_by=self.request.user)
 
 class AdImpressionViewSet(viewsets.ModelViewSet):
     queryset = Impression.objects.all()
