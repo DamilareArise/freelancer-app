@@ -11,7 +11,7 @@ from rest_framework.decorators import action
 from accounts.tasks import send_email
 from django.utils import timezone
 from rest_framework.exceptions import PermissionDenied, ValidationError
-
+from accounts.permissions import isAuthenticatedOrReadOnly
 
 class AvailableViewSet(viewsets.ModelViewSet):
     queryset = Availability.objects.all()
@@ -227,7 +227,7 @@ class ReviewViewSet(mixins.CreateModelMixin,
         serializer.save(reviewer=self.request.user, booking=booking)
         
 class GetReviews(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [isAuthenticatedOrReadOnly]
     
     def get(self, request, listing_id):
         """
