@@ -1,5 +1,15 @@
 from rest_framework import permissions
 
+
+class isAuthenticatedOrReadOnly(permissions.BasePermission):
+    """
+    Custom permission to only allow authenticated users to edit objects.
+    """
+    def has_permission(self, request, view):
+        if request.method in permissions.SAFE_METHODS:
+            return True
+        return request.user and request.user.is_authenticated
+
 class IsAdminUser(permissions.BasePermission):
     """
     Custom permission to only allow users with an admin role.

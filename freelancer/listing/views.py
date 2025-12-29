@@ -3,7 +3,7 @@ from rest_framework.permissions import IsAuthenticated
 from .models import Listing, Resource, Favorite
 from rest_framework.decorators import action
 from . import serializers as sz
-from accounts.permissions import IsAdminOrOwner, IsAdminUser
+from accounts.permissions import IsAdminOrOwner, IsAdminUser, isAuthenticatedOrReadOnly
 from accounts.pagination import CustomOffsetPagination
 from django.db.models import Q, OuterRef, Exists, Prefetch
 import json
@@ -134,7 +134,7 @@ class ListingViewSet(viewsets.ModelViewSet):
 class UserListings(viewsets.ReadOnlyModelViewSet):
     queryset = Listing.objects.all()
     serializer_class = sz.ListingSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [isAuthenticatedOrReadOnly]
     pagination_class = CustomOffsetPagination
     filter_backends = [filters.OrderingFilter]
     ordering_fields = ['created_at', 'status']
@@ -143,7 +143,7 @@ class UserListings(viewsets.ReadOnlyModelViewSet):
     def get_queryset(self):
         queryset = super().get_queryset()
         params = self.request.query_params
-        user = self.request.user
+        user = self.request.user if self.request.user.is_authenticated else None
 
         self_param = params.get('self', 'false').lower() == 'true'
         status = params.get('status')
@@ -362,7 +362,7 @@ class UpdateAvailability(APIView):
     
 
 class GetSuperAdLocationListings(viewsets.ViewSet):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [isAuthenticatedOrReadOnly]
 
     def list(self, request):
         ad_locations = request.query_params.get('locations')
