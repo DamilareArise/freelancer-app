@@ -4,6 +4,7 @@ from .models import Role, UserRole, Address
 from django.db import transaction
 from rest_framework_simplejwt.tokens import RefreshToken
 from .tasks import send_email
+from .utils import create_default_availability
 
 User = get_user_model()
 
@@ -139,6 +140,11 @@ class DocumentSerializer(serializers.ModelSerializer):
         
         user.document_status = 'submitted'  
         user.save()
+        
+        # Create default availability for SERVICE_PROVIDER role
+        if role.id == 'SERVICE_PROVIDER':
+            create_default_availability(user)
+            
         
         
         UserRole.objects.get_or_create(user=user, role=role)
