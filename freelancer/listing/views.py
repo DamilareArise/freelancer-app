@@ -398,12 +398,14 @@ class GetSuperAdLocationListings(viewsets.ViewSet):
                 if location_filter and loc_id not in location_filter:
                     continue
                 
-                serialized = sz.ListingSerializer(listing, context={'request': request}).data.update({
-                    "superAd": {
-                        'id': ad.id,
+                serialized = sz.ListingSerializer(listing, context={'request': request}).data
+                location_map.setdefault(loc_id, []).append(serialized.update({
+                    "super_ads_category": {
+                        "id": ad.super_ads_category.id,
+                        "title": ad.super_ads_category.title,
+                        "tier": ad.super_ads_category.tier
                     }
-                })
-                location_map.setdefault(loc_id, []).append(serialized)
+                }) or serialized)
                 
         return Response(location_map, status=status.HTTP_200_OK)
     
