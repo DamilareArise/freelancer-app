@@ -400,7 +400,7 @@ class GetSuperAdLocationListings(viewsets.ViewSet):
                 
                 serialized = sz.ListingSerializer(listing, context={'request': request}).data
                 location_map.setdefault(loc_id, []).append(serialized.update({
-                    "superAds": {
+                    "superAd": {
                         "id": ad.id
                     }
                 }) or serialized)
