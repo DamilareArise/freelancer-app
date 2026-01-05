@@ -9,7 +9,7 @@ case "$1" in
     python manage.py migrate --noinput
     python manage.py support_type
     python manage.py role_seed
-    python manage.py faq_seed
+    # python manage.py faq_seed
     python manage.py charges_seed
     python manage.py superad_seed
     exec gunicorn freelancer.wsgi:application --bind 0.0.0.0:8000 --workers 3
