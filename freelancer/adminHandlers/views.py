@@ -277,3 +277,4 @@ class GetReviews(viewsets.ReadOnlyModelViewSet):
     serializer_class = sz.AdminReviewSerializer
     queryset = Reviews.objects.all().order_by('-created_at')
     
+
