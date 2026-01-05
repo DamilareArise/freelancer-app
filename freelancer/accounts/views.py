@@ -282,6 +282,9 @@ class GetAllUser(APIView):
         # Filter base queryset
         users = User.objects.all()
         search = request.query_params.get('search', None)
+        status = request.query_params.get('status', None)
+        doc_status = request.query_params.get('doc_status', None)
+        
         
         if type == 'admin':
             users = users.filter(user_roles__role__is_admin=True).distinct()
@@ -296,6 +299,13 @@ class GetAllUser(APIView):
                 Q(last_name__icontains=search)
             ).distinct()
 
+        if status and status in ['active', 'inactive', 'suspended']:
+            users = users.filter(status=status)
+            
+        if doc_status and doc_status in ['pending', 'verified', 'rejected', 'submitted']:
+            users = users.filter(document_status=doc_status)
+            
+            
         users = users.prefetch_related('user_roles', 'user_roles__role').order_by('-created_at')
 
         paginator = CustomOffsetPagination()
