@@ -100,7 +100,7 @@ class GetCategories(viewsets.ReadOnlyModelViewSet):
     permission_classes = [AllowAny]
     authentication_classes = []
     serializer_class = sz.ServiceCategoryUnifiedSerializer
-    queryset = ServiceCategory.objects.order_by('-created_at')
+    queryset = ServiceCategory.objects.all()
     
 class HandleDocumentApproval(APIView):
     permission_classes = [IsAdminUser]
