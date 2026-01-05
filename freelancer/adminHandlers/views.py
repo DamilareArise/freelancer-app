@@ -44,7 +44,7 @@ class ChargesViewSet(viewsets.ModelViewSet):
     
 class CategoryViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
-    queryset = ServiceCategory.objects.order_by('-created_at')
+    queryset = ServiceCategory.objects.all()
     serializer_class = sz.ServiceCategoryUnifiedSerializer
     
     
