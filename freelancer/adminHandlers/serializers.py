@@ -55,7 +55,9 @@ class AdminSerializer(serializers.ModelSerializer):
                     'link': f'https://admin.book-freelancer.com/reset-password-otp/?email={user.email}',
                     'roles': list(roles.values_list('label', flat=True)),
                 }
-                send_email.delay(context, file='admin_onboarding.html')
+                transaction.on_commit(lambda:
+                    send_email.delay(context, file='admin_onboarding.html')
+                )
 
             return user 
 
