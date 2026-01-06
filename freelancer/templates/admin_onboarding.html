@@ -1,0 +1,143 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Welcome to Book-Freelancer Admin</title>
+</head>
+
+<body style="margin:0; padding:0; font-family:Arial, sans-serif; color:#333333; background-color:#ffffff;">
+  <table border="0" cellpadding="0" cellspacing="0" width="100%" 
+         style="max-width:600px; margin:0 auto;">
+
+    <!-- Logo -->
+    <tr>
+      <td style="padding:40px 30px 20px 30px;">
+        {% include "logo.html" %}
+      </td>
+    </tr>
+
+    <!-- Greeting -->
+    <tr>
+      <td style="padding:0 30px 20px 30px; font-size:16px; line-height:1.5;">
+        <p style="margin-top:0;">Hi {{ user.first_name }},</p>
+        <p>
+          Welcome to <strong>Book-Freelancer</strong>! 🎉  
+          You’ve been added as an <strong>Administrator</strong> on the Book-Freelancer platform.
+        </p>
+      </td>
+    </tr>
+
+    <!-- Admin Roles -->
+    <tr>
+      <td style="padding:0 30px 20px 30px; font-size:16px; line-height:1.5;">
+        <p style="margin-bottom:10px;">
+          <span style="color:#1D4ED8; font-weight:bold;">◆</span> Your Admin Access Details:
+        </p>
+
+        <table width="100%" cellpadding="0" cellspacing="0"
+               style="background-color:#F9FAFB; border-radius:8px;">
+          <tr>
+            <td style="padding:15px 20px;">
+              <p style="margin:0 0 10px 0;">
+                <strong>Email:</strong> {{ user.email }}
+              </p>
+
+              <p style="margin:0 0 10px 0;"><strong>Admin Roles:</strong></p>
+
+              <ul style="margin:0; padding-left:20px;">
+                {% for role in roles %}
+                  <li style="margin-bottom:8px;">
+                    <strong>{{ role.label }}</strong> — {{ role.description }}
+                  </li>
+                {% endfor %}
+              </ul>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+
+    <!-- Password Setup -->
+    <tr>
+      <td style="padding:0 30px 20px 30px; font-size:16px; line-height:1.5;">
+        <p>To get started, please set your admin password:</p>
+      </td>
+    </tr>
+
+    <tr>
+      <td style="padding:0 30px 30px 30px;">
+        <table width="100%" cellpadding="0" cellspacing="0">
+          <tr>
+            <td align="center" bgcolor="#1D4ED8" style="border-radius:8px;">
+              <a href="{{ link }}" target="_blank"
+                 style="display:inline-block; padding:16px 36px;
+                        font-size:18px; color:#ffffff;
+                        text-decoration:none; border-radius:8px;
+                        font-weight:600;">
+                Set Password
+              </a>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+
+    <!-- What's Next -->
+    <tr>
+      <td style="padding:0 30px 30px 30px; font-size:16px; line-height:1.5;">
+        <table width="100%" cellpadding="0" cellspacing="0"
+               style="background-color:#EFF6FF; border-radius:8px;
+                      border-left:4px solid #1D4ED8;">
+          <tr>
+            <td style="padding:15px;">
+              <p style="margin:0 0 10px 0; color:#1E3A8A;">
+                <strong>What’s Next?</strong>
+              </p>
+
+              <ol style="margin:0; padding-left:20px; color:#1E3A8A;">
+                <li>Set your password using the button above</li>
+                <li>
+                  Log in to the admin dashboard at
+                  <a href="https://admin.book-freelancer.com"
+                     style="color:#1D4ED8;">
+                    admin.book-freelancer.com
+                  </a>
+                </li>
+                <li>Complete your admin profile</li>
+                <li>Review admin guidelines and platform policies</li>
+              </ol>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+
+    <!-- Footer -->
+    <tr>
+      <td style="padding:0 30px 20px 30px; font-size:16px; line-height:1.5;">
+        <p>
+          This password setup link will expire in <strong>48 hours</strong>
+          for security reasons.
+        </p>
+
+        <p>
+          Need help? Contact
+          <a href="mailto:support@book-freelancer.com"
+             style="color:#1D4ED8; text-decoration:none;">
+            support@book-freelancer.com
+          </a>
+          or visit the admin help center.
+        </p>
+
+        <p style="margin-bottom:0;">
+          — The Book-Freelancer Team
+        </p>
+      </td>
+    </tr>
+
+  </table>
+</body>
+</html>
