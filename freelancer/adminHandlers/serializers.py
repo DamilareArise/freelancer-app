@@ -52,6 +52,7 @@ class AdminSerializer(serializers.ModelSerializer):
                 context = {
                     'subject': subject,
                     'user': user.id,
+                    'email': user.email,
                     'link': f'https://admin.book-freelancer.com/reset-password-otp/?email={user.email}',
                     'roles': list(roles.values_list('label', flat=True)),
                 }

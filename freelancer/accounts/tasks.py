@@ -18,6 +18,7 @@ logger = logging.getLogger(__name__)
 @shared_task
 def send_email(context, file=None):
     user_id = context.get('user')
+    email = context.get('email')
     context['user'] = User.objects.filter(id=user_id).first() if user_id else None
     
     if context.get('booking'):
@@ -44,7 +45,7 @@ def send_email(context, file=None):
             subject=context['subject'],
             body=plain_message,
             from_email=settings.DEFAULT_FROM_EMAIL,
-            to=[context['user'].email],
+            to=[email if email else context['user'].email],
         )
 
         d_email.attach_alternative(html_message, 'text/html')
