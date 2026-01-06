@@ -37,6 +37,16 @@ def send_email(context, file=None):
         from adsApp.models import Ad
         context['ad'] = Ad.objects.filter(id=context['ad']).first()
     
+    
+    recipient_email = email or (
+        context['user'].email if context.get('user') else None
+    )
+
+    if not recipient_email:
+        logger.error("Email not sent: recipient email missing")
+        return
+
+    
     try:
         html_message = render_to_string(file, context=context)
         plain_message = strip_tags(html_message)
@@ -45,7 +55,7 @@ def send_email(context, file=None):
             subject=context['subject'],
             body=plain_message,
             from_email=settings.DEFAULT_FROM_EMAIL,
-            to=[email if email else context['user'].email],
+            to=[recipient_email],
         )
 
         d_email.attach_alternative(html_message, 'text/html')
