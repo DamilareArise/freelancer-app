@@ -88,7 +88,7 @@ class VerifyOtp(APIView):
             Notification.objects.create(
                 recipient_user=user,
                 title="Welcome to Freelancer",
-                message="Your account has been successfully verified. Start exploring our services!",
+                message="Your account has been successfully created. Start exploring our services!",
                 status=Notification.Status.SENT
             )
             
