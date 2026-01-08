@@ -16,6 +16,7 @@ from django.db.models import Q
 from rest_framework.decorators import action
 from django.utils import timezone
 from paymentApp.models import CoversAllSubscription
+from notificationApp.models import Notification
 
 
 # Create your views here.
@@ -82,6 +83,14 @@ class VerifyOtp(APIView):
                     'user': user.id,
                 }
             send_email.delay(context, file='onboarding.html')
+            
+            # Get in-app notification
+            Notification.objects.create(
+                recipient_user=user,
+                title="Welcome to Freelancer",
+                message="Your account has been successfully verified. Start exploring our services!",
+                status=Notification.Status.SENT
+            )
             
             return Response({'message':'OTP verified successfully'}, status=status.HTTP_200_OK)
 
