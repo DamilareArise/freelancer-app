@@ -115,7 +115,7 @@ class SupportTypeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = SupportType
-        fields = ['id', 'name', 'description', 'name_en', 'name_hr', 'description_en', 'description_hr']
+        fields = "__all__"
 
 class TicketSerializer(serializers.ModelSerializer):
     support_type = serializers.PrimaryKeyRelatedField(queryset=SupportType.objects.all())

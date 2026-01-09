@@ -18,6 +18,27 @@ class Command(BaseCommand):
                 'for_label': 'Regular Ad'
             },
             {
+                'base_amount': 12,
+                'charge_percent': 2.9,
+                'charge_fixed': 0.30,
+                'for_key': 'all_category_1month',
+                'for_label': 'All Category - 1 Month'
+            },
+            {
+                'base_amount': 36,
+                'charge_percent': 2.9,
+                'charge_fixed': 0.30,
+                'for_key': 'all_category_3month',
+                'for_label': 'All Category - 3 Months'
+            },
+            {
+                'base_amount': 60,
+                'charge_percent': 2.9,
+                'charge_fixed': 0.30,
+                'for_key': 'all_category_6month',
+                'for_label': 'All Category - 6 Months'
+            },
+            {
                 'base_amount': 80.00,
                 'charge_percent': 2.9,
                 'charge_fixed': 0.30,

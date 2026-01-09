@@ -237,6 +237,9 @@ def create_payment_intent(request):
             covers_all_month = int(covers_all_month)
 
             duration_map = {
+                1: 'all_category_1month',
+                3: 'all_category_3month',
+                6: 'all_category_6month',
                 12: 'all_category_1year',
                 24: 'all_category_2year',
                 36: 'all_category_3year',
@@ -245,7 +248,7 @@ def create_payment_intent(request):
             key = duration_map.get(covers_all_month)
             if not key:
                 return Response(
-                    {"error": "Invalid covers_all_month. Allowed: 12, 24, 36"},
+                    {"error": "Invalid covers_all_month. Allowed: 1, 3, 6, 12, 24, 36"},
                     status=status.HTTP_400_BAD_REQUEST
                 )
 
