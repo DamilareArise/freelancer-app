@@ -130,8 +130,8 @@ class TicketSerializer(serializers.ModelSerializer):
         }
         data['support_type'] = {
             'id': instance.support_type.id,
-            'name': instance.support_type.name,
-            'description': instance.support_type.description
+            'name': instance.support_type.name_en or instance.support_type.name_hr,
+            'description': instance.support_type.description_en or instance.support_type.description_hr,
         }
         return data
     
