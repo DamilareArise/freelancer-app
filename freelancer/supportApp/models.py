@@ -34,13 +34,15 @@ class Chat(models.Model):
 
 
 class SupportType(models.Model):
-    name = models.CharField(max_length=100, unique=True)
-    description = models.TextField()
+    name_hr = models.CharField(max_length=100, unique=True, null=True, blank=True)
+    name_en = models.CharField(max_length=100, unique=True, null=True, blank=True)
+    description_en = models.TextField(null=True, blank=True)
+    description_hr = models.TextField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.name
+        return self.name_en if self.name_en else self.name_hr
 
 class SupportTicket(models.Model):
     status_choices = (

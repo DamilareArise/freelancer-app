@@ -100,9 +100,22 @@ class SupportChatSerializer(ChatSerializer):
         return data
 
 class SupportTypeSerializer(serializers.ModelSerializer):
+    
+    def to_representation(self, instance):
+        request = self.context.get('request')
+        lang = request.headers.get("Accept-Language", "en") if request else "en"
+        data = super().to_representation(instance)
+        if lang == "hr":
+            data['name'] = instance.name_hr
+            data['description'] = instance.description_hr
+        else:
+            data['name'] = instance.name_en
+            data['description'] = instance.description_en
+        return data
+
     class Meta:
         model = SupportType
-        fields = ['id', 'name', 'description']
+        fields = ['id', 'name', 'description', 'name_en', 'name_hr', 'description_en', 'description_hr']
 
 class TicketSerializer(serializers.ModelSerializer):
     support_type = serializers.PrimaryKeyRelatedField(queryset=SupportType.objects.all())
