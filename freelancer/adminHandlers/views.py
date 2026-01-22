@@ -27,6 +27,7 @@ User = get_user_model()
 
 # Create your views here.
 
+
 class AdminViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAdminUser]
     queryset = User.objects.all()
