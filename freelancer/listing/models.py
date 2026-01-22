@@ -56,7 +56,7 @@ class Listing(models.Model):
     )
     
     
-    category = models.ForeignKey(ServiceCategory, on_delete=models.RESTRICT, related_name='listings')
+    category = models.ForeignKey(ServiceCategory, on_delete=models.CASCADE, related_name='listings')
     subcategory = models.ForeignKey(SubCategory, on_delete=models.SET_NULL, null=True, blank=True)
     user_type = models.CharField(max_length=50, choices=USER_TYPE_CHOICES, default='private')
     location = models.OneToOneField(Location, on_delete=models.CASCADE)
@@ -76,7 +76,7 @@ class Listing(models.Model):
     
 class ListingFeatures(models.Model):
     listing = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name='features')
-    feature_field = models.ForeignKey(CategoryFeaturesField, on_delete=models.RESTRICT, null=True, blank=True)
+    feature_field = models.ForeignKey(CategoryFeaturesField, on_delete=models.CASCADE, null=True, blank=True)
     value = models.JSONField()
     
     def __str__(self):
