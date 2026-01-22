@@ -62,18 +62,9 @@ class CategoryViewSet(viewsets.ModelViewSet):
         serializer.save(updated_by=self.request.user)
     
     def destroy(self, request, *args, **kwargs):
-        """Handle delete exceptions"""
         instance = self.get_object()
-        try:
-            self.perform_destroy(instance)
-            return Response({"message": "Category deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
-        except RestrictedError as e:
-            return Response(
-                {"error": "This category has related listings and cannot be deleted."},
-                status=status.HTTP_400_BAD_REQUEST
-            ) 
-        except Exception as e:
-            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        self.perform_destroy(instance)
+        return Response({"message": "Category deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
         
 class ServiceCategoryCreateView(APIView):
     permission_classes = [IsAdminUser]
