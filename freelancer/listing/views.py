@@ -207,10 +207,10 @@ class UserListings(viewsets.ReadOnlyModelViewSet):
         queryset = queryset.filter(filters)
 
         #  Public listings visibility (ads OR covers-all)
-        if not self_param:
-            queryset = queryset.filter(
-                Q(has_active_ad=True) | Q(has_covers_all=True)
-            )
+        # if not self_param:
+        #     queryset = queryset.filter(
+        #         Q(has_active_ad=True) | Q(has_covers_all=True)
+        #     )
 
         return queryset.distinct()
 

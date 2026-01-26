@@ -1,9 +1,10 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ad Payment Confirmation</title>
+  <title>Potvrda Plaćanja Oglasa</title>
 </head>
 <body style="margin: 0; padding: 0; font-family: Arial, sans-serif; color: #333333; background-color: #ffffff;">
   <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px; margin: 0 auto;">
@@ -13,8 +14,8 @@
 
     <tr>
       <td style="padding: 0 30px 20px 30px; font-size: 16px; line-height: 1.5;">
-        <p style="margin-top: 0;">Hi {{ user.first_name }},</p>
-        <p>Thank you for purchasing a promotional ad for your service <strong>{{ payment.listing.service.header }}</strong>! Your payment has been successfully processed. 🎉</p>
+        <p style="margin-top: 0;">Pozdrav {{ user.first_name }},</p>
+        <p>Hvala što ste kupili promotivni oglas za svoju uslugu <strong>{{ payment.listing.service.header }}</strong>! Vaša uplata je uspješno obrađena.</p>
       </td>
     </tr>
 
@@ -24,20 +25,20 @@
         <table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #F9FAFB; border-radius: 8px;">
           <tr>
             <td style="padding: 20px;">
-              <p style="margin: 0 0 15px 0;"><strong>Payment Details:</strong></p>
+              <p style="margin: 0 0 15px 0;"><strong>Detalji Plaćanja:</strong></p>
               <table border="0" cellpadding="0" cellspacing="0" width="100%">
                 <tr>
-                  <td width="140" style="color: #6B7280;">Transaction ID:</td>
+                  <td width="140" style="color: #6B7280;">ID Transakcije:</td>
                   <td>{{ payment.transaction_id }}</td>
                 </tr>
                 <tr><td height="10"></td></tr>
                 <tr>
-                  <td width="140" style="color: #6B7280;">Date:</td>
+                  <td width="140" style="color: #6B7280;">Datum:</td>
                   <td>{{ payment.created_at }}</td>
                 </tr>
                 <tr><td height="10"></td></tr>
                 <tr>
-                  <td width="140" style="color: #6B7280;">Amount:</td>
+                  <td width="140" style="color: #6B7280;">Iznos:</td>
                   <td>&euro;{{ payment.amount_paid }}</td>
                 </tr>
               </table>
@@ -53,31 +54,31 @@
         <table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #E3F2FD; border-radius: 8px; border: 1px solid #BBDEFB;">
           <tr>
             <td style="padding: 20px;">
-              <p style="margin: 0 0 15px 0;"><strong>Promotion Details:</strong></p>
+              <p style="margin: 0 0 15px 0;"><strong>Detalji Promocije:</strong></p>
               <table border="0" cellpadding="0" cellspacing="0" width="100%">
                 <tr>
-                  <td width="140" style="color: #6B7280;">Ad Type:</td>
-                  <td><strong>{{ ad.type|default:"Standard Boost" }}</strong></td>
+                  <td width="140" style="color: #6B7280;">Vrsta Oglasa:</td>
+                  <td><strong>{{ ad.type|default:"Standardno Povećanje" }}</strong></td>
                 </tr>
                 <tr><td height="10"></td></tr>
                 <tr>
-                  <td width="140" style="color: #6B7280;">Service:</td>
+                  <td width="140" style="color: #6B7280;">Usluga:</td>
                   <td>{{ ad.service.title }}</td>
                 </tr>
                 <tr><td height="10"></td></tr>
                 <tr>
-                  <td width="140" style="color: #6B7280;">Start Date:</td>
+                  <td width="140" style="color: #6B7280;">Datum Početka:</td>
                   <td>{{ ad.start_date }}</td>
                 </tr>
                 <tr><td height="10"></td></tr>
                 <tr>
-                  <td width="140" style="color: #6B7280;">End Date:</td>
+                  <td width="140" style="color: #6B7280;">Datum Završetka:</td>
                   <td><strong>{{ ad.end_date }}</strong></td>
                 </tr>
                 <tr><td height="10"></td></tr>
                 <tr>
-                  <td width="140" style="color: #6B7280;">Duration:</td>
-                  <td>{{ duration }} days</td>
+                  <td width="140" style="color: #6B7280;">Trajanje:</td>
+                  <td>{{ duration }} dana</td>
                 </tr>
               </table>
             </td>
@@ -89,52 +90,7 @@
     <!-- Ad Benefits -->
     <tr>
       <td style="padding: 0 30px 30px 30px; font-size: 16px; line-height: 1.5; background-color: #F0F7FF; border-radius: 8px; margin: 0 30px;">
-        <p style="margin-top: 15px;"><span style="color: #1E88E5;">✓</span> <strong>Your Ad Benefits:</strong></p>
+        <p style="margin-top: 15px;"><strong>Prednosti Vašeg Oglasa:</strong></p>
         <ul style="margin: 0 0 15px 0; padding: 0 0 0 20px;">
-          <li style="margin-bottom: 8px;">Increased visibility in search results</li>
-          <li style="margin-bottom: 8px;">Featured placement in the “Top Services” section</li>
-          <li style="margin-bottom: 8px;">Priority ranking when clients search related keywords</li>
-          <li style="margin-bottom: 0;">Access to ad performance insights</li>
-        </ul>
-      </td>
-    </tr>
-
-    <!-- Call to Action -->
-    <tr>
-      <td style="padding: 20px 30px 10px 30px; font-size: 16px; line-height: 1.5;">
-        <p>View your ad performance or manage your service listing:</p>
-      </td>
-    </tr>
-
-    <tr>
-      <td style="padding: 0 30px 30px 30px;">
-        <table border="0" cellpadding="0" cellspacing="0" width="100%">
-          <tr>
-            <td align="center" bgcolor="#1E88E5" style="border-radius: 8px;">
-              <a href="https://example.com/my-services" target="_blank" style="display: inline-block; padding: 16px 36px; font-size: 18px; color: #ffffff; text-decoration: none; border-radius: 8px; font-weight: semibold;">View My Service</a>
-            </td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-
-    <!-- Reminder Section -->
-    <tr>
-      <td style="padding: 0 30px 30px 30px; font-size: 16px; line-height: 1.5; background-color: #FFF8E1; border-radius: 8px; border-left: 4px solid #FBC02D;">
-        <p style="margin-top: 15px;"><span style="color: #F9A825;">⏰</span> <strong>Important Reminder:</strong></p>
-        <p>Your promotional ad will expire on <strong>{{ ad.end_date }}</strong>. We’ll send a reminder email 5 days before expiration so you can renew easily.</p>
-        <p style="margin-bottom: 15px;">To ensure uninterrupted visibility, enable auto-renew in your ad settings.</p>
-      </td>
-    </tr>
-
-    <!-- Footer -->
-    <tr>
-      <td style="padding: 0 30px 20px 30px; font-size: 16px; line-height: 1.5;">
-        <p>Want even more exposure? <a href="https://example.com/upgrade-ad" style="color: #1E88E5; text-decoration: none;">Upgrade to a Premium Ad</a> and reach more clients today! 🚀</p>
-        <p>If you have any questions about your promotion, please <a href="mailto:support@book-freelancer.com" style="color: #1E88E5; text-decoration: none;">contact our support team</a>.</p>
-        <p style="margin-bottom: 0;">— The Freelancer Team</p>
-      </td>
-    </tr>
-  </table>
-</body>
-</html>
+          <li style="margin-bottom: 8px;">Povećana vidljivost u rezultatima pretraživanja</li>
+          <li style="margin-bottom: 8px;">Istaknuto mjesto u odjeljku „Top Usluge”</li>

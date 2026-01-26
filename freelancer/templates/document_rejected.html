@@ -3,7 +3,7 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>{{role}} Verification Not Approved - Freelancer</title>
+  <title>{{role}} Verifikacija nije odobrena – Freelancer</title>
 </head>
 <body style="margin: 0; padding: 0; font-family: Arial, sans-serif; color: #333333; background-color: #ffffff;">
   <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px; margin: 0 auto;">
@@ -13,9 +13,12 @@
     <!-- Greeting -->
     <tr>
       <td style="padding: 0 30px 20px 30px; font-size: 16px; line-height: 1.5;">
-        <p style="margin-top: 0;">Hi {{user.first_name}},</p>
-        <p>Thank you for your interest in becoming a {{role}} on <strong>Freelancer</strong>.  
-        We've reviewed your submitted documents, and unfortunately, we’re unable to approve your account at this time.</p>
+        <p style="margin-top: 0;">Poštovani/Poštovana {{user.first_name}},</p>
+        <p>
+          Zahvaljujemo vam na interesu za registraciju kao {{role}} na
+          <strong>Freelancer</strong> platformi.
+          Pregledali smo dostavljenu dokumentaciju, ali vas nažalost u ovom trenutku ne možemo odobriti.
+        </p>
       </td>
     </tr>
 
@@ -25,21 +28,21 @@
         <table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #F9FAFB; border-radius: 8px;">
           <tr>
             <td style="padding: 20px;">
-              <p style="margin: 0 0 15px 0;"><strong>Your Account Details:</strong></p>
+              <p style="margin: 0 0 15px 0;"><strong>Podaci o vašem računu:</strong></p>
               <table border="0" cellpadding="0" cellspacing="0" width="100%">
                 <tr>
-                  <td width="120" style="color: #6B7280;">Email:</td>
+                  <td width="140" style="color: #6B7280;">E-mail adresa:</td>
                   <td>{{user.email}}</td>
                 </tr>
                 <tr><td height="10"></td></tr>
                 <tr>
-                  <td width="120" style="color: #6B7280;">Account Type:</td>
+                  <td width="140" style="color: #6B7280;">Vrsta računa:</td>
                   <td>{{role}}</td>
                 </tr>
                 <tr><td height="10"></td></tr>
                 <tr>
-                  <td width="120" style="color: #6B7280;">Status:</td>
-                  <td><span style="color: #EF4444; font-weight: bold;">Not Approved</span></td>
+                  <td width="140" style="color: #6B7280;">Status:</td>
+                  <td><span style="color: #EF4444; font-weight: bold;">Nije odobren</span></td>
                 </tr>
               </table>
             </td>
@@ -51,8 +54,8 @@
     <!-- Verification Issues -->
     <tr>
       <td style="padding: 0 30px 30px 30px; font-size: 16px; line-height: 1.5; background-color: #FEF2F2; border-radius: 8px; margin: 0 30px;">
-        <p style="margin-top: 15px;"><span style="color: #EF4444;">⚠️</span> <strong>Verification Issues</strong></p>
-        <p>We were unable to verify your {{role}} account due to the following reason(s):</p>
+        <p style="margin-top: 15px; color: #EF4444;"><strong>Problemi s verifikacijom</strong></p>
+        <p>Vaš {{role}} račun nije moguće verificirati iz sljedećeg razloga (razloga):</p>
         <ul style="margin: 10px 0 15px 20px; padding: 0;">
           <li style="margin-bottom: 8px;">{{message}}</li>
         </ul>
@@ -62,7 +65,7 @@
     <!-- Call to Action -->
     <tr>
       <td style="padding: 20px 30px 10px 30px; font-size: 16px; line-height: 1.5;">
-        <p>You can resubmit your verification documents by clicking the button below:</p>
+        <p>Dokumentaciju za verifikaciju možete ponovno poslati klikom na gumb ispod:</p>
       </td>
     </tr>
     <tr>
@@ -70,7 +73,10 @@
         <table border="0" cellpadding="0" cellspacing="0" width="100%">
           <tr>
             <td align="center" bgcolor="#EF4444" style="border-radius: 8px;">
-              <a href="https://book-freelancer.com/resubmit-verification" target="_blank" style="display: inline-block; padding: 16px 36px; font-size: 18px; color: #ffffff; text-decoration: none; border-radius: 8px; font-weight: semibold;">Resubmit Documents</a>
+              <a href="https://book-freelancer.com/resubmit-verification" target="_blank"
+                 style="display: inline-block; padding: 16px 36px; font-size: 18px; color: #ffffff; text-decoration: none; border-radius: 8px; font-weight: 600;">
+                Ponovno pošalji dokumente
+              </a>
             </td>
           </tr>
         </table>
@@ -83,12 +89,12 @@
         <table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #FEFBEA; border-radius: 8px; border-left: 4px solid #F59E0B;">
           <tr>
             <td style="padding: 15px;">
-              <p style="margin: 0 0 10px 0; color: #92400E;"><strong>Tips for Successful Verification:</strong></p>
+              <p style="margin: 0 0 10px 0; color: #92400E;"><strong>Savjeti za uspješnu verifikaciju:</strong></p>
               <ul style="margin: 0 0 0 20px; padding: 0; color: #92400E;">
-                <li style="margin-bottom: 5px;">Ensure all documents are clear, complete, and legible</li>
-                <li style="margin-bottom: 5px;">Provide official identification or business registration documents</li>
-                <li style="margin-bottom: 5px;">Make sure personal information matches across all documents</li>
-                <li style="margin-bottom: 0;">Include all required documentation as specified in our guidelines</li>
+                <li style="margin-bottom: 5px;">Provjerite jesu li svi dokumenti jasni, potpuni i čitljivi</li>
+                <li style="margin-bottom: 5px;">Dostavite službeni identifikacijski dokument ili registraciju poslovnog subjekta</li>
+                <li style="margin-bottom: 5px;">Osigurajte da se osobni podaci podudaraju na svim dokumentima</li>
+                <li style="margin-bottom: 0;">Uključite svu potrebnu dokumentaciju u skladu s našim smjernicama</li>
               </ul>
             </td>
           </tr>
@@ -99,8 +105,18 @@
     <!-- Support -->
     <tr>
       <td style="padding: 0 30px 20px 30px; font-size: 16px; line-height: 1.5;">
-        <p>Need help with the verification process? Please review our <a href="https://book-freelancer.com/verification-guidelines" style="color: #003B95; text-decoration: none;">Verification Guidelines</a> or <a href="mailto:support@book-freelancer.com" style="color: #003B95; text-decoration: none;">contact our support team</a> for assistance.</p>
-        <p style="margin-bottom: 0;">— The Freelancer Team</p>
+        <p>
+          Trebate pomoć s postupkom verifikacije?
+          Pregledajte naše
+          <a href="https://book-freelancer.com/verification-guidelines" style="color: #003B95; text-decoration: none;">
+            smjernice za verifikaciju
+          </a>
+          ili
+          <a href="mailto:support@book-freelancer.com" style="color: #003B95; text-decoration: none;">
+            kontaktirajte naš tim za podršku
+          </a>.
+        </p>
+        <p style="margin-bottom: 0;">— Freelancer tim</p>
       </td>
     </tr>
   </table>

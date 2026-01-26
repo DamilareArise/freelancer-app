@@ -31,10 +31,10 @@
     <tr>
       <td style="padding:20px 30px 10px 30px; font-size:16px; line-height:1.5;">
         <p style="margin:0 0 10px 0;">
-          Hi {{ user.first_name|default:"there" }},
+          Pozdrav {{ user.first_name|default:"tamo" }},
         </p>
         <p style="margin:0 0 20px 0;">
-          You have a new notification:
+          Imate novu obavijest:
         </p>
       </td>
     </tr>
@@ -65,7 +65,7 @@
               <a href="{{ action_url }}" 
                  style="display:inline-block; padding:14px 28px; color:#ffffff; 
                         text-decoration:none; font-size:16px; border-radius:8px;">
-                {{ action_text|default:"View Details" }}
+                {{ action_text|default:"Pogledaj detalje" }}
               </a>
             </td>
           </tr>
@@ -78,13 +78,13 @@
     <tr>
       <td style="padding:20px 30px 30px 30px; font-size:14px; line-height:1.5; color:#6b7280;">
         <p style="margin:0;">
-          If this wasn't you, please ignore this message or contact our support team.
+          Ako ovo niste vi inicirali, zanemarite ovu poruku ili kontaktirajte naš tim za podršku.
         </p>
         <p style="margin-top:15px; margin-bottom:0;">
-          — The Book-Freelancer Team
+          — Tim Book-Freelancer
         </p>
         <p style="font-size:12px; color:#9ca3af; margin-top:10px;">
-          © 2025 Book-Freelancer. All rights reserved.
+          © {{year}} Book-Freelancer. Sva prava pridržana.
         </p>
       </td>
     </tr>

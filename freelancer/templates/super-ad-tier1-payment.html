@@ -3,46 +3,44 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Super Ad Payment Confirmation</title>
+  <title>Potvrda Plaćanja Super Oglasa</title>
 </head>
 <body style="margin: 0; padding: 0; font-family: Arial, sans-serif; color: #333333; background-color: #ffffff;">
   <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px; margin: 0 auto;">
     
-    
     {% include "logo.html" %}
-  
 
-    <!-- Greeting -->
+    <!-- Pozdrav -->
     <tr>
       <td style="padding: 0 30px 20px 30px; font-size: 16px; line-height: 1.5;">
-        <p style="margin-top: 0;">Hi {{ user.first_name }},</p>
+        <p style="margin-top: 0;">Bok {{ user.first_name }},</p>
         <p>
-          Thank you for purchasing a <strong>Super Ad (Tier 1)</strong> for your service listing 
-          <strong>{{ payment.listing.service.header }}</strong>! Your payment has been successfully processed. 🚀
+          Hvala što ste kupili <strong>Super Oglas (Razina 1)</strong> za vašu uslugu 
+          <strong>{{ payment.listing.service.header }}</strong>! Vaša uplata je uspješno obrađena. 🚀
         </p>
       </td>
     </tr>
 
-    <!-- Payment Details -->
+    <!-- Detalji Plaćanja -->
     <tr>
       <td style="padding: 0 30px 30px 30px;">
         <table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #F9FAFB; border-radius: 8px;">
           <tr>
             <td style="padding: 20px;">
-              <p style="margin: 0 0 15px 0;"><strong>Payment Details:</strong></p>
+              <p style="margin: 0 0 15px 0;"><strong>Detalji Plaćanja:</strong></p>
               <table border="0" cellpadding="0" cellspacing="0" width="100%">
                 <tr>
-                  <td width="140" style="color: #6B7280;">Transaction ID:</td>
+                  <td width="140" style="color: #6B7280;">ID Transakcije:</td>
                   <td>{{ payment.transaction_id }}</td>
                 </tr>
                 <tr><td height="10"></td></tr>
                 <tr>
-                  <td width="140" style="color: #6B7280;">Date:</td>
+                  <td width="140" style="color: #6B7280;">Datum:</td>
                   <td>{{ payment.created_at }}</td>
                 </tr>
                 <tr><td height="10"></td></tr>
                 <tr>
-                  <td width="140" style="color: #6B7280;">Amount:</td>
+                  <td width="140" style="color: #6B7280;">Iznos:</td>
                   <td>&euro;{{ payment.amount_paid }}</td>
                 </tr>
               </table>
@@ -52,34 +50,34 @@
       </td>
     </tr>
 
-    <!-- Ad Summary -->
+    <!-- Sažetak Oglasa -->
     <tr>
       <td style="padding: 0 30px 30px 30px;">
         <table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #EBF4FF; border-radius: 8px; border: 1px solid #BFDBFE;">
           <tr>
             <td style="padding: 20px;">
-              <p style="margin: 0 0 8px 0; font-size: 18px; font-weight: bold; color: #1E40AF;">Super Ad - Tier 1 🌟</p>
-              <p style="margin: 0 0 15px 0; color: #1E3A8A;">Boost your visibility and attract more clients.</p>
+              <p style="margin: 0 0 8px 0; font-size: 18px; font-weight: bold; color: #1E40AF;">Super Oglas - Razina 1 🌟</p>
+              <p style="margin: 0 0 15px 0; color: #1E3A8A;">Povećajte svoju vidljivost i privucite više klijenata.</p>
 
               <table border="0" cellpadding="0" cellspacing="0" width="100%">
                 <tr>
-                  <td width="140" style="color: #6B7280;">Service:</td>
+                  <td width="140" style="color: #6B7280;">Usluga:</td>
                   <td>{{ payment.listing.service.header }}</td>
                 </tr>
                 <tr><td height="10"></td></tr>
                 <tr>
-                  <td width="140" style="color: #6B7280;">Start Date:</td>
+                  <td width="140" style="color: #6B7280;">Datum početka:</td>
                   <td>{{ ad.start_date }}</td>
                 </tr>
                 <tr><td height="10"></td></tr>
                 <tr>
-                  <td width="140" style="color: #6B7280;">Expiration Date:</td>
+                  <td width="140" style="color: #6B7280;">Datum isteka:</td>
                   <td><strong>{{ ad.end_date }}</strong></td>
                 </tr>
                 <tr><td height="10"></td></tr>
                 <tr>
-                  <td width="140" style="color: #6B7280;">Duration:</td>
-                  <td>{{ duration }} days</td>
+                  <td width="140" style="color: #6B7280;">Trajanje:</td>
+                  <td>{{ duration }} dana</td>
                 </tr>
               </table>
             </td>
@@ -88,24 +86,24 @@
       </td>
     </tr>
 
-    <!-- Benefits -->
+    <!-- Prednosti -->
     <tr>
       <td style="padding: 0 30px 30px 30px; font-size: 16px; line-height: 1.5; background-color: #EFF6FF; border-radius: 8px;">
-        <p style="margin-top: 15px;"><strong style="color: #1E3A8A;">✓ Your Super Ad (Tier 1) Includes:</strong></p>
+        <p style="margin-top: 15px;"><strong style="color: #1E3A8A;">✓ Vaš Super Oglas (Razina 1) uključuje:</strong></p>
         <ul style="margin: 0 0 15px 0; padding: 0 0 0 20px;">
-          <li style="margin-bottom: 8px;">Top placement in search results</li>
-          <li style="margin-bottom: 8px;">Featured in “Top Rated Services” section</li>
-          <li style="margin-bottom: 8px;">Verified “Super Ad” badge on your profile</li>
-          <li style="margin-bottom: 8px;">Basic analytics dashboard for performance insights</li>
-          <li style="margin-bottom: 0;">Priority email and chat support</li>
+          <li style="margin-bottom: 8px;">Najbolja pozicija u rezultatima pretraživanja</li>
+          <li style="margin-bottom: 8px;">Prikaz u odjeljku “Najbolje ocijenjene usluge”</li>
+          <li style="margin-bottom: 8px;">Provjereni “Super Oglas” bedž na vašem profilu</li>
+          <li style="margin-bottom: 8px;">Osnovna analitika za uvid u performanse</li>
+          <li style="margin-bottom: 0;">Prioritetna podrška putem e-pošte i chata</li>
         </ul>
       </td>
     </tr>
 
-    <!-- View Ad Button -->
+    <!-- Gumb za praćenje oglasa -->
     <tr>
       <td style="padding: 20px 30px 10px 30px; font-size: 16px;">
-        <p>Track your Super Ad performance and engagement below:</p>
+        <p>Pratite performanse i angažman vašeg Super Oglasa u nastavku:</p>
       </td>
     </tr>
     <tr>
@@ -116,7 +114,7 @@
               <a href="https://example.com/my-services/analytics" target="_blank" 
                  style="display: inline-block; padding: 16px 36px; font-size: 18px; color: #ffffff; 
                         text-decoration: none; border-radius: 8px; font-weight: semibold;">
-                View Ad Performance
+                Pogledajte Performanse Oglasa
               </a>
             </td>
           </tr>
@@ -124,25 +122,25 @@
       </td>
     </tr>
 
-    <!-- Reminder -->
+    <!-- Podsjetnik -->
     <tr>
       <td style="padding: 0 30px 30px 30px; font-size: 16px; background-color: #DBEAFE; border-radius: 8px; border-left: 4px solid #2563EB;">
-        <p style="margin-top: 15px;"><strong style="color: #1E40AF;">⏰ Important Reminder:</strong></p>
-        <p>Your Super Ad will expire on <strong>{{ ad.end_date }}</strong>. You’ll receive a reminder email 5 days before expiration to renew it easily.</p>
-        <p style="margin-bottom: 15px;">You can also enable auto-renewal from your account settings for continuous promotion.</p>
+        <p style="margin-top: 15px;"><strong style="color: #1E40AF;">⏰ Važan podsjetnik:</strong></p>
+        <p>Vaš Super Oglas istječe <strong>{{ ad.end_date }}</strong>. Dobit ćete podsjetnik putem e-pošte 5 dana prije isteka kako biste ga lako obnovili.</p>
+        <p style="margin-bottom: 15px;">Također možete omogućiti automatsko obnavljanje u postavkama računa za kontinuiranu promociju.</p>
       </td>
     </tr>
 
-    <!-- Upgrade + Support -->
+    <!-- Nadogradnja + Podrška -->
     <tr>
       <td style="padding: 0 30px 20px 30px; font-size: 16px; line-height: 1.5;">
-        <p>Want to upgrade to <strong>Tier 2</strong> or <strong>Tier 3</strong> for maximum visibility and advanced analytics? 
-          <a href="https://example.com/upgrade-super-ad" style="color: #2563EB; text-decoration: none;">Click here to upgrade</a>.
+        <p>Želite nadograditi na <strong>Razinu 2</strong> ili <strong>Razinu 3</strong> za maksimalnu vidljivost i naprednu analitiku? 
+          <a href="https://example.com/upgrade-super-ad" style="color: #2563EB; text-decoration: none;">Kliknite ovdje za nadogradnju</a>.
         </p>
-        <p>If you have any questions, 
-          <a href="mailto:support@book-freelance.com" style="color: #2563EB; text-decoration: none;">contact our support team</a>.
+        <p>Ako imate bilo kakvih pitanja, 
+          <a href="mailto:support@book-freelance.com" style="color: #2563EB; text-decoration: none;">kontaktirajte naš tim za podršku</a>.
         </p>
-        <p style="margin-bottom: 0;">— The Book-Freelancer Team</p>
+        <p style="margin-bottom: 0;">— Book-Freelancer Tim</p>
       </td>
     </tr>
   </table>

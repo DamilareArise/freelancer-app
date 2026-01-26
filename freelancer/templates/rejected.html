@@ -4,19 +4,22 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Service Listing Rejected</title>
+  <title>Odbijena uslužna ponuda</title>
 </head>
 <body style="margin: 0; padding: 0; font-family: Arial, sans-serif; color: #333333; background-color: #ffffff;">
   <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px; margin: 0 auto;">
     
     {% include "logo.html" %}
 
-
     <!-- Greeting -->
     <tr>
       <td style="padding: 0 30px 20px 30px; font-size: 16px; line-height: 1.5;">
-        <p style="margin-top: 0;">Hi {{user.first_name}},</p>
-        <p>We’ve reviewed your service listing for <strong>{{listing.service.header}}</strong>, and unfortunately, it does not currently meet our listing requirements.</p>
+        <p style="margin-top: 0;">Poštovani/Poštovana {{user.first_name}},</p>
+        <p>
+          Pregledali smo vašu uslužnu ponudu za
+          <strong>{{listing.service.header}}</strong>, no nažalost trenutačno ne ispunjava
+          naše uvjete za objavu.
+        </p>
       </td>
     </tr>
 
@@ -24,15 +27,15 @@
     <tr>
       <td style="padding: 0 30px 20px 30px; font-size: 16px; line-height: 1.5;">
         <p style="margin-bottom: 10px;">
-          <span style="color: #DC2626; font-weight: bold;">◆</span> Listing Details:
+          <span style="color: #DC2626; font-weight: bold;">◆</span> Podaci o ponudi:
         </p>
         <table border="0" cellpadding="0" cellspacing="0" width="100%">
           <tr>
             <td style="padding-left: 20px;">
               <ul style="margin: 0; padding: 0 0 0 20px;">
-                <li style="margin-bottom: 8px;">Category: {{listing.category}}</li>
-                <li style="margin-bottom: 8px;">Service Type: {{listing.service_type}}</li>
-                <li style="margin-bottom: 8px;">Price: &euro;{{listing.price}}</li>
+                <li style="margin-bottom: 8px;">Kategorija: {{listing.category}}</li>
+                <li style="margin-bottom: 8px;">Vrsta usluge: {{listing.service_type}}</li>
+                <li style="margin-bottom: 8px;">Cijena: &euro;{{listing.price}}</li>
               </ul>
             </td>
           </tr>
@@ -43,8 +46,8 @@
     <!-- Rejection reasons -->
     <tr>
       <td style="padding: 0 30px 20px 30px; font-size: 16px; line-height: 1.5; background-color: #FEE2E2; border-radius: 8px;">
-        <p style="margin-top: 15px; margin-bottom: 10px;">
-          <span style="color: #DC2626; font-weight: bold;">⚠</span> <strong>Reasons for Rejection:</strong>
+        <p style="margin-top: 15px; margin-bottom: 10px; color: #DC2626;">
+          <strong>Razlozi odbijanja:</strong>
         </p>
         <table border="0" cellpadding="0" cellspacing="0" width="100%">
           <tr>
@@ -63,7 +66,9 @@
     <!-- CTA -->
     <tr>
       <td style="padding: 20px 30px 10px 30px; font-size: 16px; line-height: 1.5;">
-        <p>You can edit your listing to fix these issues and resubmit it for review:</p>
+        <p>
+          Možete urediti svoju ponudu, ispraviti navedene nedostatke i ponovno je poslati na pregled:
+        </p>
       </td>
     </tr>
     <tr>
@@ -71,7 +76,10 @@
         <table border="0" cellpadding="0" cellspacing="0" width="100%">
           <tr>
             <td align="center" bgcolor="#2563EB" style="border-radius: 8px;">
-              <a href="https://example.com/edit-listing" target="_blank" style="display: inline-block; padding: 16px 36px; font-size: 18px; color: #ffffff; text-decoration: none; border-radius: 8px; font-weight: bold;">Edit My Listing</a>
+              <a href="https://example.com/edit-listing" target="_blank"
+                 style="display: inline-block; padding: 16px 36px; font-size: 18px; color: #ffffff; text-decoration: none; border-radius: 8px; font-weight: bold;">
+                Uredi moju ponudu
+              </a>
             </td>
           </tr>
         </table>
@@ -81,9 +89,21 @@
     <!-- Help -->
     <tr>
       <td style="padding: 0 30px 20px 30px; font-size: 16px; line-height: 1.5;">
-        <p>Need help improving your listing? Check out our <a href="https://example.com/listing-guidelines" style="color: #2563EB; text-decoration: none; font-weight: bold;">Service Listing Guidelines</a> for tips.</p>
-        <p>If you have any questions, please <a href="mailto:support@freelancer.com" style="color: #2563EB; text-decoration: none;">contact our support team</a>.</p>
-        <p style="margin-bottom: 0;">— The Freelancer Team</p>
+        <p>
+          Trebate pomoć pri poboljšanju ponude?
+          Pogledajte naše
+          <a href="https://example.com/listing-guidelines"
+             style="color: #2563EB; text-decoration: none; font-weight: bold;">
+            smjernice za objavu usluga
+          </a>.
+        </p>
+        <p>
+          Ako imate dodatnih pitanja,
+          <a href="mailto:support@freelancer.com" style="color: #2563EB; text-decoration: none;">
+            kontaktirajte naš tim za podršku
+          </a>.
+        </p>
+        <p style="margin-bottom: 0;">— Freelancer tim</p>
       </td>
     </tr>
   </table>

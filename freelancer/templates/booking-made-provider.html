@@ -4,18 +4,19 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>New Service Booking Request</title>
+  <title>Novi zahtjev za rezervaciju usluge</title>
 </head>
 <body style="margin: 0; padding: 0; font-family: Arial, sans-serif; color: #1F2937; background-color: #ffffff;">
   <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px; margin: 0 auto;">
     
-        <!-- Logo -->
-        {% include "logo.html" %}
+    <!-- Logo -->
+    {% include "logo.html" %}
      
+    <!-- Greeting -->
     <tr>
       <td style="padding: 0 30px 20px 30px; font-size: 16px; line-height: 1.6;">
-        <p style="margin-top: 0;">Hi {{ user.first_name }},</p>
-        <p>You’ve received a new <strong>service booking request</strong> on <span style="color:#2563EB;">Freelancer</span> 🎉</p>
+        <p style="margin-top: 0;">Pozdrav {{ user.first_name }},</p>
+        <p>Primili ste novi <strong>zahtjev za rezervaciju usluge</strong> na <span style="color:#2563EB;">Freelanceru</span> 🎉</p>
       </td>
     </tr>
 
@@ -25,40 +26,40 @@
         <table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #F9FAFB; border-radius: 8px;">
           <tr>
             <td style="padding: 20px;">
-              <p style="margin: 0 0 15px 0; font-weight: bold; color: #111827;">Booking Details</p>
+              <p style="margin: 0 0 15px 0; font-weight: bold; color: #111827;">Detalji rezervacije</p>
               <table border="0" cellpadding="0" cellspacing="0" width="100%">
                 <tr>
-                  <td width="150" style="color: #6B7280;">Service:</td>
+                  <td width="150" style="color: #6B7280;">Usluga:</td>
                   <td>{{ booking.service.title }}</td>
                 </tr>
                 <tr><td height="8"></td></tr>
                 <tr>
-                  <td width="150" style="color: #6B7280;">Category:</td>
+                  <td width="150" style="color: #6B7280;">Kategorija:</td>
                   <td>{{ booking.service.category.name }}</td>
                 </tr>
                 <tr><td height="8"></td></tr>
                 <tr>
-                  <td width="150" style="color: #6B7280;">Requested Date:</td>
+                  <td width="150" style="color: #6B7280;">Zahtjevani datum:</td>
                   <td>{{ booking.date_time|date:"d M Y" }}</td>
                 </tr>
                 <tr><td height="8"></td></tr>
                 <tr>
-                  <td width="150" style="color: #6B7280;">Requested Time:</td>
+                  <td width="150" style="color: #6B7280;">Zahtjevano vrijeme:</td>
                   <td>{{ booking.date_time|time:"h:i A" }}</td>
                 </tr>
                 <tr><td height="8"></td></tr>
                 <tr>
-                  <td width="150" style="color: #6B7280;">Client Name:</td>
+                  <td width="150" style="color: #6B7280;">Ime klijenta:</td>
                   <td>{{ booking.requester.get_full_name }}</td>
                 </tr>
                 <tr><td height="8"></td></tr>
                 <tr>
-                  <td width="150" style="color: #6B7280;">Client Phone:</td>
+                  <td width="150" style="color: #6B7280;">Telefon klijenta:</td>
                   <td>{{ booking.requester.phone }}</td>
                 </tr>
                 <tr><td height="8"></td></tr>
                 <tr>
-                  <td width="150" style="color: #6B7280;">Client Email:</td>
+                  <td width="150" style="color: #6B7280;">Email klijenta:</td>
                   <td>{{ booking.requester.email }}</td>
                 </tr>
               </table>
@@ -71,7 +72,7 @@
     <!-- Action Reminder -->
     <tr>
       <td style="padding: 0 30px 20px 30px; font-size: 16px; line-height: 1.6;">
-        <p>Please review and respond to this booking request promptly to confirm your availability.</p>
+        <p>Molimo pregledajte i odgovorite na ovaj zahtjev što prije kako biste potvrdili svoju dostupnost.</p>
       </td>
     </tr>
 
@@ -81,8 +82,8 @@
         <table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #EFF6FF; border-radius: 8px;">
           <tr>
             <td style="padding: 20px;">
-              <p style="margin-top: 0; color: #1E40AF;"><strong>💡 Quick Tip:</strong></p>
-              <p style="margin-bottom: 0;">Providers who respond within 6 hours are twice as likely to secure bookings. Stay active and keep your calendar updated!</p>
+              <p style="margin-top: 0; color: #1E40AF;"><strong>💡 Brzi savjet:</strong></p>
+              <p style="margin-bottom: 0;">Pružatelji usluga koji odgovore unutar 6 sati dvostruko češće osiguraju rezervacije. Budite aktivni i redovito ažurirajte svoj kalendar!</p>
             </td>
           </tr>
         </table>
@@ -97,7 +98,7 @@
             <td align="center" bgcolor="#2563EB" style="border-radius: 8px;">
               <a href="https://freelancerapp.com/provider-dashboard" target="_blank"
                  style="display: inline-block; padding: 16px 36px; font-size: 18px; color: #ffffff; text-decoration: none; border-radius: 8px; font-weight: bold;">
-                 View Booking Request
+                 Pregled zahtjeva
               </a>
             </td>
           </tr>
@@ -108,8 +109,8 @@
     <!-- Footer -->
     <tr>
       <td style="padding: 0 30px 30px 30px; font-size: 15px; line-height: 1.6; color: #4B5563;">
-        <p>Need help? Reach out to our <a href="mailto:support@freelancerapp.com" style="color: #2563EB; text-decoration: none;">support team</a>.</p>
-        <p style="margin-bottom: 0;">— The Freelancer Team</p>
+        <p>Treba li vam pomoć? Obratite se našem <a href="mailto:support@freelancerapp.com" style="color: #2563EB; text-decoration: none;">timu za podršku</a>.</p>
+        <p style="margin-bottom: 0;">— Tim Freelancer</p>
       </td>
     </tr>
   </table>

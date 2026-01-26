@@ -46,6 +46,7 @@ def send_email(context, file=None):
         logger.error("Email not sent: recipient email missing")
         return
 
+    context['year'] = timezone.now().year
     
     try:
         html_message = render_to_string(file, context=context)

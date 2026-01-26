@@ -1,9 +1,10 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Your Service Booking Request</title>
+  <title>Vaš zahtjev za rezervaciju usluge</title>
 </head>
 <body style="margin: 0; padding: 0; font-family: Arial, sans-serif; color: #333333; background-color: #ffffff;">
   <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px; margin: 0 auto;">
@@ -13,51 +14,52 @@
 
     <tr>
       <td style="padding: 0 30px 20px 30px; font-size: 16px; line-height: 1.5;">
-        <p style="margin-top: 0;">Hi {{user.first_name}},</p>
-        <p>Your request to book <strong>{{booking.listing.service.header}}</strong> has been submitted successfully! 💼</p>
+        <p style="margin-top: 0;">Pozdrav {{user.first_name}},</p>
+        <p>Vaš zahtjev za rezervaciju <strong>{{booking.listing.service.header}}</strong> je uspješno poslan! 💼</p>
       </td>
     </tr>
 
+    <!-- Booking Details -->
     <tr>
       <td style="padding: 0 30px 30px 30px; font-size: 16px; line-height: 1.5;">
         <table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #F9FAFB; border-radius: 8px;">
           <tr>
             <td style="padding: 20px;">
-              <p style="margin: 0 0 15px 0;"><strong>Booking Details:</strong></p>
+              <p style="margin: 0 0 15px 0;"><strong>Pojedinosti rezervacije:</strong></p>
               <table border="0" cellpadding="0" cellspacing="0" width="100%">
                 <tr>
-                  <td width="140" style="color: #6B7280;">Service:</td>
+                  <td width="140" style="color: #6B7280;">Usluga:</td>
                   <td>{{booking.listing.service.header}}</td>
                 </tr>
                 <tr><td height="10"></td></tr>
 
                 <tr>
-                  <td width="140" style="color: #6B7280;">Category:</td>
+                  <td width="140" style="color: #6B7280;">Kategorija:</td>
                   <td>{{booking.listing.category.name}}</td>
                 </tr>
                 <tr><td height="10"></td></tr>
 
                 <tr>
-                  <td width="140" style="color: #6B7280;">Location:</td>
+                  <td width="140" style="color: #6B7280;">Lokacija:</td>
                   <td>{{booking.listing.location.city}}, {{booking.listing.location.country}}</td>
                 </tr>
                 <tr><td height="10"></td></tr>
 
                 <tr>
-                  <td width="140" style="color: #6B7280;">Date:</td>
+                  <td width="140" style="color: #6B7280;">Datum:</td>
                   <td>{{booking.date_time|date:"d M Y"}}</td>
                 </tr>
                 <tr><td height="10"></td></tr>
 
                 <tr>
-                  <td width="140" style="color: #6B7280;">Time:</td>
+                  <td width="140" style="color: #6B7280;">Vrijeme:</td>
                   <td>{{booking.date_time|time:"h:i A"}}</td>
                 </tr>
                 <tr><td height="10"></td></tr>
 
                 <tr>
                   <td width="140" style="color: #6B7280;">Status:</td>
-                  <td><span style="color: #1E88E5; font-weight: bold;">Pending Confirmation</span></td>
+                  <td><span style="color: #1E88E5; font-weight: bold;">Na čekanju potvrde</span></td>
                 </tr>
               </table>
             </td>
@@ -66,38 +68,38 @@
       </td>
     </tr>
 
+    <!-- What Happens Next -->
     <tr>
       <td style="padding: 0 30px 30px 30px; font-size: 16px; line-height: 1.5; background-color: #E3F2FD; border-radius: 8px; margin: 0 30px;">
-        <p style="margin-top: 15px;"><span style="color: #1E88E5;">ℹ️</span> <strong>What Happens Next?</strong></p>
-        <p>The service provider will review your request and confirm or suggest an alternative time. You’ll receive an email notification once your booking is confirmed.</p>
-        <p style="margin-bottom: 15px;">Most bookings are confirmed within 24 hours.</p>
+        <p style="margin-top: 15px;"><span style="color: #1E88E5;">ℹ️</span> <strong>Što se događa dalje?</strong></p>
+        <p>Pružatelj usluge će pregledati vaš zahtjev i potvrditi termin ili predložiti alternativno vrijeme. Dobit ćete obavijest putem e-maila kada vaša rezervacija bude potvrđena.</p>
+        <p style="margin-bottom: 15px;">Većina rezervacija se potvrđuje unutar 24 sata.</p>
       </td>
     </tr>
 
+    <!-- CTA -->
     <tr>
-      <td style="padding: 20px 30px 10px 30px; font-size: 16px; line-height: 1.5;">
-        <p>You can view or manage your bookings here:</p>
-      </td>
-    </tr>
-
-    <tr>
-      <td style="padding: 0 30px 30px 30px;">
+      <td style="padding: 20px 30px 30px 30px;">
         <table border="0" cellpadding="0" cellspacing="0" width="100%">
           <tr>
             <td align="center" bgcolor="#1E88E5" style="border-radius: 8px;">
-              <a href="https://example.com/my-bookings" target="_blank" style="display: inline-block; padding: 16px 36px; font-size: 18px; color: #ffffff; text-decoration: none; border-radius: 8px; font-weight: semibold;">View My Bookings</a>
+              <a href="https://example.com/my-bookings" target="_blank" style="display: inline-block; padding: 16px 36px; font-size: 18px; color: #ffffff; text-decoration: none; border-radius: 8px; font-weight: semibold;">
+                Pogledaj moje rezervacije
+              </a>
             </td>
           </tr>
         </table>
       </td>
     </tr>
 
+    <!-- Footer -->
     <tr>
       <td style="padding: 0 30px 20px 30px; font-size: 16px; line-height: 1.5;">
-        <p>Need to cancel or reschedule? You can manage your booking through your account or <a href="mailto:support@freelancer.com" style="color: #1E88E5; text-decoration: none;">contact our support team</a>.</p>
-        <p style="margin-bottom: 0;">— The Freelancer Team</p>
+        <p>Ako trebate otkazati ili promijeniti termin, upravljajte svojom rezervacijom putem računa ili <a href="mailto:support@freelancer.com" style="color: #1E88E5; text-decoration: none;">kontaktirajte naš tim za podršku</a>.</p>
+        <p style="margin-bottom: 0;">— Tim Freelancer</p>
       </td>
     </tr>
+
   </table>
 </body>
 </html>

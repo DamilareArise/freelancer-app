@@ -1,29 +1,31 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Welcome to Freelancer {{label}}</title>
+  <title>Dobrodošli na Freelancer {{label}}</title>
 </head>
 <body style="margin: 0; padding: 0; font-family: Arial, sans-serif; color: #333333; background-color: #ffffff;">
   <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px; margin: 0 auto;">
- 
+
     {% include "logo.html" %}
       
     <tr>
       <td style="padding: 0 30px 20px 30px; font-size: 16px; line-height: 1.5;">
-        <p style="margin-top: 0;">Hi {{user.first_name}},</p>
-        <p>Thank you for joining <strong>Freelancer</strong> as a <strong>{{role}}</strong>! 🎉  
-        Your account has been created and is currently pending verification.</p>
+        <p style="margin-top: 0;">Pozdrav {{user.first_name}},</p>
+        <p>Hvala što ste se pridružili <strong>Freelanceru</strong> kao <strong>{{role}}</strong>!  
+        Vaš račun je kreiran i trenutno je na čekanju verifikacije.</p>
       </td>
     </tr>
+
     <!-- Account Details -->
     <tr>
       <td style="padding: 0 30px 30px 30px; font-size: 16px; line-height: 1.5;">
         <table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #F9FAFB; border-radius: 8px;">
           <tr>
             <td style="padding: 20px;">
-              <p style="margin: 0 0 15px 0;"><strong>Your Account Details:</strong></p>
+              <p style="margin: 0 0 15px 0;"><strong>Detalji Vašeg Računa:</strong></p>
               <table border="0" cellpadding="0" cellspacing="0" width="100%">
                 <tr>
                   <td width="120" style="color: #6B7280;">Email:</td>
@@ -31,13 +33,13 @@
                 </tr>
                 <tr><td height="10"></td></tr>
                 <tr>
-                  <td width="120" style="color: #6B7280;">Account Type:</td>
+                  <td width="120" style="color: #6B7280;">Vrsta Računa:</td>
                   <td>{{role}}</td>
                 </tr>
                 <tr><td height="10"></td></tr>
                 <tr>
                   <td width="120" style="color: #6B7280;">Status:</td>
-                  <td><span style="color: #F59E0B; font-weight: bold;">Pending Verification</span></td>
+                  <td><span style="color: #F59E0B; font-weight: bold;">Na čekanju verifikacije</span></td>
                 </tr>
               </table>
             </td>
@@ -45,19 +47,21 @@
         </table>
       </td>
     </tr>
+
     <!-- Verification Notice -->
     <tr>
       <td style="padding: 0 30px 30px 30px; font-size: 16px; line-height: 1.5; background-color: #DBEAFE; border-radius: 8px; margin: 0 30px;">
-        <p style="margin-top: 15px;"><span style="color: #1D4ED8;">ℹ️</span> <strong>Verification Required</strong></p>
-        <p>Before you can start offering your services, we need to verify your details and any required documents.  
-        Our team will review your submission shortly.</p>
-        <p style="margin-bottom: 15px;">This process usually takes 1–3 business days. You’ll get an email once your account is verified.</p>
+        <p style="margin-top: 15px;"><span style="color: #1D4ED8;">ℹ️</span> <strong>Potrebna Verifikacija</strong></p>
+        <p>Prije nego što možete početi nuditi svoje usluge, potrebno je verificirati vaše podatke i sve potrebne dokumente.  
+        Naš tim će pregledati vašu prijavu uskoro.</p>
+        <p style="margin-bottom: 15px;">Ovaj proces obično traje 1–3 radna dana. Dobit ćete obavijest putem e-maila kada vaš račun bude verificiran.</p>
       </td>
     </tr>
+
     <!-- Dashboard CTA -->
     <tr>
       <td style="padding: 20px 30px 10px 30px; font-size: 16px; line-height: 1.5;">
-        <p>In the meantime, you can complete your profile and get ready to showcase your skills:</p>
+        <p>U međuvremenu, možete dovršiti svoj profil i pripremiti se za prikaz svojih vještina:</p>
       </td>
     </tr>
     <tr>
@@ -65,37 +69,40 @@
         <table border="0" cellpadding="0" cellspacing="0" width="100%">
           <tr>
             <td align="center" bgcolor="#2563EB" style="border-radius: 8px;">
-              <a href="https://example.com/provider-dashboard" target="_blank" style="display: inline-block; padding: 16px 36px; font-size: 18px; color: #ffffff; text-decoration: none; border-radius: 8px; font-weight: bold;">Go to Dashboard</a>
+              <a href="https://example.com/provider-dashboard" target="_blank" style="display: inline-block; padding: 16px 36px; font-size: 18px; color: #ffffff; text-decoration: none; border-radius: 8px; font-weight: bold;">Idi na Dashboard</a>
             </td>
           </tr>
         </table>
       </td>
     </tr>
+
     <!-- Next Steps -->
     <tr>
       <td style="padding: 0 30px 30px 30px; font-size: 16px; line-height: 1.5;">
         <table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #EFF6FF; border-radius: 8px; border-left: 4px solid #2563EB;">
           <tr>
             <td style="padding: 15px;">
-              <p style="margin: 0 0 10px 0; color: #1E40AF;"><strong>What You Can Do Now:</strong></p>
+              <p style="margin: 0 0 10px 0; color: #1E40AF;"><strong>Što možete učiniti sada:</strong></p>
               <ul style="margin: 0 0 0 20px; padding: 0; color: #1E40AF;">
-                <li style="margin-bottom: 5px;">Complete your provider profile with your bio and skills</li>
-                <li style="margin-bottom: 5px;">Upload certificates, ID, or portfolio (if required)</li>
-                <li style="margin-bottom: 5px;">Browse available job categories and service requests</li>
-                <li style="margin-bottom: 0;">Prepare your service offerings so you can publish once approved</li>
+                <li style="margin-bottom: 5px;">Dovršite svoj profil s biografijom i vještinama</li>
+                <li style="margin-bottom: 5px;">Prenesite certifikate, osobnu iskaznicu ili portfolio (ako je potrebno)</li>
+                <li style="margin-bottom: 5px;">Pregledajte dostupne kategorije poslova i zahtjeve za uslugama</li>
+                <li style="margin-bottom: 0;">Pripremite svoje usluge kako biste ih mogli objaviti nakon odobrenja</li>
               </ul>
             </td>
           </tr>
         </table>
       </td>
     </tr>
+
     <!-- Footer -->
     <tr>
       <td style="padding: 0 30px 20px 30px; font-size: 16px; line-height: 1.5;">
-        <p>Need help with verification or have questions? Reach out to our <a href="mailto:support@freelancer.com" style="color: #2563EB; text-decoration: none;">support team</a>.</p>
-        <p style="margin-bottom: 0;">— The Freelancer Team</p>
+        <p>Imate pitanja ili trebate pomoć oko verifikacije? Kontaktirajte naš <a href="mailto:support@freelancer.com" style="color: #2563EB; text-decoration: none;">tim za podršku</a>.</p>
+        <p style="margin-bottom: 0;">— Tim Freelancer</p>
       </td>
     </tr>
+
   </table>
 </body>
 </html>

@@ -4,7 +4,7 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Service Booking Cancelled</title>
+  <title>Rezervacija Usluge Otkazana</title>
 </head>
 <body style="margin: 0; padding: 0; font-family: Arial, sans-serif; color: #1F2937; background-color: #ffffff;">
   <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px; margin: 0 auto;">
@@ -14,55 +14,55 @@
         {% include "logo.html" %}
       
 
-    <!-- Greeting -->
+    <!-- Pozdrav -->
     <tr>
       <td style="padding: 0 30px 20px 30px; font-size: 16px; line-height: 1.6;">
-        <p style="margin-top: 0;">Hi {{ user.first_name }},</p>
-        <p>Your service booking for <strong>{{ booking.service.title }}</strong> has been cancelled.</p>
+        <p style="margin-top: 0;">Bok {{ user.first_name }},</p>
+        <p>Vaša rezervacija usluge <strong>{{ booking.service.title }}</strong> je otkazana.</p>
       </td>
     </tr>
 
-    <!-- Cancelled Booking Details -->
+    <!-- Detalji otkazane rezervacije -->
     <tr>
       <td style="padding: 0 30px 30px 30px;">
         <table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #F9FAFB; border-radius: 8px;">
           <tr>
             <td style="padding: 20px;">
-              <p style="margin: 0 0 15px 0; font-weight: bold; color: #111827;">Cancelled Booking Details</p>
+              <p style="margin: 0 0 15px 0; font-weight: bold; color: #111827;">Detalji Otkazane Rezervacije</p>
               <table border="0" cellpadding="0" cellspacing="0" width="100%">
                 <tr>
-                  <td width="140" style="color: #6B7280;">Service:</td>
+                  <td width="140" style="color: #6B7280;">Usluga:</td>
                   <td>{{ booking.service.title }}</td>
                 </tr>
                 <tr><td height="8"></td></tr>
 
                 <tr>
-                  <td width="140" style="color: #6B7280;">Category:</td>
+                  <td width="140" style="color: #6B7280;">Kategorija:</td>
                   <td>{{ booking.service.category.name }}</td>
                 </tr>
                 <tr><td height="8"></td></tr>
 
                 <tr>
-                  <td width="140" style="color: #6B7280;">Date:</td>
+                  <td width="140" style="color: #6B7280;">Datum:</td>
                   <td>{{ booking.date_time|date:"d M Y" }}</td>
                 </tr>
                 <tr><td height="8"></td></tr>
 
                 <tr>
-                  <td width="140" style="color: #6B7280;">Time:</td>
+                  <td width="140" style="color: #6B7280;">Vrijeme:</td>
                   <td>{{ booking.date_time|time:"h:i A" }}</td>
                 </tr>
                 <tr><td height="8"></td></tr>
 
                 <tr>
-                  <td width="140" style="color: #6B7280;">Cancelled By:</td>
+                  <td width="140" style="color: #6B7280;">Otkazao:</td>
                   <td>{{ booking.canceled_by.get_full_name }}</td>
                 </tr>
                 <tr><td height="8"></td></tr>
 
                 <tr>
                   <td width="140" style="color: #6B7280;">Status:</td>
-                  <td><span style="color: #EF4444; font-weight: bold;">Cancelled</span></td>
+                  <td><span style="color: #EF4444; font-weight: bold;">Otkazano</span></td>
                 </tr>
               </table>
             </td>
@@ -71,22 +71,22 @@
       </td>
     </tr>
 
-    <!-- Cancellation Reason -->
+    <!-- Razlog otkazivanja -->
     <tr>
       <td style="padding: 0 30px 30px 30px; font-size: 16px; line-height: 1.6; background-color: #EFF6FF; border-radius: 8px; margin: 0 30px;">
-        <p style="margin-top: 15px; color: #1E40AF;">ℹ️ <strong>Cancellation Reason:</strong></p>
+        <p style="margin-top: 15px; color: #1E40AF;">ℹ️ <strong>Razlog otkazivanja:</strong></p>
         <p style="font-style: italic; color: #1F2937;">"{{ booking.cancel_reason }}"</p>
       </td>
     </tr>
 
-    <!-- Action Options -->
+    <!-- Opcije -->
     <tr>
       <td style="padding: 20px 30px 10px 30px; font-size: 16px; line-height: 1.6;">
-        <p>Would you like to reschedule this service or explore other available providers?</p>
+        <p>Želite li ponovno zakazati ovu uslugu ili istražiti druge dostupne pružatelje usluga?</p>
       </td>
     </tr>
 
-    <!-- Buttons -->
+    <!-- Gumbi -->
     <tr>
       <td style="padding: 0 30px 30px 30px;">
         <table border="0" cellpadding="0" cellspacing="0" width="100%">
@@ -94,14 +94,14 @@
             <td width="48%" align="center" bgcolor="#2563EB" style="border-radius: 8px;">
               <a href="https://freelancerapp.com/reschedule-booking?id={{ booking.id }}" target="_blank"
                  style="display: inline-block; padding: 16px 0; width: 100%; font-size: 16px; color: #ffffff; text-decoration: none; border-radius: 8px; font-weight: bold;">
-                 Reschedule Service
+                 Ponovno Zakazivanje
               </a>
             </td>
             <td width="4%"></td>
             <td width="48%" align="center" bgcolor="#F3F4F6" style="border-radius: 8px;">
               <a href="https://freelancerapp.com/explore-services" target="_blank"
                  style="display: inline-block; padding: 16px 0; width: 100%; font-size: 16px; color: #4B5563; text-decoration: none; border-radius: 8px; font-weight: bold;">
-                 Browse Services
+                 Pregledajte Usluge
               </a>
             </td>
           </tr>
@@ -109,13 +109,13 @@
       </td>
     </tr>
 
-    <!-- Footer -->
+    <!-- Podnožje -->
     <tr>
       <td style="padding: 0 30px 30px 30px; font-size: 15px; line-height: 1.6; color: #4B5563;">
-        <p>If you have any questions or need assistance, please 
-          <a href="mailto:support@freelancerapp.com" style="color: #2563EB; text-decoration: none;">contact our support team</a>.
+        <p>Ako imate bilo kakvih pitanja ili trebate pomoć, molimo 
+          <a href="mailto:support@freelancerapp.com" style="color: #2563EB; text-decoration: none;">kontaktirajte naš tim za podršku</a>.
         </p>
-        <p style="margin-bottom: 0;">— The Freelancer Team</p>
+        <p style="margin-bottom: 0;">— Freelancer Tim</p>
       </td>
     </tr>
   </table>

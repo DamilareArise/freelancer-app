@@ -3,64 +3,94 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Verify Your Email Address</title>
+  <title>Potvrdite svoju email adresu</title>
 </head>
 <body style="margin: 0; padding: 0; font-family: Arial, sans-serif; color: #333333; background-color: #ffffff;">
   <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px; margin: 0 auto;">
-    
+
       {% include "logo.html" %}
-     
+
     <tr>
       <td style="padding: 0 30px 20px 30px; font-size: 16px; line-height: 1.5;">
-        <p style="margin-top: 0;">Hi {{user.first_name}},</p>
-        <p>Welcome to Freelancer! To complete your account setup, please verify your email address using the verification code below:</p>
+        <p style="margin-top: 0;">Poštovani/Poštovana {{user.first_name}},</p>
+        <p>
+          Dobrodošli na Freelancer! Kako biste dovršili postavljanje svog korisničkog računa,
+          molimo vas da potvrdite svoju email adresu pomoću verifikacijskog koda u nastavku.
+        </p>
       </td>
     </tr>
+
     <tr>
       <td style="padding: 0 30px 30px 30px;">
         <table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #F9FAFB; border-radius: 8px; border: 1px solid #E5E7EB;">
           <tr>
             <td align="center" style="padding: 20px;">
-              <p style="margin: 0; font-size: 14px; color: #6B7280;">Your verification code</p>
-              <p style="margin: 10px 0 0 0; font-size: 32px; font-weight: bold; letter-spacing: 5px; color: #111827; font-family: 'Courier New', monospace;">{{otp}}</p>
+              <p style="margin: 0; font-size: 14px; color: #6B7280;">
+                Vaš verifikacijski kod
+              </p>
+              <p style="margin: 10px 0 0 0; font-size: 32px; font-weight: bold; letter-spacing: 5px; color: #111827; font-family: 'Courier New', monospace;">
+                {{otp}}
+              </p>
             </td>
           </tr>
         </table>
       </td>
     </tr>
+
     <tr>
       <td style="padding: 0 30px 30px 30px;">
-        <table border="0" cellpadding="0" cellspacing="0" width="100%" style="">
+        <table border="0" cellpadding="0" cellspacing="0" width="100%">
+
           <tr>
             <td style="padding: 20px; font-size: 16px; line-height: 1.5; background-color: #003c951a; border-radius: 8px; border-left: 4px solid #003B95;">
-              <p style="margin: 0; color: #003B95;"><strong>How to verify your email:</strong></p>
+              <p style="margin: 0; color: #003B95;">
+                <strong>Kako potvrditi email adresu:</strong>
+              </p>
               <ol style="margin: 10px 0 0 20px; padding: 0; color: #003B95;">
-                <li style="margin-bottom: 5px;">Return to the verification page</li>
-                <li style="margin-bottom: 5px;">Enter this 4-digit code</li>
-                <li style="margin-bottom: 0;">Complete your account setup</li>
+                <li style="margin-bottom: 5px;">Vratite se na stranicu za potvrdu</li>
+                <li style="margin-bottom: 5px;">Unesite ovaj četveroznamenkasti kod</li>
+                <li style="margin-bottom: 0;">Dovršite postavljanje računa</li>
               </ol>
             </td>
           </tr>
+
           <tr>
             <td style="padding: 10px;"></td>
           </tr>
-          <tr >
-            <td style="padding: 0 20px 0 20px; font-size: 16px; line-height: 1.5; background-color: #FFFBEB; border-radius: 8px; border-left: 4px solid #F59E0B;">
-              <p style="margin-top: 15px;"><span style="color: #D97706;">⏰</span> <strong>Important:</strong></p>
-              <p>This verification code will expire in <strong>10 minutes</strong> for security reasons.</p>
-              <p style="margin-bottom: 15px;">If you don't verify your email within this time, you'll need to request a new code.</p>
+
+          <tr>
+            <td style="padding: 0 20px; font-size: 16px; line-height: 1.5; background-color: #FFFBEB; border-radius: 8px; border-left: 4px solid #F59E0B;">
+              <p style="margin-top: 15px;">
+                <strong>Važno:</strong>
+              </p>
+              <p>
+                Ovaj verifikacijski kod istječe za <strong>10 minuta</strong> iz sigurnosnih razloga.
+              </p>
+              <p style="margin-bottom: 15px;">
+                Ako u tom roku ne potvrdite email adresu, bit će potrebno zatražiti novi kod.
+              </p>
             </td>
           </tr>
+
         </table>
       </td>
     </tr>
-    
+
     <tr>
       <td style="padding: 0 30px 20px 30px; font-size: 16px; line-height: 1.5;">
-        <p>If you didn't create an account with Freelancer, please ignore this email or <a href="mailto:support@Freelancerproperty.com" style="color: #003B95; text-decoration: none;">contact our support team</a> if you have concerns.</p>
-        <p style="margin-bottom: 0;">— The Freelancer team</p>
+        <p>
+          Ako niste vi kreirali račun na Freelanceru, slobodno zanemarite ovu poruku ili
+          <a href="mailto:support@Freelancerproperty.com" style="color: #003B95; text-decoration: none;">
+            kontaktirajte naš tim za podršku
+          </a>
+          ako imate bilo kakvih nedoumica.
+        </p>
+        <p style="margin-bottom: 0;">
+          — Freelancer tim
+        </p>
       </td>
     </tr>
+
   </table>
 </body>
 </html>
