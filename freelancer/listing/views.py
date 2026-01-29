@@ -448,3 +448,15 @@ class SuperadListings(viewsets.ReadOnlyModelViewSet):
             
         # Apply the accumulated filters in one go
         return queryset.filter(filters).distinct()
+
+
+class AvailableListingsViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    Returns available and approved listings in random order.
+    """
+    serializer_class = sz.ListingSerializer
+    permission_classes = [isAuthenticatedOrReadOnly]
+    pagination_class = CustomOffsetPagination
+
+    def get_queryset(self):
+        return Listing.objects.filter(status='approved', available=True).order_by('?')
