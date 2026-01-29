@@ -14,6 +14,7 @@ from adsApp.models import Ad
 from django.utils.timezone import now
 from paymentApp.models import CoversAllSubscription
 from dateutil.relativedelta import relativedelta
+from rest_framework.permissions import AllowAny
 
 
 
@@ -455,7 +456,7 @@ class AvailableListingsViewSet(viewsets.ReadOnlyModelViewSet):
     Returns available and approved listings in random order.
     """
     serializer_class = sz.ListingSerializer
-    permission_classes = [isAuthenticatedOrReadOnly]
+    permission_classes = [AllowAny]
     pagination_class = CustomOffsetPagination
 
     def get_queryset(self):
