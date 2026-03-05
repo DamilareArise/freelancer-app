@@ -460,4 +460,16 @@ class AvailableListingsViewSet(viewsets.ReadOnlyModelViewSet):
     pagination_class = CustomOffsetPagination
 
     def get_queryset(self):
-        return Listing.objects.filter(status='approved', available=True).order_by('?')
+        params = self.request.query_params
+        country = params.get('country')
+        city = params.get('city')
+        county = params.get('county')
+        filters = Q(status='approved', available=True)
+        if country:
+            filters &= Q(location__country=country)
+        if city:
+            filters &= Q(location__city=city)
+        if county:
+            filters &= Q(location__county=county)
+        return Listing.objects.filter(filters).order_by('?')
+        
