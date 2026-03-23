@@ -3,6 +3,7 @@ from accounts.models import User
 from adminHandlers.models import ServiceCategory, SubCategory, CategoryFeaturesField
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.core.files.base import ContentFile
 import tinify
 from django.conf import settings
 
@@ -103,10 +104,10 @@ class Resource(models.Model):
 def compress_resource_image(sender, instance, **kwargs):
     if instance.type == 'image' and instance.resource:
         try:
-            file_path = instance.resource.path
-            source = tinify.from_file(file_path)
-            source.to_file(file_path)
-            print(f"Compressed: {file_path}")
+            source = tinify.from_url(instance.resource.url)
+            compressed = source.to_buffer()
+            instance.resource.storage.save(instance.resource.name, ContentFile(compressed))
+            print(f"Compressed: {instance.resource.name}")
         except Exception as e:
             print(f"Compression error: {e}")
             

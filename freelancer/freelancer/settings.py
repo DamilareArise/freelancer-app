@@ -221,9 +221,9 @@ CELERY_BEAT_SCHEDULE = {
         "task": "accounts.tasks.expire_ads_if_needed",
         "schedule": crontab(minute='*/30'),  # every 30 minutes
     },
-    "dispatch-notifications-every-10-minutes": {
+    "dispatch-notifications-every-5-minutes": {
         "task": "notificationApp.tasks.run_notification_dispatcher",
-        "schedule": crontab(minute="*/10"),
+        "schedule": crontab(minute="*/5"),
     },
 }
 
